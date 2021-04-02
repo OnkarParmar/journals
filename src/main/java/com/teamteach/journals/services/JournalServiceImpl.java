@@ -1,6 +1,7 @@
 package com.teamteach.journals.services;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.teamteach.journals.models.entities.*;
 import com.teamteach.journals.models.requests.*;
@@ -31,9 +32,12 @@ public class JournalServiceImpl implements JournalService {
 					.message("A Journal with this name already exists!")
 					.build();
 		} else {
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+			Date date = new Date(System.currentTimeMillis());
 			journal = Journal.builder()
 				.id(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
 				.name(journalRequestDto.getName())
+				.createdAt(date)
 				.build();
 			mongoTemplate.save(journal);
 			return ObjectResponseDto.builder()
