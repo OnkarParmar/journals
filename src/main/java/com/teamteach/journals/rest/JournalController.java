@@ -35,21 +35,21 @@ public class JournalController {
         return journalService.save(journal);
     }
 
-    @Secured({Roles.SERVICE_PROVIDER, Roles.USER})
+    @Secured({Roles.ADMIIN, Roles.USER})
     @Get("/journals/{journalId}")
     public Single<Journal> findJournalByNo(@PathVariable(value ="journalId" ) String journalId){
 
         return journalService.findJournalByNo(journalId); 
     }
 
-    @Secured({Roles.SERVICE_PROVIDER, Roles.USER})
+    @Secured({Roles.ADMIN, Roles.USER})
     @Get("/journals/getAll")
     public Flowable<Journal> findAll(){
 
         return journalService.findAll(); 
     }
 
-    @Secured({Roles.SERVICE_PROVIDER, Roles.USER})
+    @Secured({Roles.ADMIN, Roles.USER})
     @Get("/journals/getJournalIn{name}")
     public Flowable<Journal> findByName(@PathVariable("name") String name){
         return journalService.findByName(name); 
