@@ -1,16 +1,13 @@
 package com.teamteach.journals.services;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.inject.Singleton;
 
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
 
-import org.bson.BsonArray;
 import org.bson.BsonDocument;
-import org.bson.BsonDouble;
 import org.bson.BsonString;
 
 import com.teamteach.journals.domains.Journal;
@@ -21,15 +18,11 @@ import io.reactivex.Single;
 
 @Singleton
 public class JournalService {
-
     private final MongoClient mongoClient;
-    
 
-    public JournalService(MongoClient mongoClient)
-    {
+    public JournalService(MongoClient mongoClient) {
         this.mongoClient = mongoClient;
     }
-
 
     private MongoCollection<Journal> getCollection() {
             return mongoClient
@@ -37,20 +30,15 @@ public class JournalService {
                 .getCollection("journals", Journal.class);
     }
 
-    private Single<Journal> findAsSingle(BsonDocument query)
-    {
-
+    private Single<Journal> findAsSingle(BsonDocument query) {
         return Single.fromPublisher(getCollection().find(query)); 
     }
     
-    private Flowable<Journal> findAsFlowable(BsonDocument query)
-    {
-
+    private Flowable<Journal> findAsFlowable(BsonDocument query){
         return Flowable.fromPublisher(getCollection().find(query)); 
     }
 
     public Single<Journal> save(Journal journal){
-
         Long x = Single.fromPublisher(getCollection()
                 .countDocuments(new BsonDocument()
                         .append("journalerName", new BsonString(journal.getJournalerName()))))
@@ -60,26 +48,22 @@ public class JournalService {
 
         return   Single.fromPublisher(getCollection().insertOne(journal))
                 .map(success->journal);
-
     }
     
     public Single<Journal> findJournalByNo(String journalNo) {
-        
         return findAsSingle(new BsonDocument().append("_id", new BsonString(journalNo))); 
-        
     }
     
-    public Flowable<Journal> findAll()
-    {
+    public Flowable<Journal> findAll(){
             BsonDocument query = new BsonDocument().append("status", new BsonString(JournalStatus.CREATED.toString())); 
             return findAsFlowable(query); 
-
     }
     
     public Flowable<Journal> findAll(String username){
         return findAsFlowable(new BsonDocument()
                                 .append("journalerName", new BsonString(username))); 
     }
+
     public Flowable<Journal> findByName(String name) {
         BsonDocument query = new BsonDocument()
         .append("status", new BsonString(JournalStatus.CREATED.toString()))
@@ -92,7 +76,6 @@ public class JournalService {
         BsonDocument filter = new BsonDocument().append("_id", new BsonString(journalId)); 
 
         Journal journal = findAsSingle(filter).blockingGet(); 
-        //Single.fromPublisher(getCollection().find(filter).limit(1).first()).blockingGet(); 
         journal.setStatus(status);
         journal.setLastUpdate(new Date());
 
