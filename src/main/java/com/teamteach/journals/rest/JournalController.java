@@ -35,7 +35,7 @@ public class JournalController {
         return journalService.save(journal);
     }
 
-    @Secured({Roles.ADMIIN, Roles.USER})
+    @Secured({Roles.ADMIN, Roles.USER})
     @Get("/journals/{journalId}")
     public Single<Journal> findJournalByNo(@PathVariable(value ="journalId" ) String journalId){
 
