@@ -42,7 +42,7 @@ public class JournalController {
         return journalService.findJournalByNo(journalId); 
     }
 
-    @Secured({Roles.ADMIN, Roles.USER})
+    //@Secured({Roles.ADMIN, Roles.USER})
     @Get("/journals/getAll")
     public Flowable<Journal> findAll(){
 

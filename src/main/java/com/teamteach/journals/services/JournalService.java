@@ -69,6 +69,7 @@ public class JournalService {
         .append("status", new BsonString(JournalStatus.CREATED.toString()))
         .append("title", new BsonString(name)); 
 
+
         return findAsFlowable(query); 
     }
 
