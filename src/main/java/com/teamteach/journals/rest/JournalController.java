@@ -20,7 +20,7 @@ import io.micronaut.security.annotation.Secured;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-@Controller("")
+@Controller("/")
 public class JournalController {
 
 
