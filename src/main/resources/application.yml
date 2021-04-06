@@ -27,3 +27,10 @@ mongodb:
   uri: "mongodb+srv://digisherpa:MongoSherpa21@digisherpa.h80qy.mongodb.net/digisherpa?retryWrites=true&w=majority"
 
 ---
+eureka:
+  client:
+    enabled: true
+    registration:
+      enabled: true
+      defaultZone: "${EUREKA_HOST:ms.digisherpa.ai}:${EUREKA_PORT:8761}"
+
