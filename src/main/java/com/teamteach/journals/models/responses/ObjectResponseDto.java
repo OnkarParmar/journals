@@ -2,6 +2,7 @@ package com.teamteach.journals.models.responses;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
@@ -10,6 +11,11 @@ public class ObjectResponseDto {
     private final boolean success;
     private final String message;
     private Object object;
+
+    public ObjectResponseDto(){
+        this.success = false;
+        this.message = "";
+    }
 
     @Builder
     public ObjectResponseDto(boolean success, String message, Object object) {
