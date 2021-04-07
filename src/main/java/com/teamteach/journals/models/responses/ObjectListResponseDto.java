@@ -18,7 +18,7 @@ public class ObjectListResponseDto<T> {
 
     @Builder
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public ObjectListResponseDto(boolean success, String message, @JsonProperty("journals") List<T> objects) {
+    public ObjectListResponseDto(boolean success, String message, @JsonProperty("objects") List<T> objects) {
         this.success = success;
         this.message = message;
         this.objects = objects;

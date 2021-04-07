@@ -41,6 +41,11 @@ public class JournalController {
             return ResponseEntity.ok(journalService.findAll());
         }
 
+    @GetMapping("/entry")
+        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findAllEntries() {
+            return ResponseEntity.ok(journalEntryService.findAllEntries());
+        }
+
     @GetMapping("/{id}")
         public ResponseEntity<ObjectResponseDto> find(@PathVariable("id") String id) {
             return ResponseEntity.ok(journalService.findById(id));
