@@ -22,11 +22,6 @@ public class JournalServiceImpl implements JournalService {
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public ObjectResponseDto saveEntry(JournalRequestDto journalRequestDto) {
-		return new ObjectResponseDto();
-	}
-
-	@Override
 	public ObjectResponseDto save(JournalRequestDto journalRequestDto) {
 		Query query = new Query(Criteria.where("name").is(journalRequestDto.getName()));
 		Journal journal = mongoTemplate.findOne(query, Journal.class);

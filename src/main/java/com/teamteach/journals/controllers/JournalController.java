@@ -14,7 +14,7 @@ import com.teamteach.journals.models.entities.*;
 import com.teamteach.journals.models.requests.*;
 import com.teamteach.journals.models.responses.*;
 import com.teamteach.journals.services.interfaces.JournalService;
-import com.teamteach.journals.services.interfaces.EntryService;
+import com.teamteach.journals.services.interfaces.JournalEntryService;
 
 @RestController
 @RequestMapping("")
@@ -22,7 +22,9 @@ public class JournalController {
 
     @Autowired
         private JournalService journalService;
-        private EntryService entryService;
+
+    @Autowired
+        private JournalEntryService journalEntryService;
 
     @PostMapping("")
         public ResponseEntity<ObjectResponseDto> save(@RequestBody JournalRequestDto journalRequestDto) {
@@ -30,8 +32,8 @@ public class JournalController {
         }
 
     @PostMapping("/entry")
-        public ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalRequestDto journalRequestDto) {
-            return ResponseEntity.ok(journalService.saveEntry(journalRequestDto));
+        public ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryRequestDto journalEntryRequestDto) {
+            return ResponseEntity.ok(journalEntryService.saveEntry(journalEntryRequestDto));
         }
 
     @GetMapping("")

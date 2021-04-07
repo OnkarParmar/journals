@@ -1,4 +1,4 @@
-build/
+target/
 logs/
 .gradle
 .vscode

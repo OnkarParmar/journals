@@ -7,11 +7,14 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
-@Builder
 @Data
+@Builder
+@AllArgsConstructor
 @Accessors(chain = true)
-public class JournalRequestDto {
-    @NotBlank(message = "The name is required")
-    private String name;
+public class JournalEntryRequestDto {
+    @NotBlank(message = "The text is required")
+    private String[] children;
+    private String text;
+    private String category;
+    private String mood;
 }
