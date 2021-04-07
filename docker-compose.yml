@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  journals:
+    image: teamteach/journals
+    container_name: teamteach-journals
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "0.0.0.0:5004:5004"
+    network_mode: host
