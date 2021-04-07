@@ -9,4 +9,8 @@ public interface JournalEntryService {
     ObjectResponseDto saveEntry(JournalEntryRequestDto journalEntryRequestDto);
 
     ObjectListResponseDto<JournalEntry> findAllEntries();
+
+    ObjectResponseDto findById(String id);
+
+    ObjectResponseDto delete(String id);
 }

@@ -27,7 +27,7 @@ public class JournalController {
         private JournalEntryService journalEntryService;
 
     @PostMapping("")
-        public ResponseEntity<ObjectResponseDto> save(@RequestBody JournalRequestDto journalRequestDto) {
+        public ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody JournalRequestDto journalRequestDto) {
             return ResponseEntity.ok(journalService.save(journalRequestDto));
         }
 
@@ -37,7 +37,7 @@ public class JournalController {
         }
 
     @GetMapping("")
-        public ResponseEntity<ObjectListResponseDto<Journal>> findAll() {
+        public ResponseEntity<ObjectListResponseDto<Journal>> findAllJournals() {
             return ResponseEntity.ok(journalService.findAll());
         }
 
@@ -47,13 +47,22 @@ public class JournalController {
         }
 
     @GetMapping("/{id}")
-        public ResponseEntity<ObjectResponseDto> find(@PathVariable("id") String id) {
+        public ResponseEntity<ObjectResponseDto> findJournal(@PathVariable("id") String id) {
             return ResponseEntity.ok(journalService.findById(id));
-        }    
+        }
+
+    @GetMapping("/entry/{id}")
+    public ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id) {
+        return ResponseEntity.ok(journalEntryService.findById(id));
+    }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<ObjectResponseDto> delete(@PathVariable("id") String id) {
+        public ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable("id") String id) {
             return ResponseEntity.ok(journalService.delete(id));
         }
 
+    @DeleteMapping("/entry/{id}")
+    public ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id) {
+        return ResponseEntity.ok(journalEntryService.delete(id));
+    }
 }

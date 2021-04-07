@@ -57,4 +57,42 @@ public class JournalEntryServiceImpl implements JournalEntryService {
                 "Entries retrieved successfully!",
                 entries);
     }
+
+    @Override
+    public ObjectResponseDto delete(String id) {
+        Query query = new Query(Criteria.where("id").is(id));
+        try {
+            mongoTemplate.remove(query, "entries");
+            return ObjectResponseDto.builder()
+                    .success(true)
+                    .message("Entry deleted successfully")
+                    .build();
+        } catch (RuntimeException e) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Entry deletion failed")
+                    .build();
+        }
+    }
+
+    @Override
+    public ObjectResponseDto findById(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+
+        JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+
+        if (journalEntry == null) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("An entry with this id does not exist!")
+                    .build();
+        } else {
+            return ObjectResponseDto.builder()
+                    .success(true)
+                    .message("Entry record retrieved!")
+                    .object(journalEntry)
+                    .build();
+        }
+    }
 }
