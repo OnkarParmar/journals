@@ -67,7 +67,7 @@ public class JournalController {
         }
 
     @PostMapping("/entry/search")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntryRequestDto journalEntryRequestDto) {
-            return ResponseEntity.ok(journalEntryService.searchEntries(journalEntryRequestDto));
+        public ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntrySearchDto journalEntrySearchDto) {
+            return ResponseEntity.ok(journalEntryService.searchEntries(journalEntrySearchDto));
         }
 }

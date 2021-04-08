@@ -14,5 +14,5 @@ public interface JournalEntryService {
 
     ObjectResponseDto delete(String id);
 
-    ObjectListResponseDto<JournalEntry> searchEntries(JournalEntryRequestDto journalEntryRequestDto);
+    ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchDto journalEntrySearchDto);
 }

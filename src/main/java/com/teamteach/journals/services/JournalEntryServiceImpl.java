@@ -97,13 +97,13 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntryRequestDto journalEntryRequestDto) {
+    public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchDto JournalEntrySearchDto) {
         Query query = new Query();
-        if (journalEntryRequestDto.getMood() != null) {
-            query.addCriteria(Criteria.where("mood").is(journalEntryRequestDto.getMood()));
+        if (JournalEntrySearchDto.getMoods() != null) {
+            query.addCriteria(Criteria.where("mood").in(JournalEntrySearchDto.getMoods()));
         }
-        if (journalEntryRequestDto.getCategory() != null) {
-            query.addCriteria(Criteria.where("category").is(journalEntryRequestDto.getCategory()));
+        if (JournalEntrySearchDto.getCategories() != null) {
+            query.addCriteria(Criteria.where("category").in(JournalEntrySearchDto.getCategories()));
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         return new ObjectListResponseDto<>(true, "Entry records retrieved successfully!", entries);
