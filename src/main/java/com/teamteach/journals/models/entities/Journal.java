@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.teamteach.journals.models.entities.*;
 
 import java.util.*;
 
@@ -19,6 +20,7 @@ import java.util.*;
         @Id
         protected String id;
         private String name;
+        private List<Category> categories;
 
         @Builder
         public Journal(String id, Date createdAt, Date updatedAt, String name) {

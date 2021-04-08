@@ -95,4 +95,24 @@ public class JournalEntryServiceImpl implements JournalEntryService {
                     .build();
         }
     }
+
+    @Override
+    public ObjectListResponseDto<JournalEntry> findByMood(String mood) {
+        Query query = new Query(Criteria.where("mood").is(mood));
+        List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
+        return new ObjectListResponseDto<>(
+                true,
+                "Entry records retrieved successfully!",
+                entries);
+    }
+
+    @Override
+    public ObjectListResponseDto<JournalEntry> findByCategory(String category) {
+        Query query = new Query(Criteria.where("category").is(category));
+        List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
+        return new ObjectListResponseDto<>(
+                true,
+                "Entry records retrieved successfully!",
+                entries);
+    }
 }

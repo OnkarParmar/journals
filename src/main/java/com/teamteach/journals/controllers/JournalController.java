@@ -52,9 +52,9 @@ public class JournalController {
         }
 
     @GetMapping("/entry/{id}")
-    public ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id) {
-        return ResponseEntity.ok(journalEntryService.findById(id));
-    }
+        public ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id) {
+            return ResponseEntity.ok(journalEntryService.findById(id));
+        }
 
     @DeleteMapping("/{id}")
         public ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable("id") String id) {
@@ -62,7 +62,17 @@ public class JournalController {
         }
 
     @DeleteMapping("/entry/{id}")
-    public ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id) {
-        return ResponseEntity.ok(journalEntryService.delete(id));
-    }
+        public ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id) {
+            return ResponseEntity.ok(journalEntryService.delete(id));
+        }
+
+    @GetMapping("/entry/{mood}")
+        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findEntryByMood(@PathVariable("mood") String mood) {
+            return ResponseEntity.ok(journalEntryService.findByMood(mood));
+        }
+
+    @GetMapping("/entry/{category}")
+        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findEntryByCategory(@PathVariable("category") String category) {
+            return ResponseEntity.ok(journalEntryService.findByCategory(category));
+        }
 }
