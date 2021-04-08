@@ -66,13 +66,8 @@ public class JournalController {
             return ResponseEntity.ok(journalEntryService.delete(id));
         }
 
-    @GetMapping("/entry/{mood}")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findEntryByMood(@PathVariable("mood") String mood) {
-            return ResponseEntity.ok(journalEntryService.findByMood(mood));
-        }
-
-    @GetMapping("/entry/{category}")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findEntryByCategory(@PathVariable("category") String category) {
-            return ResponseEntity.ok(journalEntryService.findByCategory(category));
+    @PostMapping("/entry/search")
+        public ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntryRequestDto journalEntryRequestDto) {
+            return ResponseEntity.ok(journalEntryService.searchEntries(journalEntryRequestDto));
         }
 }

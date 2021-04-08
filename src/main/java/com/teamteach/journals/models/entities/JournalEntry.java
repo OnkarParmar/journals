@@ -19,10 +19,11 @@ public class JournalEntry {
 
     @Id
     protected String entryId;
-    private String[] children;
-    private String text;
-    private String category;
+    private String journalId;
     private String mood;
+    private String text;
+    private String[] children;
+    private String category;
 
     @Builder
     public JournalEntry(

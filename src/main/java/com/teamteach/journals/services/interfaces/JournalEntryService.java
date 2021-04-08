@@ -14,7 +14,5 @@ public interface JournalEntryService {
 
     ObjectResponseDto delete(String id);
 
-    ObjectListResponseDto<JournalEntry> findByCategory(String category);
-
-    ObjectListResponseDto<JournalEntry> findByMood(String mood);
+    ObjectListResponseDto<JournalEntry> searchEntries(JournalEntryRequestDto journalEntryRequestDto);
 }
