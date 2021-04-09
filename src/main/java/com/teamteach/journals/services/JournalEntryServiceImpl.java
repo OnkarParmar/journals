@@ -100,16 +100,22 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchDto JournalEntrySearchDto) {
+    public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchDto journalEntrySearchDto) {
         Query query = new Query();
-        if (JournalEntrySearchDto.getMoods() != null) {
-            query.addCriteria(Criteria.where("mood").in(JournalEntrySearchDto.getMoods()));
+        if (journalEntrySearchDto.getMoods() != null) {
+            query.addCriteria(Criteria.where("mood").in(journalEntrySearchDto.getMoods()));
         }
-        if (JournalEntrySearchDto.getCategories() != null) {
-            query.addCriteria(Criteria.where("category").in(JournalEntrySearchDto.getCategories()));
+        if (journalEntrySearchDto.getCategories() != null) {
+            query.addCriteria(Criteria.where("category").in(journalEntrySearchDto.getCategories()));
         }
-        if (JournalEntrySearchDto.getChildren() != null) {
-            query.addCriteria(Criteria.where("children").in(JournalEntrySearchDto.getChildren()));
+        if (journalEntrySearchDto.getChildren() != null) {
+            query.addCriteria(Criteria.where("children").in(journalEntrySearchDto.getChildren()));
+        }
+        if (journalEntrySearchDto.getFromDate() != null) {
+            query.addCriteria(Criteria.where("fromDate").is(journalEntrySearchDto.getFromDate()));
+        }
+        if (journalEntrySearchDto.getToDate() != null) {
+            query.addCriteria(Criteria.where("toDate").is(journalEntrySearchDto.getToDate()));
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         return new ObjectListResponseDto<>(true, "Entry records retrieved successfully!", entries);

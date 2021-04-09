@@ -1,6 +1,8 @@
 package com.teamteach.journals.services;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.teamteach.journals.models.entities.*;
@@ -32,8 +34,8 @@ public class JournalServiceImpl implements JournalService {
 					.message("A Journal with this name already exists!")
 					.build();
 		} else {
-			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-			Date date = new Date(System.currentTimeMillis());
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();			
 			journal = Journal.builder()
 				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
 				.title(journalRequestDto.getTitle())

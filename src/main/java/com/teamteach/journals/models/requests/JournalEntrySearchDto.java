@@ -17,7 +17,6 @@ import javax.validation.constraints.NotBlank;
 public class JournalEntrySearchDto {
     @NotBlank(message = "The text is required")
     private List<String> children;
-    private String text;
     private String fromDate;
     private String toDate;
     private List<String> categories;

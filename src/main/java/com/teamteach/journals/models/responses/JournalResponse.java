@@ -19,7 +19,7 @@ import com.teamteach.journals.models.entities.*;
 
         @Builder
         public JournalResponse(Journal journal) {
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
             this.journalId = journal.getJournalId();
             this.title = journal.getTitle();
             this.createdAt = formatter.format(journal.getCreatedAt());
