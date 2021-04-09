@@ -1,5 +1,6 @@
 package com.teamteach.journals.models.requests;
 
+import com.teamteach.journals.models.entities.Moods;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class JournalEntrySearchDto {
     @NotBlank(message = "The text is required")
     private List<String> children;
     private String text;
+    private String fromDate;
+    private String toDate;
     private List<String> categories;
-    private List<String> moods;
+    private List<Moods> moods;
 }

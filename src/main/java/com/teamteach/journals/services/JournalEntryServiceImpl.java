@@ -1,4 +1,6 @@
 package com.teamteach.journals.services;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.teamteach.journals.models.entities.*;
@@ -30,14 +32,15 @@ public class JournalEntryServiceImpl implements JournalEntryService {
                     .message("An entry with this text already exists!")
                     .build();
         } else {
-            /*SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-            Date date = new Date(System.currentTimeMillis());*/
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+            Date date = new Date(System.currentTimeMillis());
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
                     .text(journalEntryRequestDto.getText())
                     .children(journalEntryRequestDto.getChildren())
                     .category(journalEntryRequestDto.getCategory())
                     .mood(journalEntryRequestDto.getMood())
+                    .createdAt(date)
                     .build();
             mongoTemplate.save(journalEntry);
             return ObjectResponseDto.builder()
@@ -104,6 +107,9 @@ public class JournalEntryServiceImpl implements JournalEntryService {
         }
         if (JournalEntrySearchDto.getCategories() != null) {
             query.addCriteria(Criteria.where("category").in(JournalEntrySearchDto.getCategories()));
+        }
+        if (JournalEntrySearchDto.getChildren() != null) {
+            query.addCriteria(Criteria.where("children").in(JournalEntrySearchDto.getChildren()));
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         return new ObjectListResponseDto<>(true, "Entry records retrieved successfully!", entries);

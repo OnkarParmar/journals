@@ -17,17 +17,25 @@ import java.util.*;
         public static final String SEQUENCE_NAME = "journals_sequence";
 
         @Id
-        protected String id;
-        private String parentId;
-        private String name;
-        private List<Category> categories;
+        protected String journalId;
+        private String title;
+        private String desc;
+        private String[] children;
 
         @Builder
-        public Journal(String id, Date createdAt, Date updatedAt, String name) {
+        public Journal(
+                String journalId,
+                Date createdAt,
+                Date updatedAt,
+                String title,
+                String desc,
+                String[] children) {
             super(createdAt, updatedAt);
 
-            this.id = id;
-            this.name = name;
+            this.journalId = journalId;
+            this.title = title;
+            this.children = children;
+            this.desc = desc;
         }
 
     }

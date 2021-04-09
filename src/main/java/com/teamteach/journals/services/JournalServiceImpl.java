@@ -23,7 +23,7 @@ public class JournalServiceImpl implements JournalService {
 
 	@Override
 	public ObjectResponseDto save(JournalRequestDto journalRequestDto) {
-		Query query = new Query(Criteria.where("name").is(journalRequestDto.getName()));
+		Query query = new Query(Criteria.where("title").is(journalRequestDto.getTitle()));
 		Journal journal = mongoTemplate.findOne(query, Journal.class);
 
 		if (journal != null) {
@@ -35,8 +35,10 @@ public class JournalServiceImpl implements JournalService {
 			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 			Date date = new Date(System.currentTimeMillis());
 			journal = Journal.builder()
-				.id(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
-				.name(journalRequestDto.getName())
+				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
+				.title(journalRequestDto.getTitle())
+				.desc(journalRequestDto.getDesc())
+				.children(journalRequestDto.getChildren())
 				.createdAt(date)
 				.build();
 			mongoTemplate.save(journal);
@@ -97,8 +99,8 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public ObjectResponseDto findByName(String name) {
-		Query query = new Query(Criteria.where("name").is(name));
+	public ObjectResponseDto findByTitle(String title) {
+		Query query = new Query(Criteria.where("title").is(title));
 		Journal journal = mongoTemplate.findOne(query, Journal.class);
 
 		if (journal == null) {

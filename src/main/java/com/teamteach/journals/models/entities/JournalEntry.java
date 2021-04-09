@@ -13,7 +13,7 @@ import java.util.*;
 @Data
 @EqualsAndHashCode
 @Document(collection = "journalEntries")
-public class JournalEntry {
+public class JournalEntry extends BaseModel{
     @Transient
     public static final String SEQUENCE_NAME = "journalEntries_sequence";
 
@@ -26,12 +26,15 @@ public class JournalEntry {
     private String category;
 
     @Builder
-    public JournalEntry(
+    public JournalEntry (
             String entryId,
             String text,
+            Date createdAt,
+            Date updatedAt,
             String[] children,
             String category,
             String mood ) {
+        super(createdAt, updatedAt);
 
         this.entryId = entryId;
         this.text = text;

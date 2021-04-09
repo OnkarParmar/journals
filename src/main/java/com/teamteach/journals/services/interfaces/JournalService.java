@@ -11,7 +11,7 @@ public interface JournalService {
 
     ObjectResponseDto delete(String id);
 
-    ObjectResponseDto findByName(String name);
+    ObjectResponseDto findByTitle(String title);
 
     ObjectResponseDto findById(String id);
 }
