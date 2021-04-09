@@ -35,7 +35,7 @@ public class JournalServiceImpl implements JournalService {
 					.build();
 		} else {
 			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
-			Date date = new Date();			
+			Date date = new Date(System.currentTimeMillis());			
 			journal = Journal.builder()
 				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
 				.title(journalRequestDto.getTitle())
@@ -53,13 +53,17 @@ public class JournalServiceImpl implements JournalService {
 	}
 
 	@Override
-	public ObjectListResponseDto<Journal> findAll() {
+	public ObjectListResponseDto<JournalResponse> findAll() {
+		List<JournalResponse> journalResponses = new ArrayList<>();
 		Query query = new Query();
 		List<Journal> journals = mongoTemplate.find(query, Journal.class);
+		for(Journal journal: journals){
+			journalResponses.add(new JournalResponse(journal));
+		}
 		return new ObjectListResponseDto<>(
 			true, 
 			"Journal records retrieved successfully!", 
-			journals);
+			journalResponses);
 	}
 
 	@Override

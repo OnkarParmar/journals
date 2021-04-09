@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class JournalEntrySearchDto {
-    @NotBlank(message = "The text is required")
+    @NotBlank(message = "Some filter is required")
     private List<String> children;
     private String fromDate;
     private String toDate;
