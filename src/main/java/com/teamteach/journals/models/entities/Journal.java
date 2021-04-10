@@ -18,9 +18,12 @@ import java.util.*;
 
         @Id
         protected String journalId;
+        private String journalType;
+        private String ownerId;
         private String title;
         private String desc;
-        private String[] children;
+        private List<Category> categories;
+        private List<Mood> moods;
 
         @Builder
         public Journal(

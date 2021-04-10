@@ -33,7 +33,7 @@ public class JournalEntryController {
         }
 
     @GetMapping("")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findAllEntries() {
+        public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries() {
             return ResponseEntity.ok(journalEntryService.findAllEntries());
         }
 

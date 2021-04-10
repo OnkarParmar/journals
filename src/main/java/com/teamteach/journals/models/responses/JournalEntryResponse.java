@@ -19,7 +19,7 @@ public class JournalEntryResponse {
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry) {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         this.entryId = journalEntry.getEntryId();
         //this.name = journalEntry.getName();
         this.createdAt = formatter.format(journalEntry.getCreatedAt());

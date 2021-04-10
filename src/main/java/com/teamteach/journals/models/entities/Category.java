@@ -19,5 +19,7 @@ public class Category {
     @Id
     protected String categoryId;
     private String title;
-    private String colour;    
+    private String colour; 
+    private boolean isParent;
+    private boolean isTeacher;   
 }

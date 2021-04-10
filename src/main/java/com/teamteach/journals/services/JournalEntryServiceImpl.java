@@ -32,8 +32,8 @@ public class JournalEntryServiceImpl implements JournalEntryService {
                     .message("An entry with this text already exists!")
                     .build();
         } else {
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-            Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
+			Date date = new Date(System.currentTimeMillis());
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
                     .text(journalEntryRequestDto.getText())
@@ -52,13 +52,17 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntry> findAllEntries() {
+    public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
+        List<JournalEntryResponse> journalEntryResponses = new ArrayList<>();
         Query query = new Query();
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
+        for(JournalEntry journalEntry: entries){
+			journalEntryResponses.add(new JournalEntryResponse(journalEntry));
+		}
         return new ObjectListResponseDto<>(
                 true,
                 "Entries retrieved successfully!",
-                entries);
+                journalEntryResponses);
     }
 
     @Override

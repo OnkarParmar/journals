@@ -20,4 +20,6 @@ public class Mood {
     @Id
     protected String moodId;
     private String name;
+    private boolean isParent;
+    private boolean isTeacher;
 }

@@ -1,5 +1,6 @@
 package com.teamteach.journals.models.requests;
 
+import com.teamteach.journals.models.entities.Category;
 import com.teamteach.journals.models.entities.Mood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,6 @@ public class JournalEntrySearchDto {
     private List<String> children;
     private String fromDate;
     private String toDate;
-    private List<String> categories;
+    private List<Category> categories;
     private List<Mood> moods;
 }

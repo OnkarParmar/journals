@@ -8,7 +8,7 @@ public interface JournalEntryService {
 
     ObjectResponseDto saveEntry(JournalEntryRequestDto journalEntryRequestDto);
 
-    ObjectListResponseDto<JournalEntry> findAllEntries();
+    ObjectListResponseDto<JournalEntryResponse> findAllEntries();
 
     ObjectResponseDto findById(String id);
 
