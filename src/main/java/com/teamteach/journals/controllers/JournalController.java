@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.teamteach.journals.models.entities.*;
 import com.teamteach.journals.models.requests.*;
 import com.teamteach.journals.models.responses.*;
-import com.teamteach.journals.services.interfaces.JournalService;
-import com.teamteach.journals.services.interfaces.JournalEntryService;
+import com.teamteach.journals.services.interfaces.*;
 
 @RestController
 @RequestMapping("")
@@ -24,50 +23,88 @@ public class JournalController {
         private JournalService journalService;
 
     @Autowired
-        private JournalEntryService journalEntryService;
+        private MoodService moodService;
+    
+    @Autowired
+        private CategoryService categoryService;
 
     @PostMapping("")
         public ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody JournalRequestDto journalRequestDto) {
             return ResponseEntity.ok(journalService.save(journalRequestDto));
         }
+    
+    @PostMapping("/moods")
+    public ResponseEntity<ObjectResponseDto> saveMood(@RequestBody Mood mood) {
+        return ResponseEntity.ok(moodService.saveMood(mood));
+    }
 
-    @PostMapping("/entry")
-        public ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryRequestDto journalEntryRequestDto) {
-            return ResponseEntity.ok(journalEntryService.saveEntry(journalEntryRequestDto));
-        }
+    @PostMapping("/categories")
+    public ResponseEntity<ObjectResponseDto> saveCategory(@RequestBody Category category) {
+        return ResponseEntity.ok(categoryService.saveCategory(category));
+    }
 
     @GetMapping("")
         public ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals() {
             return ResponseEntity.ok(journalService.findAll());
         }
+        
+    @GetMapping("/moods")
+    public ResponseEntity<ObjectListResponseDto> findAllMoods() {
+        return ResponseEntity.ok(moodService.findMoods());
+    }    
 
-    @GetMapping("/entry")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> findAllEntries() {
-            return ResponseEntity.ok(journalEntryService.findAllEntries());
-        }
+    @GetMapping("/categories")
+    public ResponseEntity<ObjectListResponseDto> findCategories() {
+        return ResponseEntity.ok(categoryService.findCategories());
+    }
 
-    @GetMapping("/{id}")
-        public ResponseEntity<ObjectResponseDto> findJournal(@PathVariable("id") String id) {
+    @GetMapping("/id/{id}")
+        public ResponseEntity<ObjectResponseDto> findJournalById(@PathVariable("id") String id) {
             return ResponseEntity.ok(journalService.findById(id));
         }
 
-    @GetMapping("/entry/{id}")
-        public ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id) {
-            return ResponseEntity.ok(journalEntryService.findById(id));
-        }
+    @GetMapping("/moods/id/{id}")
+    public ResponseEntity<ObjectResponseDto> findMoodById(@PathVariable("id") String id) {
+        return ResponseEntity.ok(moodService.findMoodById(id));
+    }    
+
+    @GetMapping("/categories/id/{id}")
+    public ResponseEntity<ObjectResponseDto> findCategoryById(@PathVariable("id") String id) {
+        return ResponseEntity.ok(categoryService.findCategoryById(id));
+    }
+        
+    @GetMapping("/title/{title}")
+    public ResponseEntity<ObjectResponseDto> findJournalByTitle(@PathVariable("title") String title) {
+        return ResponseEntity.ok(journalService.findByTitle(title));
+    }
+
+    @GetMapping("/moods/name/{name}")
+    public ResponseEntity<ObjectResponseDto> findMoodByName(@PathVariable("name") String name) {
+        return ResponseEntity.ok(moodService.findByName(name));
+    }
+
+    @GetMapping("/categories/title/{title}")
+    public ResponseEntity<ObjectResponseDto> findCategoryByTitle(@PathVariable("title") String title) {
+        return ResponseEntity.ok(categoryService.findCategoryByTitle(title));
+    }
+
+    @GetMapping("/categories/colour/{colour}")
+    public ResponseEntity<ObjectResponseDto> findCategoryByColour(@PathVariable("colour") String colour) {
+        return ResponseEntity.ok(categoryService.findCategoryByColour(colour));
+    }
 
     @DeleteMapping("/{id}")
         public ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable("id") String id) {
             return ResponseEntity.ok(journalService.delete(id));
         }
+        
+    @DeleteMapping("/moods/{id}")
+    public ResponseEntity<ObjectResponseDto> deleteMood(@PathVariable("id") String id) {
+        return ResponseEntity.ok(moodService.deleteMood(id));
+    }
 
-    @DeleteMapping("/entry/{id}")
-        public ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id) {
-            return ResponseEntity.ok(journalEntryService.delete(id));
-        }
-
-    @PostMapping("/entry/search")
-        public ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntrySearchDto journalEntrySearchDto) {
-            return ResponseEntity.ok(journalEntryService.searchEntries(journalEntrySearchDto));
-        }
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<ObjectResponseDto> deleteCategory(@PathVariable("id") String id) {
+        return ResponseEntity.ok(categoryService.deleteCategory(id));
+    }
 }

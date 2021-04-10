@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @Accessors(chain = true)
 public class JournalRequestDto {
-    @NotBlank(message = "The name is required")
+    @NotBlank(message = "The title is required")
     private String title;
     private String desc;
     private String[] children;

@@ -6,12 +6,8 @@ import com.teamteach.journals.models.responses.*;
 
 public interface JournalService {
     ObjectResponseDto save(JournalRequestDto journalRequestDto);
-
     ObjectListResponseDto<JournalResponse> findAll();
-
     ObjectResponseDto delete(String id);
-
     ObjectResponseDto findByTitle(String title);
-
-    ObjectResponseDto findById(String id);
+    ObjectResponseDto findById(String id);  
 }

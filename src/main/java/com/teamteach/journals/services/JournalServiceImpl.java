@@ -34,7 +34,7 @@ public class JournalServiceImpl implements JournalService {
 					.message("A Journal with this name already exists!")
 					.build();
 		} else {
-			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
 			Date date = new Date(System.currentTimeMillis());			
 			journal = Journal.builder()
 				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
@@ -78,7 +78,7 @@ public class JournalServiceImpl implements JournalService {
 		} catch (RuntimeException e) {
 			return ObjectResponseDto.builder()
 					.success(false)
-					.message("Journal deletiond failed")
+					.message("Journal deletion failed")
 					.build();
 		}
 	}
