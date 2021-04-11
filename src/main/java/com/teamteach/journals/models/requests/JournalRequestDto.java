@@ -16,4 +16,6 @@ public class JournalRequestDto {
     private String title;
     private String desc;
     private String[] children;
+    private String journalType;
+    private String ownerId;
 }

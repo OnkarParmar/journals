@@ -28,17 +28,19 @@ import java.util.*;
         @Builder
         public Journal(
                 String journalId,
+                String journalType,
+                String ownerId,
                 Date createdAt,
                 Date updatedAt,
                 String title,
-                String desc,
-                String[] children) {
+                String desc) {
             super(createdAt, updatedAt);
 
             this.journalId = journalId;
             this.title = title;
-            this.children = children;
             this.desc = desc;
+            this.journalType = journalType;
+            this.ownerId = ownerId;
         }
 
     }

@@ -24,14 +24,20 @@ public class JournalServiceImpl implements JournalService {
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public ObjectResponseDto save(JournalRequestDto journalRequestDto) {
-		Query query = new Query(Criteria.where("title").is(journalRequestDto.getTitle()));
-		Journal journal = mongoTemplate.findOne(query, Journal.class);
+	public ObjectResponseDto saveMaster(JournalRequestDto journalRequestDto) {
+		Journal journal = null;
+		if(journalRequestDto.getOwnerId() != null){
+			Query query = new Query(Criteria.where("ownerId").is(journalRequestDto.getOwnerId()));
+			journal = mongoTemplate.findOne(query, Journal.class);
+		}
+		else {
+			journalRequestDto.setOwnerId("0");
+		}
 
 		if (journal != null) {
 			return ObjectResponseDto.builder()
 					.success(false)
-					.message("A Journal with this name already exists!")
+					.message("A Journal with this ownerID already exists!")
 					.build();
 		} else {
 			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
@@ -40,7 +46,8 @@ public class JournalServiceImpl implements JournalService {
 				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
 				.title(journalRequestDto.getTitle())
 				.desc(journalRequestDto.getDesc())
-				.children(journalRequestDto.getChildren())
+				.journalType(journalRequestDto.getJournalType())
+				.ownerId(journalRequestDto.getOwnerId())
 				.createdAt(date)
 				.build();
 			mongoTemplate.save(journal);
@@ -121,5 +128,23 @@ public class JournalServiceImpl implements JournalService {
 					.object(journal)
 					.build();
 		}
+	}
+
+	@Override
+    public ObjectResponseDto savePrivate(JournalRequestDto journalRequestDto) {
+        Query query = new Query();
+		query.addCriteria(Criteria.where("ownerId").is("0"));		
+		query.addCriteria(Criteria.where("journalType").is(journalRequestDto.getJournalType()));
+		Journal journal = mongoTemplate.findOne(query, Journal.class);
+		if(journal == null)
+		{
+			return ObjectResponseDto.builder()
+									.success(false)
+									.message("No master journal found with type " + journalRequestDto.getJournalType())
+									.build();
+		}
+		journalRequestDto.setTitle(journal.getTitle());
+		journalRequestDto.setDesc(journal.getDesc());
+		return saveMaster(journalRequestDto);
 	}
 }

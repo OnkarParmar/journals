@@ -30,7 +30,12 @@ public class JournalController {
 
     @PostMapping("")
         public ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody JournalRequestDto journalRequestDto) {
-            return ResponseEntity.ok(journalService.save(journalRequestDto));
+            if(journalRequestDto.getOwnerId() == null) //creating a master copy 
+                return ResponseEntity.ok(journalService.saveMaster(journalRequestDto));
+            else // retrieve the existing journal of the owner with the ownerId
+            {
+                return ResponseEntity.ok(journalService.savePrivate(journalRequestDto));
+            }
         }
     
     @PostMapping("/moods")
