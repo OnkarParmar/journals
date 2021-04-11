@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class JournalEntryRequestDto {
     @NotBlank(message = "The text is required")
     private String[] children;
+    private String ownerId;
     private String text;
     private String category;
     private String mood;

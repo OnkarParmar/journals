@@ -22,7 +22,7 @@ public class JournalEntryController {
     @Autowired
         private JournalEntryService journalEntryService;
 
-    @PostMapping("")
+    @PostMapping("/create")
         public ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryRequestDto journalEntryRequestDto) {
             return ResponseEntity.ok(journalEntryService.saveEntry(journalEntryRequestDto));
         }

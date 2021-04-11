@@ -36,6 +36,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
 			Date date = new Date(System.currentTimeMillis());
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
+                    .ownerId(journalEntryRequestDto.getOwnerId())
                     .text(journalEntryRequestDto.getText())
                     .children(journalEntryRequestDto.getChildren())
                     .category(journalEntryRequestDto.getCategory())
@@ -106,6 +107,12 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     @Override
     public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchDto journalEntrySearchDto) {
         Query query = new Query();
+        if (journalEntrySearchDto.getEntryId() != null) {
+            query.addCriteria(Criteria.where("entryId").is(journalEntrySearchDto.getEntryId()));
+        }
+        if (journalEntrySearchDto.getOwnerId() != null) {
+            query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchDto.getOwnerId()));
+        }
         if (journalEntrySearchDto.getMoods() != null) {
             query.addCriteria(Criteria.where("mood").in(journalEntrySearchDto.getMoods()));
         }

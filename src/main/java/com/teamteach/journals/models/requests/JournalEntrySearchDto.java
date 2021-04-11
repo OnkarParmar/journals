@@ -20,6 +20,8 @@ public class JournalEntrySearchDto {
     private List<String> children;
     private String fromDate;
     private String toDate;
+    private String ownerId;
+    private String entryId;
     private List<Category> categories;
     private List<Mood> moods;
 }
