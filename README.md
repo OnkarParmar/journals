@@ -1,1 +1,1 @@
-# journals
+# journal
