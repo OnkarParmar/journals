@@ -15,19 +15,31 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class ApplicationBeanConfig {
 
     final IJournalRepository journalRepository;
+    final IJournalEntryRepository journalEntryRepository;
     final MongoTemplate mongoTemplate;
-    //final IJournalEntryMgmt journalEntryMgmt;
 
     @Bean("journalMgmtSvc")
     IJournalMgmt journalMgmt() {
         return new JournalUse(journalRepository);
     }
+    @Bean("journalEntryMgmtSvc")
+    IJournalEntryMgmt journalEntryMgmt() {
+        return new JournalEntryUse(journalEntryRepository);
+    }
     @Bean("journalDALayer")
     IJournalRepository journalDAL() {
         return new JournalDAL(mongoTemplate);
     }
-    // @Bean("journalEntryMgmt")
-    // IJournalEntryMgmt journalEntry() {
-    //     return new JournalEntryUse(journalEntryMgmt);
-    // }
+    @Bean("journalEntryDALayer")
+    IJournalEntryRepository journalEntryDAL() {
+        return new JournalDAL(mongoTemplate);
+    }
+    @Bean("moodMgmtSvc")
+    IMoodMgmt moodMgmt() {
+        return new MoodUse(journalRepository);
+    }
+    @Bean("categoryMgmtSvc")
+    ICategoryMgmt categoryMgmt() {
+        return new CategoryUse(journalRepository);
+    }
 }
