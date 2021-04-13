@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
 
-@RequestMapping("/")
+@RequestMapping("")
 public interface IJournalResource {
 
-    @PostMapping("create")
+    @PostMapping("/create")
         ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody @Valid JournalCommand journalCommand);
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
         ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals();
 
     @GetMapping("/id/{id}")
