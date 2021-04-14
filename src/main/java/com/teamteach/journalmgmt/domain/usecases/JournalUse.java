@@ -95,24 +95,28 @@ public class JournalUse implements IJournalMgmt{
 	}
 
 	@Override
-	public ObjectResponseDto findById(String id) {
+	public ObjectListResponseDto findById(String ownerId) {
+		List<JournalResponse> journalResponses = new ArrayList<>();
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
+		query.addCriteria(Criteria.where("ownerId").is(ownerId));
 
-		Journal journal = mongoTemplate.findOne(query, Journal.class);
+		//Journal journal = mongoTemplate.findOne(query, Journal.class);
 
-		if (journal == null) {
-			return ObjectResponseDto.builder()
-					.success(false)
-					.message("A Journal with this id does not exist!")
-					.build();
-		} else {
-			return ObjectResponseDto.builder()
-					.success(true)
-					.message("Journal record retrieved!")
-					.object(journal)
-					.build();
+		List<Journal> journals = mongoTemplate.find(query, Journal.class);
+		for(Journal journal: journals){
+			if (journal == null) {
+				return ObjectListResponseDto.builder()
+						.success(false)
+						.message("A Journal with this parentId does not exist!")
+						.build();
+			} else {
+				journalResponses.add(new JournalResponse(journal));
+			}
 		}
+		return new ObjectListResponseDto<>(
+			true, 
+			"Journal records retrieved successfully!", 
+			journalResponses);
 	}
 
 	@Override

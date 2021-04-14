@@ -15,13 +15,15 @@ import com.teamteach.journalmgmt.domain.models.*;
 public class JournalResponse {
     protected String journalId;
     private String title;
+    private String desc;
     private String createdAt;
 
     @Builder
     public JournalResponse(Journal journal) {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd at hh:mm:ss");
         this.journalId = journal.getJournalId();
         this.title = journal.getTitle();
+        this.desc = journal.getDesc();
         this.createdAt = formatter.format(journal.getCreatedAt());
     }
 

@@ -8,20 +8,20 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
 
-@RequestMapping("api")
+@RequestMapping("/api")
 public interface IJournalResource {
 
     @PostMapping("/create")
         ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody @Valid JournalCommand journalCommand);
 
-    @GetMapping("/getAll")
-        ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals();
+    // @GetMapping("/")
+    //     ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals();
 
-    @GetMapping("/id/{id}")
-        ResponseEntity<ObjectResponseDto> findJournalById(@PathVariable String id) ;
+    @GetMapping("/parentId/{ownerId}")
+        ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@PathVariable String ownerId) ;
     
-    @GetMapping("/title/{title}")
-        ResponseEntity<ObjectResponseDto> findJournalByTitle(@PathVariable String title) ;
+    // @GetMapping("/title/{title}")
+    //     ResponseEntity<ObjectResponseDto> findJournalByTitle(@PathVariable String title) ;
 
     @DeleteMapping("/{id}")
         ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable String id) ;

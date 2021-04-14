@@ -33,11 +33,11 @@ class JournalResource extends AbstractAppController implements IJournalResource 
         }
     }
 
-    @Override
-    @ApiOperation(value = "Finds journals", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals(){
-        return ResponseEntity.ok(journalMgmt.findAll());
-    }
+    // @Override
+    // @ApiOperation(value = "Finds journals", authorizations = { @Authorization(value="jwtToken") })
+    // public ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals(){
+    //     return ResponseEntity.ok(journalMgmt.findAll());
+    // }
 
     @Override
     @ApiOperation(value = "Deletes journals", authorizations = { @Authorization(value="jwtToken") })
@@ -46,16 +46,16 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     }
 
     @Override
-    @ApiOperation(value = "Finds journal by id", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findJournalById(String id){
-        return ResponseEntity.ok(journalMgmt.findById(id));
+    @ApiOperation(value = "Finds journal by ownerId", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(String ownerId){
+        return ResponseEntity.ok(journalMgmt.findById(ownerId));
     }
 
-    @Override
-    @ApiOperation(value = "Finds journal by title", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findJournalByTitle(String title){
-        return ResponseEntity.ok(journalMgmt.findByTitle(title));
-    }
+    // @Override
+    // @ApiOperation(value = "Finds journal by title", authorizations = { @Authorization(value="jwtToken") })
+    // public ResponseEntity<ObjectResponseDto> findJournalByTitle(String title){
+    //     return ResponseEntity.ok(journalMgmt.findByTitle(title));
+    // }
 
     @Override
     @ApiOperation(value = "Creates mood", authorizations = { @Authorization(value="jwtToken") })

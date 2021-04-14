@@ -8,6 +8,6 @@ public interface IJournalMgmt {
     ObjectListResponseDto<JournalResponse> findAll();
     ObjectResponseDto delete(String id);
     ObjectResponseDto findByTitle(String title);
-    ObjectResponseDto findById(String id);  
+    ObjectListResponseDto findById(String id);
     ObjectResponseDto savePrivate(JournalCommand journalCommand);
 }

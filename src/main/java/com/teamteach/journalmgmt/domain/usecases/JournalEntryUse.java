@@ -120,10 +120,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
         }
         if (journalEntrySearchCommand.getMoods() != null) {
-            query.addCriteria(Criteria.where("mood").in(journalEntrySearchCommand.getMoods()));
+            query.addCriteria(Criteria.where("moods").in(journalEntrySearchCommand.getMoods()));
         }
         if (journalEntrySearchCommand.getCategories() != null) {
-            query.addCriteria(Criteria.where("category").in(journalEntrySearchCommand.getCategories()));
+            query.addCriteria(Criteria.where("categories").in(journalEntrySearchCommand.getCategories()));
         }
         if (journalEntrySearchCommand.getChildren() != null) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
