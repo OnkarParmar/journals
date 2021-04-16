@@ -12,7 +12,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.*;
+import java.time.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -113,6 +115,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (journalEntrySearchCommand.getEntryId() != null) {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
         }
@@ -128,11 +132,26 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getChildren() != null) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
         }
-        if (journalEntrySearchCommand.getFromDate() != null) {
-            query.addCriteria(Criteria.where("fromDate").is(journalEntrySearchCommand.getFromDate()));
-        }
-        if (journalEntrySearchCommand.getToDate() != null) {
-            query.addCriteria(Criteria.where("toDate").is(journalEntrySearchCommand.getToDate()));
+        if (journalEntrySearchCommand.getFromDate() != null && journalEntrySearchCommand.getToDate() != null) {
+            try {
+                String fromDateStr = journalEntrySearchCommand.getFromDate() + "T00:00:00.000Z";                
+                Date fromDate = formatter.parse(fromDateStr);
+                String toDateStr = journalEntrySearchCommand.getToDate() + "T23:59:59.999Z"; 
+                Date toDate = formatter.parse(toDateStr);
+                query.addCriteria(Criteria.where("createdAt").lte(toDate).gte(fromDate));
+            }
+            catch(ParseException e){
+                e.printStackTrace();
+            }
+        } else if (journalEntrySearchCommand.getFromDate() != null) {
+            try {
+                String fromDateStr = journalEntrySearchCommand.getFromDate() + "T00:00:00.000Z";                
+                Date fromDate = formatter.parse(fromDateStr);
+                query.addCriteria(Criteria.where("createdAt").gte(fromDate));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         return new ObjectListResponseDto<>(true, "Entry records retrieved successfully!", entries);
