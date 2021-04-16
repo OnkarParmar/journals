@@ -31,17 +31,17 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
-        Query query = new Query(Criteria.where("text").is(journalEntryCommand.getText()));
+        Date date = new Date(System.currentTimeMillis());
+        Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
 
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
                     .success(false)
-                    .message("An entry with this text already exists!")
+                    .message("An entry at the same time already exists!")
                     .build();
         } else {
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
-			Date date = new Date(System.currentTimeMillis());
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
                     .ownerId(journalEntryCommand.getOwnerId())
