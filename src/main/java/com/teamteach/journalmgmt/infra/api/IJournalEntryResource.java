@@ -5,6 +5,7 @@ import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -18,12 +19,15 @@ public interface IJournalEntryResource {
     @PostMapping("/search")
     ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
 
+    @ApiIgnore
     @GetMapping("/getAll")
     ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries();
 
+    @ApiIgnore
     @GetMapping("")
     ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
 
+    @ApiIgnore
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
 }
