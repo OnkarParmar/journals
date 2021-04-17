@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
 import java.util.Collections;
 
-@RequestMapping("api/entry")
+@RequestMapping("server/entry")
 public interface IJournalEntryResource {
 
     @PostMapping("/create")

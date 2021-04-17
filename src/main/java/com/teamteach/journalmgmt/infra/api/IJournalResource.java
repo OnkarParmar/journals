@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
 
-@RequestMapping("/api")
+@RequestMapping("server")
 public interface IJournalResource {
 
     @PostMapping("/create")
