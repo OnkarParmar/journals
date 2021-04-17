@@ -39,7 +39,7 @@ public class CategoryUse implements ICategoryMgmt{
                 .build();
 		} else {
             category2 = Category.builder()
-                .categoryId(sequenceGeneratorService.generateSequence(Category.SEQUENCE_NAME))
+                .categoryId(category.getCategoryId())
                 .title(category.getTitle())
                 .colour(category.getColour())
                 .build();

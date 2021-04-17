@@ -20,7 +20,7 @@ public class JournalResponse {
 
     @Builder
     public JournalResponse(Journal journal) {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd at hh:mm:ss");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
         this.journalId = journal.getJournalId();
         this.title = journal.getTitle();
         this.desc = journal.getDesc();

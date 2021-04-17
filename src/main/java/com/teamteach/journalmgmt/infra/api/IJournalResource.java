@@ -17,7 +17,7 @@ public interface IJournalResource {
     // @GetMapping("/")
     //     ResponseEntity<ObjectListResponseDto<JournalResponse>> findAllJournals();
 
-    @GetMapping("/parentId/{ownerId}")
+    @GetMapping("/parent/{ownerId}")
         ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@PathVariable String ownerId) ;
     
     // @GetMapping("/title/{title}")
