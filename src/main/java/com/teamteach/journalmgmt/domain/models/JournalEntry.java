@@ -20,6 +20,7 @@ public class JournalEntry extends BaseModel{
 
     @Id
     protected String entryId;
+    private String journalId;
     private String ownerId;
     private String mood;
     private String text;
@@ -29,6 +30,7 @@ public class JournalEntry extends BaseModel{
     @Builder
     public JournalEntry (
             String entryId,
+            String journalId,
             String ownerId,
             String text,
             Date createdAt,
@@ -39,6 +41,7 @@ public class JournalEntry extends BaseModel{
         super(createdAt, updatedAt);
 
         this.entryId = entryId;
+        this.journalId = journalId;
         this.ownerId = ownerId;
         this.text = text;
         this.children = children;

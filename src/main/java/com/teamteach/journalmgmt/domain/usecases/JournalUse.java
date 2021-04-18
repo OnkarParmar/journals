@@ -44,7 +44,6 @@ public class JournalUse implements IJournalMgmt{
 					.message("A Journal with this ownerID already exists!")
 					.build();
 		} else {
-			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
 			Date date = new Date(System.currentTimeMillis());
 			journal = Journal.builder()
 				.journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
@@ -99,8 +98,6 @@ public class JournalUse implements IJournalMgmt{
 		List<JournalResponse> journalResponses = new ArrayList<>();
 		Query query = new Query();
 		query.addCriteria(Criteria.where("ownerId").is(ownerId));
-
-		//Journal journal = mongoTemplate.findOne(query, Journal.class);
 
 		List<Journal> journals = mongoTemplate.find(query, Journal.class);
 		for(Journal journal: journals){

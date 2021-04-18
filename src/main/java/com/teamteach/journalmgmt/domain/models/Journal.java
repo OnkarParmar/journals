@@ -24,7 +24,6 @@ public class Journal extends BaseModel {
     private String desc;
     private List<Category> categories;
     private List<Mood> moods;
-    private int count;
 
     @Builder
     public Journal(
@@ -41,6 +40,6 @@ public class Journal extends BaseModel {
                 this.title = title;
                 this.desc = desc;
                 this.journalType = journalType;
-                this.ownerId = ownerId;
+                this.ownerId = ownerId;                
             }
 }

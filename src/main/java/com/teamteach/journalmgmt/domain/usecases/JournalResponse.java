@@ -17,14 +17,18 @@ public class JournalResponse {
     private String title;
     private String desc;
     private String createdAt;
+    private int totalEntries;
+    private String updatedAt;
 
     @Builder
     public JournalResponse(Journal journal) {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
         this.journalId = journal.getJournalId();
         this.title = journal.getTitle();
-        this.desc = journal.getDesc();
+        this.desc = journal.getDesc();    
+        //this.totalEntries = db.journals.count(ownerId(journal.getOwnerId()));
         this.createdAt = formatter.format(journal.getCreatedAt());
+        this.updatedAt = formatter.format(journal.getUpdatedAt());
     }
 
 }

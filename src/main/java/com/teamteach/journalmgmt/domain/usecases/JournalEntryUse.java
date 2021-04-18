@@ -34,7 +34,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Date date = new Date(System.currentTimeMillis());
         Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
-        int count=0;
+
+        Query query2 = new Query();
+        Journal journal = mongoTemplate.findOne(query2, Journal.class);
 
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
@@ -42,18 +44,19 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .message("An entry at the same time already exists!")
                     .build();
         } else {
-            count++;
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
                     .ownerId(journalEntryCommand.getOwnerId())
+                    .journalId(journalEntryCommand.getJournalId())
                     .text(journalEntryCommand.getText())
                     .children(journalEntryCommand.getChildren())
                     .category(journalEntryCommand.getCategory())
                     .mood(journalEntryCommand.getMood())
                     .createdAt(date)
-                    .build();
+                    .build();            
             mongoTemplate.save(journalEntry);
+            journal.setUpdatedAt(journalEntry.getCreatedAt());
+            mongoTemplate.save(journal);
             return ObjectResponseDto.builder()
                     .success(true)
                     .message("Entry created successfully")
