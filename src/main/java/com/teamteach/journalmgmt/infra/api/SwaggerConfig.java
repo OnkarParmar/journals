@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2020. PRM Fincon, Pvt. Ltd. - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Elmer Fudd <efudd@yoyodyne.com> 
- */
-
 package com.teamteach.journalmgmt.infra.api;
 
 import org.springframework.context.annotation.Bean;

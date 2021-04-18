@@ -34,6 +34,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Date date = new Date(System.currentTimeMillis());
         Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+        int count=0;
 
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
@@ -41,6 +42,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .message("An entry at the same time already exists!")
                     .build();
         } else {
+            count++;
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm:ss");
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
@@ -124,10 +126,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
         }
         if (journalEntrySearchCommand.getMoods() != null) {
-            query.addCriteria(Criteria.where("moods").in(journalEntrySearchCommand.getMoods()));
+            query.addCriteria(Criteria.where("mood").in(journalEntrySearchCommand.getMoods()));
         }
         if (journalEntrySearchCommand.getCategories() != null) {
-            query.addCriteria(Criteria.where("categories").in(journalEntrySearchCommand.getCategories()));
+            query.addCriteria(Criteria.where("category").in(journalEntrySearchCommand.getCategories()));
         }
         if (journalEntrySearchCommand.getChildren() != null) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));

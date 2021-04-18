@@ -24,6 +24,7 @@ public class Journal extends BaseModel {
     private String desc;
     private List<Category> categories;
     private List<Mood> moods;
+    private int count;
 
     @Builder
     public Journal(
