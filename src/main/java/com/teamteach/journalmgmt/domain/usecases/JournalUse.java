@@ -52,6 +52,7 @@ public class JournalUse implements IJournalMgmt{
 				.journalType(journalCommand.getJournalType())
 				.ownerId(journalCommand.getOwnerId())
 				.createdAt(date)
+				.updatedAt(date)
 				.build();
 			mongoTemplate.save(journal);
 			return ObjectResponseDto.builder()
