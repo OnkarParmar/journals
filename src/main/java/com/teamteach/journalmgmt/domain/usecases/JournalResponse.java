@@ -26,7 +26,6 @@ public class JournalResponse {
         this.journalId = journal.getJournalId();
         this.title = journal.getTitle();
         this.desc = journal.getDesc();    
-        //this.totalEntries = db.journals.count(ownerId(journal.getOwnerId()));
         this.createdAt = formatter.format(journal.getCreatedAt());
         this.updatedAt = formatter.format(journal.getUpdatedAt());
     }

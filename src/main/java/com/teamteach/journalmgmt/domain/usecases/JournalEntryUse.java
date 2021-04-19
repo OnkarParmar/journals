@@ -35,8 +35,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
 
-        Query query2 = new Query();
-        Journal journal = mongoTemplate.findOne(query2, Journal.class);
+        Query journalQuery = new Query(Criteria.where("journalId").is(journalEntryCommand.getJournalId()));
+        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
 
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
@@ -55,7 +55,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .createdAt(date)
                     .build();            
             mongoTemplate.save(journalEntry);
-            journal.setUpdatedAt(journalEntry.getCreatedAt());
+            journal.setUpdatedAt(date);
             mongoTemplate.save(journal);
             return ObjectResponseDto.builder()
                     .success(true)
