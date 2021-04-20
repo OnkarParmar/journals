@@ -2,7 +2,6 @@ package com.teamteach.journalmgmt.domain.responses;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,6 +17,7 @@ public class JournalResponse {
     private int totalEntries;
     private String updatedAt;
     private List<ObjectCount> moods;
+    private int entryCount;
 
     @Builder
     public JournalResponse(Journal journal) {
@@ -28,5 +28,7 @@ public class JournalResponse {
         this.createdAt = formatter.format(journal.getCreatedAt());
         this.updatedAt = formatter.format(journal.getUpdatedAt());
     }
-
+    public void setEntryCount() {
+        this.entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
+    }
 }

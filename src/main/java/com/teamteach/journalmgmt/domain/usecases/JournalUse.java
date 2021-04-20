@@ -118,6 +118,7 @@ public class JournalUse implements IJournalMgmt{
 				);
 				AggregationResults<ObjectCount> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, ObjectCount.class);
 				journalResponse.setMoods(results.getMappedResults());
+				journalResponse.setEntryCount();
 				journalResponses.add(journalResponse);
 			}
 		}
