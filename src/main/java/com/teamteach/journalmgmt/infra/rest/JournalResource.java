@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
@@ -44,15 +45,10 @@ class JournalResource extends AbstractAppController implements IJournalResource 
 
     @Override
     @ApiOperation(value = "Finds journal by ownerId", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(String ownerId){
-        return ResponseEntity.ok(journalMgmt.findById(ownerId));
+    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalMgmt.findById(ownerId, token));
     }
-
-    // @Override
-    // @ApiOperation(value = "Finds journal by title", authorizations = { @Authorization(value="jwtToken") })
-    // public ResponseEntity<ObjectResponseDto> findJournalByTitle(String title){
-    //     return ResponseEntity.ok(journalMgmt.findByTitle(title));
-    // }
 
     @Override
     @ApiOperation(value = "Creates mood", authorizations = { @Authorization(value="jwtToken") })

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.web.client.RestTemplate;
+
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 
 @Configuration
@@ -19,10 +21,11 @@ public class ApplicationBeanConfig {
     final IJournalEntryRepository journalEntryRepository;
     final MongoTemplate mongoTemplate;
     final IMessagingPort messagingPort;
+    final RestTemplate restTemplate;
 
     @Bean("journalMgmtSvc")
     IJournalMgmt journalMgmt() {
-        return new JournalUse(journalRepository, messagingPort);
+        return new JournalUse(journalRepository, messagingPort,restTemplate );
     }
     @Bean("journalEntryMgmtSvc")
     IJournalEntryMgmt journalEntryMgmt() {

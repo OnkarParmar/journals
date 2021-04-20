@@ -11,6 +11,6 @@ public interface IJournalMgmt {
     ObjectListResponseDto<JournalResponse> findAll();
     ObjectResponseDto delete(String id);
     ObjectResponseDto findByTitle(String title);
-    ObjectListResponseDto findById(String id);
+    ObjectListResponseDto findById(String id, String token);
     ObjectResponseDto savePrivate(JournalCommand journalCommand);
 }
