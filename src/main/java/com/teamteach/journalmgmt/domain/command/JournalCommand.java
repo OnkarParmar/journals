@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+import com.teamteach.journalmgmt.domain.models.UserSignupInfo;
+
 @Data
 @NoArgsConstructor
 @Getter
@@ -16,7 +18,12 @@ public class JournalCommand extends ValidatingCommand{
     @NotNull
     private String title;
     private String desc;
-    private String[] children;
     private String journalType;
     private String ownerId;
+    private String[] children;
+
+    public JournalCommand(UserSignupInfo userSignupInfo) {
+        this.ownerId = userSignupInfo.getUserId();
+        this.journalType = userSignupInfo.getProfiletype();
+    }
 }

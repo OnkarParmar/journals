@@ -7,7 +7,7 @@ import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import com.teamteach.journalmgmt.domain.usecases.*;
 
 public interface IJournalMgmt {
-    ObjectResponseDto saveMaster(JournalCommand journalCommand);
+    ObjectResponseDto createJournal(JournalCommand journalCommand);
     ObjectListResponseDto<JournalResponse> findAll();
     ObjectResponseDto delete(String id);
     ObjectResponseDto findByTitle(String title);

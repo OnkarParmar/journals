@@ -14,6 +14,10 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import java.util.function.Consumer;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 
 import java.util.*;
 
@@ -23,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class JournalUse implements IJournalMgmt{
 
     final IJournalRepository journalRepository;
+    final IMessagingPort messagingPort;
 
 	@Autowired
     private SequenceGeneratorService sequenceGeneratorService;
@@ -30,8 +35,20 @@ public class JournalUse implements IJournalMgmt{
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
+    @PostConstruct
+    void registerWithMQ() {
+        messagingPort.registerGeneralResponseListener("event.createjournal", UserSignupInfo.class, queueConsumer);
+    }
+
+    Consumer<UserSignupInfo> queueConsumer = new Consumer<UserSignupInfo>() {
+        @Override
+        public void accept(UserSignupInfo userSignupInfo) {
+            savePrivate(new JournalCommand(userSignupInfo));
+        }
+    };
+
     @Override
-    public ObjectResponseDto saveMaster(JournalCommand journalCommand){
+    public ObjectResponseDto createJournal(JournalCommand journalCommand){
         Journal journal = null;
 		if(journalCommand.getOwnerId() != null){
 			Query query = new Query(Criteria.where("ownerId").is(journalCommand.getOwnerId()));
@@ -45,6 +62,7 @@ public class JournalUse implements IJournalMgmt{
 			return ObjectResponseDto.builder()
 					.success(false)
 					.message("A Journal with this ownerID already exists!")
+					.object(journal)
 					.build();
 		} else {
 			Date date = new Date(System.currentTimeMillis());
@@ -159,6 +177,6 @@ public class JournalUse implements IJournalMgmt{
 		}
 		journalCommand.setTitle(journal.getTitle());
 		journalCommand.setDesc(journal.getDesc());
-		return saveMaster(journalCommand);
+		return createJournal(journalCommand);
 	}
 }

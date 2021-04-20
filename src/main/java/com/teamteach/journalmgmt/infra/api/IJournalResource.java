@@ -17,7 +17,7 @@ public interface IJournalResource {
 
     @ApiIgnore
     @PostMapping("/create")
-        ResponseEntity<ObjectResponseDto> saveJournal(@RequestBody @Valid JournalCommand journalCommand);
+        ResponseEntity<ObjectResponseDto> createJournal(@RequestBody @Valid JournalCommand journalCommand);
 
     @GetMapping("/owner/{ownerId}")
         ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@PathVariable String ownerId) ;
