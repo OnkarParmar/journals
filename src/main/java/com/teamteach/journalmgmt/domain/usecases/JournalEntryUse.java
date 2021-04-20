@@ -32,6 +32,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
+        if (journalEntryCommand.getChildren() == null || journalEntryCommand.getChildren().length == 0) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Journal Entry can't be created without a child!")
+                    .build();
+        }
         Date date = new Date(System.currentTimeMillis());
         Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
