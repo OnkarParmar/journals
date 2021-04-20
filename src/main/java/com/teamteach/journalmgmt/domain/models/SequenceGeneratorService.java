@@ -1,4 +1,4 @@
-package com.teamteach.journalmgmt.domain.usecases;
+package com.teamteach.journalmgmt.domain.models;
 
 import com.teamteach.journalmgmt.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;

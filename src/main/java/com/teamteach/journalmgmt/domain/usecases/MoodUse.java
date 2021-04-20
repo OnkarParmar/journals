@@ -4,6 +4,8 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
+import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
+import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -2,6 +2,9 @@ package com.teamteach.journalmgmt.infra.rest;
 
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
+import com.teamteach.journalmgmt.domain.responses.JournalResponse;
+import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
+import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.infra.api.IJournalResource;

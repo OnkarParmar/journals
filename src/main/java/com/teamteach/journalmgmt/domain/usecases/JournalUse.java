@@ -4,14 +4,17 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
+import com.teamteach.journalmgmt.domain.responses.JournalResponse;
+import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
+import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
@@ -95,26 +98,30 @@ public class JournalUse implements IJournalMgmt{
 	}
 
 	@Override
-	public ObjectListResponseDto findById(String ownerId) {
+	public ObjectListResponseDto<JournalResponse> findById(String ownerId) {
 		List<JournalResponse> journalResponses = new ArrayList<>();
-		Query query = new Query();
-		query.addCriteria(Criteria.where("ownerId").is(ownerId));
+		Query query = new Query(Criteria.where("ownerId").is(ownerId));
 
 		List<Journal> journals = mongoTemplate.find(query, Journal.class);
-		for(Journal journal: journals){
-			if (journal == null) {
-				return ObjectListResponseDto.builder()
-						.success(false)
-						.message("A Journal with this parentId does not exist!")
-						.build();
-			} else {
-				journalResponses.add(new JournalResponse(journal));
+		if (journals == null) {
+			return new ObjectListResponseDto<>(false, "A Journal with this parentId does not exist!", null);
+		} else {
+			for (Journal journal : journals) {
+				JournalResponse journalResponse = new JournalResponse(journal);
+				Aggregation aggregation = Aggregation.newAggregation(
+					Aggregation.match(Criteria.where("journalId").is(journal.getJournalId())),
+					Aggregation.project()
+								.and("mood").as("name"),
+					Aggregation.group("name")
+									.count().as("count"),
+					Aggregation.project("count").and("name").previousOperation()
+				);
+				AggregationResults<ObjectCount> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, ObjectCount.class);
+				journalResponse.setMoods(results.getMappedResults());
+				journalResponses.add(journalResponse);
 			}
 		}
-		return new ObjectListResponseDto<>(
-			true, 
-			"Journal records retrieved successfully!", 
-			journalResponses);
+		return new ObjectListResponseDto<>(true, "Journal records retrieved successfully!", journalResponses);
 	}
 
 	@Override

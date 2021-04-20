@@ -1,4 +1,4 @@
-package com.teamteach.journalmgmt.domain.usecases;
+package com.teamteach.journalmgmt.domain.responses;
 
 import lombok.Builder;
 import lombok.Data;
