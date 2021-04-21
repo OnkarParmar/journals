@@ -23,7 +23,7 @@ public class JournalCommand extends ValidatingCommand{
     private String[] children;
 
     public JournalCommand(UserSignupInfo userSignupInfo) {
-        this.ownerId = userSignupInfo.getUserId();
+        this.ownerId = userSignupInfo.getOwnerId();
         this.journalType = userSignupInfo.getProfiletype();
     }
 }

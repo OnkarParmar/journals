@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserSignupInfo {
     String fname;
     String lname;
-    String userId;
+    String ownerId;
     String profiletype;
     String relation;
 }
