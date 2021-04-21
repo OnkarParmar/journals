@@ -153,7 +153,7 @@ public class JournalUse implements IJournalMgmt{
 					journalResponse.setMoods(results.getMappedResults());
 					journalResponse.setEntryCount();
 
-					String parentProfileUrl = "https://ms.digisherpa.ai/profiles/"+ownerId;
+					String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
 					HttpHeaders headers = new HttpHeaders();
 					headers.set("Authorization", "Bearer " + accessToken); 
 					headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
