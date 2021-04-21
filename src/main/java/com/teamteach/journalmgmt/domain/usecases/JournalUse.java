@@ -136,7 +136,7 @@ public class JournalUse implements IJournalMgmt{
 
 		List<Journal> journals = mongoTemplate.find(query, Journal.class);
 		if (journals == null) {
-			return new ObjectListResponseDto<>(false, "A Journal with this parentId does not exist!", null);
+			return new ObjectListResponseDto<>(false, "A Journal with this ownerId does not exist!", null);
 		} else {
 			try {
 				for (Journal journal : journals) {
