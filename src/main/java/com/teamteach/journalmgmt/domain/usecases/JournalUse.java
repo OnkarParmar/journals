@@ -169,6 +169,7 @@ public class JournalUse implements IJournalMgmt{
 							children.add(new ChildProfile(childJson.get("name").asText(),childJson.get("profileId").asText()));
 						}
 						ParentProfileResponseDto parentProfile = ParentProfileResponseDto.builder()
+																	.profileId(parentProfileJson.get("profileId").asText())
 																	.fname(parentProfileJson.get("fname").asText())
 																	.lname(parentProfileJson.get("lname").asText())
 																	.email(parentProfileJson.get("email").asText())

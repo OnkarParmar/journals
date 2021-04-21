@@ -12,6 +12,7 @@ import com.teamteach.journalmgmt.domain.models.ChildProfile;
 @Data
 @Builder
 public class ParentProfileResponseDto {
+    private String profileId;
     private String fname;
     private String lname;
     private String email;
