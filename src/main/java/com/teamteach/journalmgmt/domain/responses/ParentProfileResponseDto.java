@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.teamteach.journalmgmt.domain.models.ChildProfile;
+
 @AllArgsConstructor
 @Data
 @Builder
@@ -13,5 +15,5 @@ public class ParentProfileResponseDto {
     private String fname;
     private String lname;
     private String email;
-    private List<String> children;
+    private List<ChildProfile> children;
 }
