@@ -44,6 +44,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
         Query journalQuery = new Query(Criteria.where("journalId").is(journalEntryCommand.getJournalId()));
         Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+        if (journal == null) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("No journal exists with given journalId!")
+                    .build();
+        }
 
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
