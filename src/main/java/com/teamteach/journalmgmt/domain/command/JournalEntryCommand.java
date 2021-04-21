@@ -12,7 +12,6 @@ public class JournalEntryCommand extends ValidatingCommand {
 
     private String[] children;
     private String journalId;
-    private String ownerId;
     private String text;
     private String category;
     private String mood;

@@ -68,7 +68,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         } else {
             journalEntry = JournalEntry.builder()
                     .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
-                    .ownerId(journalEntryCommand.getOwnerId())
+                    .ownerId(journal.getOwnerId())
                     .journalId(journalEntryCommand.getJournalId())
                     .text(journalEntryCommand.getText())
                     .children(journalEntryCommand.getChildren())
