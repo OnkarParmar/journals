@@ -51,6 +51,15 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .build();
         }
 
+        for (String child : journalEntryCommand.getChildren()) {
+            if (child.equals("")) {
+                return ObjectResponseDto.builder()
+                .success(false)
+                .message("Child-id can not be blank!")
+                .build();
+            }
+        }
+
         if (journalEntry != null) {
             return ObjectResponseDto.builder()
                     .success(false)
