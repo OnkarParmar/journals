@@ -38,6 +38,30 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .message("Journal Entry can't be created without a child!")
                     .build();
         }
+        if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Journal Entry can't be created without a text!")
+                    .build();
+        }
+        if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Journal Entry can't be created without a text!")
+                    .build();
+        }
+        if (journalEntryCommand.getCategory() == null || journalEntryCommand.getCategory().equals("")) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Journal Entry can't be created without a category!")
+                    .build();
+        }
+        if (journalEntryCommand.getMood() == null || journalEntryCommand.getMood().equals("")) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Journal Entry can't be created without a mood!")
+                    .build();
+        }
         Date date = new Date(System.currentTimeMillis());
         Query query = new Query(Criteria.where("createdAt").gte(date));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
@@ -147,7 +171,14 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getEntryId() != null) {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
         }
-        if (journalEntrySearchCommand.getOwnerId() != null) {
+        if (journalEntrySearchCommand.getOwnerId() == null || journalEntrySearchCommand.getOwnerId().equals("")) {
+           return new ObjectListResponseDto<>(
+                                        false,
+                                        "Owner ID is necessary to search entries",
+                                        null
+           );
+
+        } else {
             query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
         }
         if (journalEntrySearchCommand.getMoods() != null) {
