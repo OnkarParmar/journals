@@ -166,8 +166,14 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
+        SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy   hh:mm aa");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        if(journalEntrySearchCommand.getFromDate().equals("")){
+            journalEntrySearchCommand.setFromDate(null);
+        }
+        if(journalEntrySearchCommand.getToDate().equals("")){
+            journalEntrySearchCommand.setToDate(null);
+        }
         if (journalEntrySearchCommand.getEntryId() != null) {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
         }
@@ -181,13 +187,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         } else {
             query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
         }
-        if (journalEntrySearchCommand.getMoods() != null) {
+        if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
             query.addCriteria(Criteria.where("mood").in(journalEntrySearchCommand.getMoods()));
         }
-        if (journalEntrySearchCommand.getCategories() != null) {
+        if (journalEntrySearchCommand.getCategories() != null && !journalEntrySearchCommand.getCategories().isEmpty()) {
             query.addCriteria(Criteria.where("category").in(journalEntrySearchCommand.getCategories()));
         }
-        if (journalEntrySearchCommand.getChildren() != null) {
+        if (journalEntrySearchCommand.getChildren() != null && !journalEntrySearchCommand.getChildren().isEmpty()) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
         }
         if (journalEntrySearchCommand.getFromDate() != null && journalEntrySearchCommand.getToDate() != null) {
