@@ -5,18 +5,13 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import com.teamteach.journalmgmt.domain.command.*;
-import com.teamteach.journalmgmt.domain.models.*;
-import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.infra.api.IJournalEntryResource;
-import com.teamteach.journalmgmt.infra.api.IJournalResource;
 import com.teamteach.journalmgmt.shared.AbstractAppController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +27,7 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Finds entries with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand));
     }
 

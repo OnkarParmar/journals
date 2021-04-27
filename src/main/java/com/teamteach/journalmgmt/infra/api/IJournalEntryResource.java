@@ -21,7 +21,7 @@ public interface IJournalEntryResource {
     ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
 
     @PostMapping("/search")
-    ResponseEntity<ObjectListResponseDto<JournalEntry>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
+    ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
 
     @ApiIgnore
     @GetMapping("/getAll")

@@ -164,9 +164,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntry> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ObjectListResponseDto<JournalEntryResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
-        SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy   hh:mm aa");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         String fromDateStr = null;
         String toDateStr = null;
@@ -220,6 +220,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
-        return new ObjectListResponseDto<>(true, "Entry records retrieved successfully!", entries);
+        List<JournalEntryResponse> journalEntries = new ArrayList<>();
+        for (JournalEntry entry : entries) {
+            journalEntries.add(new JournalEntryResponse(entry));
+        }
+        return new ObjectListResponseDto<JournalEntryResponse>(true, "Entry records retrieved successfully!", journalEntries);
     }
 }
