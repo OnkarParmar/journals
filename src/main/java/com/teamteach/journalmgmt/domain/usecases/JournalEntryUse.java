@@ -168,11 +168,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Query query = new Query();
         SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy   hh:mm aa");
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        if(journalEntrySearchCommand.getFromDate().equals("")){
-            journalEntrySearchCommand.setFromDate(null);
+        String fromDateStr = null;
+        String toDateStr = null;
+        if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
+            fromDateStr = journalEntrySearchCommand.getFromDate();
         }
-        if(journalEntrySearchCommand.getToDate().equals("")){
-            journalEntrySearchCommand.setToDate(null);
+        if (journalEntrySearchCommand.getToDate() != null && !journalEntrySearchCommand.getToDate().equals("")){
+            toDateStr = journalEntrySearchCommand.getToDate();
         }
         if (journalEntrySearchCommand.getEntryId() != null) {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
@@ -196,20 +198,20 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getChildren() != null && !journalEntrySearchCommand.getChildren().isEmpty()) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
         }
-        if (journalEntrySearchCommand.getFromDate() != null && journalEntrySearchCommand.getToDate() != null) {
+        if (fromDateStr != null && toDateStr != null) {
             try {
-                String fromDateStr = journalEntrySearchCommand.getFromDate() + "T00:00:00.000Z";                
+                fromDateStr += "T00:00:00.000Z";                
                 Date fromDate = formatter.parse(fromDateStr);
-                String toDateStr = journalEntrySearchCommand.getToDate() + "T23:59:59.999Z"; 
+                toDateStr += "T23:59:59.999Z"; 
                 Date toDate = formatter.parse(toDateStr);
                 query.addCriteria(Criteria.where("createdAt").lte(toDate).gte(fromDate));
             }
             catch(ParseException e){
                 e.printStackTrace();
             }
-        } else if (journalEntrySearchCommand.getFromDate() != null) {
+        } else if (fromDateStr != null) {
             try {
-                String fromDateStr = journalEntrySearchCommand.getFromDate() + "T00:00:00.000Z";                
+                fromDateStr += "T00:00:00.000Z";                
                 Date fromDate = formatter.parse(fromDateStr);
                 query.addCriteria(Criteria.where("createdAt").gte(fromDate));
             }
