@@ -166,15 +166,42 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectListResponseDto<JournalEntryResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String fromDateStr = null;
-        String toDateStr = null;
-        if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
-            fromDateStr = journalEntrySearchCommand.getFromDate();
-        }
-        if (journalEntrySearchCommand.getToDate() != null && !journalEntrySearchCommand.getToDate().equals("")){
-            toDateStr = journalEntrySearchCommand.getToDate();
+        SimpleDateFormat formatter = null;
+        Date fromDate = null;
+        Date toDate = null;
+        Calendar cal = Calendar.getInstance();
+        if (journalEntrySearchCommand.getViewMonth() == null) {
+            if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
+                String fromDateStr = journalEntrySearchCommand.getFromDate();
+                formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                fromDateStr += "T00:00:00.000Z";                
+                try {
+                    fromDate = formatter.parse(fromDateStr);
+                } catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+            if (journalEntrySearchCommand.getToDate() != null && !journalEntrySearchCommand.getToDate().equals("")){
+                String toDateStr = journalEntrySearchCommand.getToDate();
+                toDateStr += "T23:59:59.999Z"; 
+                try {
+                    toDate = formatter.parse(toDateStr);
+                } catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            formatter = new SimpleDateFormat("MMMM yyyy");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+                fromDate = formatter.parse(journalEntrySearchCommand.getViewMonth());
+                cal.setTime(fromDate);
+                cal.add(Calendar.MONTH, 1);
+                toDate = cal.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         if (journalEntrySearchCommand.getEntryId() != null) {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
@@ -198,27 +225,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getChildren() != null && !journalEntrySearchCommand.getChildren().isEmpty()) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
         }
-        if (fromDateStr != null && toDateStr != null) {
-            try {
-                fromDateStr += "T00:00:00.000Z";                
-                Date fromDate = formatter.parse(fromDateStr);
-                toDateStr += "T23:59:59.999Z"; 
-                Date toDate = formatter.parse(toDateStr);
-                query.addCriteria(Criteria.where("createdAt").lte(toDate).gte(fromDate));
-            }
-            catch(ParseException e){
-                e.printStackTrace();
-            }
-        } else if (fromDateStr != null) {
-            try {
-                fromDateStr += "T00:00:00.000Z";                
-                Date fromDate = formatter.parse(fromDateStr);
-                query.addCriteria(Criteria.where("createdAt").gte(fromDate));
-            }
-            catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (fromDate != null && toDate != null) {
+            query.addCriteria(Criteria.where("createdAt").lte(toDate).gte(fromDate));
+        } else if (fromDate != null) {
+            query.addCriteria(Criteria.where("createdAt").gte(fromDate));
         }
+        System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntryResponse> journalEntries = new ArrayList<>();
         for (JournalEntry entry : entries) {
