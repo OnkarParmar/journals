@@ -170,6 +170,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Date fromDate = null;
         Date toDate = null;
         Calendar cal = Calendar.getInstance();
+        int firstDay = 1;
         if (journalEntrySearchCommand.getViewMonth() == null) {
             if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
                 String fromDateStr = journalEntrySearchCommand.getFromDate();
@@ -197,6 +198,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             try {
                 fromDate = formatter.parse(journalEntrySearchCommand.getViewMonth());
                 cal.setTime(fromDate);
+                firstDay = cal.get(Calendar.DAY_OF_WEEK);
                 cal.add(Calendar.MONTH, 1);
                 toDate = cal.getTime();
             } catch (ParseException e) {
@@ -232,9 +234,20 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
-        List<JournalEntryResponse> journalEntries = new ArrayList<>();
-        for (JournalEntry entry : entries) {
-            journalEntries.add(new JournalEntryResponse(entry));
+        List<JournalEntryResponse> journalEntries = null;
+        if (journalEntrySearchCommand.getViewMonth() == null) {
+            journalEntries = new ArrayList<>();
+            for (JournalEntry entry : entries) {
+                journalEntries.add(new JournalEntryResponse(entry));
+            }
+        } else {
+            journalEntries  = Arrays.asList(new JournalEntryResponse[35]);
+            for (JournalEntry entry : entries) {
+                Date entryDate = entry.getCreatedAt();
+                cal.setTime(entryDate);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                journalEntries.set(firstDay+day-2, new JournalEntryResponse(entry));
+            }
         }
         return new ObjectListResponseDto<JournalEntryResponse>(true, "Entry records retrieved successfully!", journalEntries);
     }
