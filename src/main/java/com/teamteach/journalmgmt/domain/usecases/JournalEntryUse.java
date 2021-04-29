@@ -5,6 +5,7 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
+import com.teamteach.journalmgmt.domain.responses.JournalEntriesResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
@@ -164,13 +165,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectListResponseDto<List<JournalEntryResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
         SimpleDateFormat formatter = null;
         Date fromDate = null;
         Date toDate = null;
         Calendar cal = Calendar.getInstance();
-        int firstDay = 1;
+        int firstDay = 0;
         if (journalEntrySearchCommand.getViewMonth() == null) {
             if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
                 String fromDateStr = journalEntrySearchCommand.getFromDate();
@@ -198,7 +199,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             try {
                 fromDate = formatter.parse(journalEntrySearchCommand.getViewMonth());
                 cal.setTime(fromDate);
-                firstDay = cal.get(Calendar.DAY_OF_WEEK);
+                firstDay = cal.get(Calendar.DAY_OF_WEEK)-1;
                 cal.add(Calendar.MONTH, 1);
                 toDate = cal.getTime();
             } catch (ParseException e) {
@@ -234,36 +235,38 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
-        List<JournalEntryResponse> journalEntries = null;
-        List<List<JournalEntryResponse>> jll = new ArrayList<>();
+        List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
-                journalEntries = new ArrayList<>();
+                JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
                 Category category = categoryService.findById(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
-                journalEntries.add(journalEntryResponse);
-                jll.add(journalEntries);
+                journalEntriesResponse.addEntry(journalEntryResponse);
+                journalEntriesGrid.add(journalEntriesResponse);
             }
         } else {
-            for (int i = 0; i < 35; i++) {
-                jll.add(new ArrayList<JournalEntryResponse>());
+            for (int i = 1; i <= 35; i++) {
+                JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
+                journalEntriesResponse.setDay(i < firstDay ? 0 : i-firstDay);
+                journalEntriesGrid.add(journalEntriesResponse);
             }
             for (JournalEntry entry : entries) {
                 Date entryDate = entry.getCreatedAt();
                 cal.setTime(entryDate);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                journalEntries = jll.get(firstDay+day-2);
+                int day = cal.get(Calendar.DAY_OF_MONTH)-1;
+                JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
+
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
                 Category category = categoryService.findById(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
-                journalEntries.add(journalEntryResponse);
+                journalEntriesResponse.addEntry(journalEntryResponse);
             }
         }
-        return new ObjectListResponseDto<List<JournalEntryResponse>>(true, "Entry records retrieved successfully!", jll);
+        return new ObjectListResponseDto<JournalEntriesResponse>(true, "Entry records retrieved successfully!", journalEntriesGrid);
     }
 }

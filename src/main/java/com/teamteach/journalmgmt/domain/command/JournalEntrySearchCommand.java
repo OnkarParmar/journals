@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import com.teamteach.journalmgmt.domain.models.*;
-
 import java.util.*;
 
 import javax.validation.constraints.NotNull;
@@ -22,6 +20,5 @@ public class JournalEntrySearchCommand extends ValidatingCommand{
     private String entryId;
     private List<String> categories;
     private List<String> moods;
-    private String viewType;
     private String viewMonth;
 }

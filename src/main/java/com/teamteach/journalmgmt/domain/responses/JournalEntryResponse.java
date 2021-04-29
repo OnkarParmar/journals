@@ -2,12 +2,7 @@ package com.teamteach.journalmgmt.domain.responses;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 import com.teamteach.journalmgmt.domain.models.*;
 
