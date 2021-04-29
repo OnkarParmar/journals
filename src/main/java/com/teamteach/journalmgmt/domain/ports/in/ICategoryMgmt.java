@@ -13,4 +13,5 @@ public interface ICategoryMgmt{
     ObjectResponseDto findCategoryByTitle(String title);
     ObjectResponseDto findCategoryById(String id);
     ObjectResponseDto findCategoryByColour(String colour);
+    Category findById(String id);
 }

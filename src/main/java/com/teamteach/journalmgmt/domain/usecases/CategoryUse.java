@@ -101,6 +101,14 @@ public class CategoryUse implements ICategoryMgmt{
 					.build();
 		}
 	}
+	
+	@Override
+	public Category findById(String id){
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(id));
+		Category category = mongoTemplate.findOne(query, Category.class);
+		return category;
+	}
 
     @Override
 	public ObjectResponseDto findCategoryByTitle(String title) {

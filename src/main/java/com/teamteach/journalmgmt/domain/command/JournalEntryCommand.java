@@ -13,7 +13,7 @@ public class JournalEntryCommand extends ValidatingCommand {
     private String[] children;
     private String journalId;
     private String text;
-    private String category;
+    private String categoryId;
     private String mood;
 
     protected void validateSelf() {

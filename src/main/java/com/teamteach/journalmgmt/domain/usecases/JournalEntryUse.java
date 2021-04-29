@@ -28,6 +28,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     private MongoTemplate mongoTemplate;
 
     @Autowired
+    private ICategoryMgmt categoryService;
+
+    @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Override
@@ -44,13 +47,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .message("Journal Entry can't be created without a text!")
                     .build();
         }
-        if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Journal Entry can't be created without a text!")
-                    .build();
-        }
-        if (journalEntryCommand.getCategory() == null || journalEntryCommand.getCategory().equals("")) {
+        if (journalEntryCommand.getCategoryId() == null || journalEntryCommand.getCategoryId().equals("")) {
             return ObjectResponseDto.builder()
                     .success(false)
                     .message("Journal Entry can't be created without a category!")
@@ -96,7 +93,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .journalId(journalEntryCommand.getJournalId())
                     .text(journalEntryCommand.getText())
                     .children(journalEntryCommand.getChildren())
-                    .category(journalEntryCommand.getCategory())
+                    .categoryId(journalEntryCommand.getCategoryId())
                     .mood(journalEntryCommand.getMood())
                     .createdAt(date)
                     .build();            
@@ -222,7 +219,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             query.addCriteria(Criteria.where("mood").in(journalEntrySearchCommand.getMoods()));
         }
         if (journalEntrySearchCommand.getCategories() != null && !journalEntrySearchCommand.getCategories().isEmpty()) {
-            query.addCriteria(Criteria.where("category").in(journalEntrySearchCommand.getCategories()));
+            query.addCriteria(Criteria.where("categoryId").in(journalEntrySearchCommand.getCategories()));
         }
         if (journalEntrySearchCommand.getChildren() != null && !journalEntrySearchCommand.getChildren().isEmpty()) {
             query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
@@ -239,7 +236,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 journalEntries = new ArrayList<>();
-                journalEntries.add(new JournalEntryResponse(entry));
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                Category category = categoryService.findById(entry.getCategoryId());
+                if(category != null){
+                    journalEntryResponse.setCategory(category);
+                }
+                journalEntries.add(journalEntryResponse);
                 jll.add(journalEntries);
             }
         } else {
