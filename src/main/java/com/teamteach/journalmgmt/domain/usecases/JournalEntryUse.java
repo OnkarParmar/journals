@@ -243,18 +243,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 jll.add(journalEntries);
             }
         } else {
-            ArrayList<JournalEntryResponse>[] jl = new ArrayList[35];
             for (int i = 0; i < 35; i++) {
-                jl[i] = new ArrayList<JournalEntryResponse>();
+                jll.add(new ArrayList<JournalEntryResponse>());
             }
             for (JournalEntry entry : entries) {
                 Date entryDate = entry.getCreatedAt();
                 cal.setTime(entryDate);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-                journalEntries = jl[firstDay+day-2];
+                journalEntries = jll.get(firstDay+day-2);
                 journalEntries.add(new JournalEntryResponse(entry));
             }
-            jll = new ArrayList<>(Arrays.asList(jl));
         }
         return new ObjectListResponseDto<List<JournalEntryResponse>>(true, "Entry records retrieved successfully!", jll);
     }
