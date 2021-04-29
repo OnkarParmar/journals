@@ -87,13 +87,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     .message("An entry at the same time already exists!")
                     .build();
         } else {
+            String entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
+            int n = entryId.length();
+            String categoryId = entryId.substring(n-1,n);
             journalEntry = JournalEntry.builder()
-                    .entryId(sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME))
+                    .entryId(entryId)
                     .ownerId(journal.getOwnerId())
                     .journalId(journalEntryCommand.getJournalId())
                     .text(journalEntryCommand.getText())
                     .children(journalEntryCommand.getChildren())
-                    .categoryId(journalEntryCommand.getCategoryId())
+                    .categoryId(categoryId)
                     .mood(journalEntryCommand.getMood())
                     .createdAt(date)
                     .build();            
@@ -253,7 +256,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 cal.setTime(entryDate);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 journalEntries = jll.get(firstDay+day-2);
-                journalEntries.add(new JournalEntryResponse(entry));
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                Category category = categoryService.findById(entry.getCategoryId());
+                if(category != null){
+                    journalEntryResponse.setCategory(category);
+                }
+                journalEntries.add(journalEntryResponse);
             }
         }
         return new ObjectListResponseDto<List<JournalEntryResponse>>(true, "Entry records retrieved successfully!", jll);
