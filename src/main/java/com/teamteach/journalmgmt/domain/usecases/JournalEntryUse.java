@@ -172,6 +172,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Date toDate = null;
         Calendar cal = Calendar.getInstance();
         int firstDay = 0;
+        int lastDay = 0;
         if (journalEntrySearchCommand.getViewMonth() == null) {
             if (journalEntrySearchCommand.getFromDate() != null && !journalEntrySearchCommand.getFromDate().equals("")){
                 String fromDateStr = journalEntrySearchCommand.getFromDate();
@@ -202,6 +203,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 firstDay = cal.get(Calendar.DAY_OF_WEEK)-1;
                 cal.add(Calendar.MONTH, 1);
                 toDate = cal.getTime();
+                cal.add(Calendar.DATE, -1);
+                lastDay = cal.get(Calendar.DAY_OF_MONTH);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -233,7 +236,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         } else if (fromDate != null) {
             query.addCriteria(Criteria.where("createdAt").gte(fromDate));
         }
-        System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         if (journalEntrySearchCommand.getViewMonth() == null) {
@@ -248,9 +250,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 journalEntriesGrid.add(journalEntriesResponse);
             }
         } else {
-            for (int i = 1; i <= 35; i++) {
+            for (int i = 1; i <= 42; i++) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
-                journalEntriesResponse.setDay(i < firstDay ? 0 : i-firstDay);
+                journalEntriesResponse.setDay(i < firstDay ? 0 : i > (lastDay+firstDay) ? 0 : i-firstDay);
                 journalEntriesGrid.add(journalEntriesResponse);
             }
             for (JournalEntry entry : entries) {
