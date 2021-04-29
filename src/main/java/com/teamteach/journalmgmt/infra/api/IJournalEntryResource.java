@@ -13,6 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 
 @RequestMapping("journals/entry")
 public interface IJournalEntryResource {
@@ -21,7 +22,7 @@ public interface IJournalEntryResource {
     ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
 
     @PostMapping("/search")
-    ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
+    ResponseEntity<ObjectListResponseDto<List<JournalEntryResponse>>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
 
     @ApiIgnore
     @GetMapping("/getAll")

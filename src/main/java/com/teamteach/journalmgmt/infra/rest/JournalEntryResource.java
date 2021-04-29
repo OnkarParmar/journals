@@ -4,6 +4,9 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
+
+import java.util.List;
+
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.infra.api.IJournalEntryResource;
 import com.teamteach.journalmgmt.shared.AbstractAppController;
@@ -27,7 +30,7 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Finds entries with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ResponseEntity<ObjectListResponseDto<List<JournalEntryResponse>>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand));
     }
 

@@ -1,5 +1,7 @@
 package com.teamteach.journalmgmt.domain.ports.in;
 
+import java.util.List;
+
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
@@ -14,5 +16,5 @@ public interface IJournalEntryMgmt {
 
     ObjectResponseDto delete(String id);
 
-    ObjectListResponseDto<JournalEntryResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand);
+    ObjectListResponseDto<List<JournalEntryResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand);
 }

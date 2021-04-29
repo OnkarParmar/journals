@@ -164,7 +164,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntryResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ObjectListResponseDto<List<JournalEntryResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
         SimpleDateFormat formatter = null;
         Date fromDate = null;
@@ -235,20 +235,27 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntryResponse> journalEntries = null;
+        List<List<JournalEntryResponse>> jll = new ArrayList<>();
         if (journalEntrySearchCommand.getViewMonth() == null) {
-            journalEntries = new ArrayList<>();
             for (JournalEntry entry : entries) {
+                journalEntries = new ArrayList<>();
                 journalEntries.add(new JournalEntryResponse(entry));
+                jll.add(journalEntries);
             }
         } else {
-            journalEntries  = Arrays.asList(new JournalEntryResponse[35]);
+            ArrayList<JournalEntryResponse>[] jl = new ArrayList[35];
+            for (int i = 0; i < 35; i++) {
+                jl[i] = new ArrayList<JournalEntryResponse>();
+            }
             for (JournalEntry entry : entries) {
                 Date entryDate = entry.getCreatedAt();
                 cal.setTime(entryDate);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-                journalEntries.set(firstDay+day-2, new JournalEntryResponse(entry));
+                journalEntries = jl[firstDay+day-2];
+                journalEntries.add(new JournalEntryResponse(entry));
             }
+            jll = new ArrayList<>(Arrays.asList(jl));
         }
-        return new ObjectListResponseDto<JournalEntryResponse>(true, "Entry records retrieved successfully!", journalEntries);
+        return new ObjectListResponseDto<List<JournalEntryResponse>>(true, "Entry records retrieved successfully!", jll);
     }
 }
