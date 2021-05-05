@@ -57,7 +57,8 @@ public class JournalUse implements IJournalMgmt{
     Consumer<UserSignupInfo> queueConsumer = new Consumer<UserSignupInfo>() {
         @Override
         public void accept(UserSignupInfo userSignupInfo) {
-            savePrivate(new JournalCommand(userSignupInfo));
+            ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
+			System.out.println(response);
         }
     };
 
