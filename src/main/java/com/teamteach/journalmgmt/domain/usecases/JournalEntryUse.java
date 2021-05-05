@@ -128,9 +128,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto delete(String id) {
-        Query query = new Query(Criteria.where("id").is(id));
+        Query query = new Query(Criteria.where("_id").is(id));
         try {
-            mongoTemplate.remove(query, "entries");
+            mongoTemplate.remove(query, JournalEntry.class);
             return ObjectResponseDto.builder()
                     .success(true)
                     .message("Entry deleted successfully")

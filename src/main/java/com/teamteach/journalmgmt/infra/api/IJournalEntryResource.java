@@ -27,7 +27,6 @@ public interface IJournalEntryResource {
     @GetMapping("")
     ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
 
-    @ApiIgnore
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
 }
