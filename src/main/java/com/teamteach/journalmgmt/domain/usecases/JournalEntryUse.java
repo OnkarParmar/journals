@@ -184,6 +184,53 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         else
             return true;
     }
+
+    @Override
+    public ObjectResponseDto editEntry(EditJournalEntryCommand editJournalEntryCommand){
+        if (editJournalEntryCommand.getEntryId() == null || editJournalEntryCommand.getEntryId().equals("")){
+            return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("EntryId cannot be null or empty")
+                        .build();
+        }
+        Query query = new Query(Criteria.where("_id").is(editJournalEntryCommand.getEntryId()));
+        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        if (entry == null) {
+            return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("No entry found with given entryId")
+                        .object(entry)
+                        .build();
+        }
+        Date created = entry.getCreatedAt();
+        boolean flag = isEditable(created);
+        if(flag == true){
+            if(editJournalEntryCommand.getMood() != null || !editJournalEntryCommand.getMood().equals("")){
+                entry.setMood(editJournalEntryCommand.getMood());
+            }
+            if(editJournalEntryCommand.getText() != null || !editJournalEntryCommand.getText().equals("")){
+                entry.setText(editJournalEntryCommand.getText());
+            }
+            if(editJournalEntryCommand.getCategoryId() != null || !editJournalEntryCommand.getCategoryId().equals("")){
+                entry.setCategoryId(editJournalEntryCommand.getCategoryId());
+            }
+            if(editJournalEntryCommand.getChildren() != null || editJournalEntryCommand.getChildren().length != 0){
+                entry.setChildren(editJournalEntryCommand.getChildren());
+            }
+        } else {
+            return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("Entries older than 24 hours cannot be edited!")
+                        .build();
+        }
+        mongoTemplate.save(entry);
+        return ObjectResponseDto.builder()
+                                .success(true)
+                                .message("Entry edited successfully")
+                                .object(entry)
+                                .build();
+    }
+
     @Override
     public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();

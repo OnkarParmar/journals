@@ -20,5 +20,7 @@ public interface IJournalEntryMgmt {
 
     boolean isEditable(Date current);
 
+    ObjectResponseDto editEntry(EditJournalEntryCommand editJournalEntryCommand);
+
     ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand);
 }

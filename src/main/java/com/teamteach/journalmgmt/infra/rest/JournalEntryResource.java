@@ -52,4 +52,10 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     public ResponseEntity<ObjectResponseDto> deleteEntry(String id) {
         return ResponseEntity.ok(journalEntryMgmt.delete(id));
     }
+
+    @Override
+    @ApiOperation(value = "Edits entries", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> editEntry(EditJournalEntryCommand editJournalEntryCommand){
+        return ResponseEntity.ok(journalEntryMgmt.editEntry(editJournalEntryCommand));
+    }
 }

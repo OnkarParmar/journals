@@ -29,4 +29,7 @@ public interface IJournalEntryResource {
 
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
+
+    @PutMapping("")
+    ResponseEntity<ObjectResponseDto> editEntry(@RequestBody EditJournalEntryCommand editJournalEntryCommand);
 }
