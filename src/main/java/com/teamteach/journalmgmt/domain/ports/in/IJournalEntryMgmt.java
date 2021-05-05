@@ -1,5 +1,6 @@
 package com.teamteach.journalmgmt.domain.ports.in;
 
+import java.util.Date;
 import java.util.List;
 
 import com.teamteach.journalmgmt.domain.command.*;
@@ -16,6 +17,8 @@ public interface IJournalEntryMgmt {
     ObjectResponseDto findById(String id);
 
     ObjectResponseDto delete(String id);
+
+    boolean isEditable(Date current);
 
     ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand);
 }

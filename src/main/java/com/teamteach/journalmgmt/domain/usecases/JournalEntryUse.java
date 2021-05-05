@@ -129,18 +129,28 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectResponseDto delete(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        try {
-            mongoTemplate.remove(query, JournalEntry.class);
+        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        Date created = entry.getCreatedAt();
+        boolean flag = isEditable(created);
+        if(flag == true){
+            try {
+                mongoTemplate.remove(query, JournalEntry.class);
+                return ObjectResponseDto.builder()
+                        .success(true)
+                        .message("Entry deleted successfully")
+                        .build();
+            } catch (RuntimeException e) {
+                return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("Entry deletion failed")
+                        .build();
+            }
+        } else {
             return ObjectResponseDto.builder()
-                    .success(true)
-                    .message("Entry deleted successfully")
-                    .build();
-        } catch (RuntimeException e) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Entry deletion failed")
-                    .build();
-        }
+                        .success(false)
+                        .message("Entries older than 24 hours cannot be deleted!")
+                        .build();
+        }        
     }
 
     @Override
@@ -164,6 +174,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
     }
 
+    @Override
+    public boolean isEditable(Date created){
+        int MILLI_TO_HOUR = 1000 * 60 * 60;
+        Date current = new Date();
+        long diff = current.getTime() - created.getTime();
+        if((diff/MILLI_TO_HOUR) > 24 )
+            return false;
+        else
+            return true;
+    }
     @Override
     public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
         Query query = new Query();
@@ -218,7 +238,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                         "Owner ID is necessary to search entries",
                                         null
            );
-
         } else {
             query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
         }
@@ -246,7 +265,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
+                Date created = entry.getCreatedAt();
                 journalEntriesResponse.addEntry(journalEntryResponse);
+                journalEntriesResponse.setEditable(isEditable(created));
                 journalEntriesGrid.add(journalEntriesResponse);
             }
         } else {

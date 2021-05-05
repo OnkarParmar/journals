@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.Setter;
 
 @Data
+@Setter
 public class JournalEntriesResponse  {
     private int day;
+    private boolean editable;
     private List<JournalEntryResponse> entries;
 
     public JournalEntriesResponse() {
