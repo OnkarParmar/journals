@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.annotations.ApiIgnore;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @RequestMapping("journals/entry")
 public interface IJournalEntryResource {
 
@@ -18,6 +20,9 @@ public interface IJournalEntryResource {
 
     @PostMapping("/search")
     ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
+
+    @PostMapping("/picture/{entryId}")
+    ResponseEntity<ObjectResponseDto> addImage(@PathVariable String entryId, @RequestParam("file") MultipartFile file);
 
     @ApiIgnore
     @GetMapping("/getAll")

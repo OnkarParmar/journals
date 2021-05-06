@@ -9,6 +9,8 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface IJournalEntryMgmt {
     ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand);
 
@@ -19,6 +21,8 @@ public interface IJournalEntryMgmt {
     ObjectResponseDto delete(String id);
 
     boolean isEditable(Date current);
+
+    ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 
     ObjectResponseDto editEntry(EditJournalEntryCommand editJournalEntryCommand);
 

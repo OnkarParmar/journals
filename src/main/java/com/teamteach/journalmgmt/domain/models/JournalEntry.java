@@ -26,6 +26,7 @@ public class JournalEntry extends BaseModel{
     private String text;
     private String[] children;
     private String categoryId;
+    private String entryImage;
 
     @Builder
     public JournalEntry (

@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @RestController
 @RequiredArgsConstructor
 class JournalEntryResource extends AbstractAppController implements IJournalEntryResource {
@@ -57,5 +59,11 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     @ApiOperation(value = "Edits entries", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> editEntry(EditJournalEntryCommand editJournalEntryCommand){
         return ResponseEntity.ok(journalEntryMgmt.editEntry(editJournalEntryCommand));
+    }
+
+    @Override
+    @ApiOperation(value = "Adds image", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> addImage(String entryId, MultipartFile file){
+        return ResponseEntity.ok(journalEntryMgmt.saveTeamTeachFile(file, entryId));
     }
 }

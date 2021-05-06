@@ -13,10 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
+import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +37,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
+
+    @Autowired
+    private FileUploadService fileUploadService;
 
     @Override
     public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
@@ -338,5 +345,36 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
         }
         return new ObjectListResponseDto<JournalEntriesResponse>(true, "Entry records retrieved successfully!", journalEntriesGrid);
+    }
+
+    @Override
+    public ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id) {
+        Query query = new Query(Criteria.where("entryId").is(id));
+        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        if (entry == null) {
+            return ObjectResponseDto.builder()
+                                    .success(false)
+                                    .message("No profile record found with given entryId")
+                                    .object(entry)
+                                    .build();
+        }
+        String url = null;
+        try {
+            String fileExt = FilenameUtils.getExtension(file.getOriginalFilename()).replaceAll("\\s", "");
+            String fileName = "journalEntry_"+id+"."+fileExt;
+            url = fileUploadService.saveTeamTeachFile("journalEntryImages", fileName.replaceAll("\\s", ""), IOUtils.toByteArray(file.getInputStream()));
+        } catch (IOException ioe) {
+            return ObjectResponseDto.builder()
+                                    .success(false)
+                                    .message(ioe.getMessage())
+                                    .build();
+        }
+        entry.setEntryImage(url);
+        mongoTemplate.save(entry);
+        return ObjectResponseDto.builder()
+                                .success(true)
+                                .message("Image added successfully")
+                                .object(entry)
+                                .build();
     }
 }

@@ -16,6 +16,7 @@ public class JournalEntryResponse {
     private String mood;
     private String[] children;
     private Category category;
+    private String entryImage;
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry) {
@@ -27,6 +28,7 @@ public class JournalEntryResponse {
         this.children = journalEntry.getChildren();
         this.ownerId = journalEntry.getOwnerId();
         this.journalId = journalEntry.getJournalId();
+        this.entryImage = journalEntry.getEntryImage();
     }
 
 }
