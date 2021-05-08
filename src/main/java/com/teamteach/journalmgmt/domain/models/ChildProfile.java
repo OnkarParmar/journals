@@ -8,4 +8,7 @@ import lombok.Data;
 public class ChildProfile {
     private String name;
     private String profileId;
+    private String info;
+    private String birthYear;
+    private String profileImage;
 }

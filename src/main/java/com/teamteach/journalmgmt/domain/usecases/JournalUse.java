@@ -167,7 +167,12 @@ public class JournalUse implements IJournalMgmt{
 						JsonNode childJsonArray = parentProfileJson.get("children");
 						List<ChildProfile> children = new ArrayList<>();
 						for (JsonNode childJson : childJsonArray) {
-							children.add(new ChildProfile(childJson.get("name").asText(),childJson.get("profileId").asText()));
+							children.add(new ChildProfile(childJson.get("name").asText(),
+															childJson.get("profileId").asText(),
+															childJson.get("info").asText(),
+															childJson.get("birthYear").asText(),
+															childJson.get("profileImage").asText()
+															));
 						}
 						ParentProfileResponseDto parentProfile = ParentProfileResponseDto.builder()
 																	.profileId(parentProfileJson.get("profileId").asText())
