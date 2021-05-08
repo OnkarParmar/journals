@@ -15,14 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("journals/entry")
 public interface IJournalEntryResource {
 
-    @PostMapping("/create")
-    ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
+    // @PostMapping("/create")
+    // ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
 
     @PostMapping("/search")
     ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
 
-    @PostMapping("/picture/{entryId}")
-    ResponseEntity<ObjectResponseDto> addImage(@PathVariable String entryId, @RequestParam("file") MultipartFile file);
+    // @PostMapping("/picture/{entryId}")
+    // ResponseEntity<ObjectResponseDto> editImage(@PathVariable String entryId, @RequestParam("file") MultipartFile file);
 
     @ApiIgnore
     @GetMapping("/getAll")
@@ -35,6 +35,12 @@ public interface IJournalEntryResource {
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
 
-    @PutMapping("")
-    ResponseEntity<ObjectResponseDto> editEntry(@RequestBody EditJournalEntryCommand editJournalEntryCommand);
+    @PostMapping("{journalId}")
+    ResponseEntity<ObjectResponseDto> saveEntry(@PathVariable String journalId,
+                                                @RequestParam(value = "entryId",required=false) String entryId,
+                                                @RequestParam(value = "entryImage",required=false) MultipartFile file,
+                                                @RequestParam(value = "mood",required=true) String mood,
+                                                @RequestParam(value = "text",required=false) String text,
+                                                @RequestParam(value = "children[]",required=true) String[] children,
+                                                @RequestParam(value = "categoryId",required=true) String categoryId);
 }

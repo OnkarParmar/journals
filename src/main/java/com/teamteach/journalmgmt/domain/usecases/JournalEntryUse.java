@@ -41,83 +41,84 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @Override
-    public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
-        if (journalEntryCommand.getChildren() == null || journalEntryCommand.getChildren().length == 0) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Journal Entry can't be created without a child!")
-                    .build();
-        }
-        if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Journal Entry can't be created without a text!")
-                    .build();
-        }
-        if (journalEntryCommand.getCategoryId() == null || journalEntryCommand.getCategoryId().equals("")) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Journal Entry can't be created without a category!")
-                    .build();
-        }
-        if (journalEntryCommand.getMood() == null || journalEntryCommand.getMood().equals("")) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("Journal Entry can't be created without a mood!")
-                    .build();
-        }
-        Date date = new Date(System.currentTimeMillis());
-        Query query = new Query(Criteria.where("createdAt").gte(date));
-        JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+    // @Override
+    // public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
+    //     if (journalEntryCommand.getChildren() == null || journalEntryCommand.getChildren().length == 0) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("Journal Entry can't be created without a child!")
+    //                 .build();
+    //     }
+    //     if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("Journal Entry can't be created without a text!")
+    //                 .build();
+    //     }
+    //     if (journalEntryCommand.getCategoryId() == null || journalEntryCommand.getCategoryId().equals("")) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("Journal Entry can't be created without a category!")
+    //                 .build();
+    //     }
+    //     if (journalEntryCommand.getMood() == null || journalEntryCommand.getMood().equals("")) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("Journal Entry can't be created without a mood!")
+    //                 .build();
+    //     }
+    //     Date date = new Date(System.currentTimeMillis());
+    //     Query query = new Query(Criteria.where("createdAt").gte(date));
+    //     JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
 
-        Query journalQuery = new Query(Criteria.where("journalId").is(journalEntryCommand.getJournalId()));
-        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
-        if (journal == null) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("No journal exists with given journalId!")
-                    .build();
-        }
+    //     Query journalQuery = new Query(Criteria.where("journalId").is(journalEntryCommand.getJournalId()));
+    //     Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+    //     if (journal == null) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("No journal exists with given journalId!")
+    //                 .build();
+    //     }
 
-        for (String child : journalEntryCommand.getChildren()) {
-            if (child.equals("")) {
-                return ObjectResponseDto.builder()
-                .success(false)
-                .message("Child-id can not be blank!")
-                .build();
-            }
-        }
+    //     for (String child : journalEntryCommand.getChildren()) {
+    //         if (child.equals("")) {
+    //             return ObjectResponseDto.builder()
+    //             .success(false)
+    //             .message("Child-id can not be blank!")
+    //             .build();
+    //         }
+    //     }
 
-        if (journalEntry != null) {
-            return ObjectResponseDto.builder()
-                    .success(false)
-                    .message("An entry at the same time already exists!")
-                    .build();
-        } else {
-            String entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
-            int n = entryId.length();
-            String categoryId = entryId.substring(n-1,n);
-            journalEntry = JournalEntry.builder()
-                    .entryId(entryId)
-                    .ownerId(journal.getOwnerId())
-                    .journalId(journalEntryCommand.getJournalId())
-                    .text(journalEntryCommand.getText())
-                    .children(journalEntryCommand.getChildren())
-                    .categoryId(categoryId)
-                    .mood(journalEntryCommand.getMood())
-                    .createdAt(date)
-                    .build();            
-            mongoTemplate.save(journalEntry);
-            journal.setUpdatedAt(date);
-            mongoTemplate.save(journal);
-            return ObjectResponseDto.builder()
-                    .success(true)
-                    .message("Entry created successfully")
-                    .object(journalEntry)
-                    .build();
-        }
-    }
+    //     if (journalEntry != null) {
+    //         return ObjectResponseDto.builder()
+    //                 .success(false)
+    //                 .message("An entry at the same time already exists!")
+    //                 .build();
+    //     } else {
+    //         String entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
+    //         int n = entryId.length();
+    //         String categoryId = entryId.substring(n-1,n);
+    //         journalEntry = JournalEntry.builder()
+    //                 .entryId(entryId)
+    //                 .ownerId(journal.getOwnerId())
+    //                 .journalId(journalEntryCommand.getJournalId())
+    //                 .text(journalEntryCommand.getText())
+    //                 .children(journalEntryCommand.getChildren())
+    //                 .categoryId(categoryId)
+    //                 .mood(journalEntryCommand.getMood())
+    //                 .createdAt(date)
+    //                 .build();    
+                    
+    //         mongoTemplate.save(journalEntry);
+    //         journal.setUpdatedAt(date);
+    //         mongoTemplate.save(journal);
+    //         return ObjectResponseDto.builder()
+    //                 .success(true)
+    //                 .message("Entry created successfully")
+    //                 .object(journalEntry)
+    //                 .build();
+    //     }
+    // }
 
     @Override
     public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
@@ -193,24 +194,36 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectResponseDto editEntry(EditJournalEntryCommand editJournalEntryCommand){
-        if (editJournalEntryCommand.getEntryId() == null || editJournalEntryCommand.getEntryId().equals("")){
+    public ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand){
+        if (editJournalEntryCommand.getEntryId() != null && editJournalEntryCommand.getEntryId().equals("")){
             return ObjectResponseDto.builder()
                         .success(false)
-                        .message("EntryId cannot be null or empty")
+                        .message("EntryId cannot be empty")
                         .build();
         }
-        Query query = new Query(Criteria.where("_id").is(editJournalEntryCommand.getEntryId()));
-        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
-        if (entry == null) {
-            return ObjectResponseDto.builder()
-                        .success(false)
-                        .message("No entry found with given entryId")
-                        .object(entry)
-                        .build();
-        }
-        Date created = entry.getCreatedAt();
-        boolean flag = isEditable(created);
+        JournalEntry entry = null;
+        boolean flag = true;
+        String entryId = null;
+        if(editJournalEntryCommand.getEntryId() != null){
+            entryId = editJournalEntryCommand.getEntryId();
+            Query query = new Query(Criteria.where("_id").is(editJournalEntryCommand.getEntryId()));
+            entry = mongoTemplate.findOne(query, JournalEntry.class);
+            if (entry == null) {
+                return ObjectResponseDto.builder()
+                            .success(false)
+                            .message("No entry found with given entryId")
+                            .object(entry)
+                            .build();
+            }
+            Date created = entry.getCreatedAt();
+            flag = isEditable(created);
+        } else {
+            entry = new JournalEntry();
+            entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
+            entry.setEntryId(entryId);  
+            Date date = new Date(System.currentTimeMillis());
+            entry.setCreatedAt(date);
+        }        
         if(flag == true){
             if(editJournalEntryCommand.getMood() != null || !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
@@ -219,11 +232,28 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 entry.setText(editJournalEntryCommand.getText());
             }
             if(editJournalEntryCommand.getCategoryId() != null || !editJournalEntryCommand.getCategoryId().equals("")){
-                entry.setCategoryId(editJournalEntryCommand.getCategoryId());
+                int n = entryId.length();
+                String categoryId = entryId.substring(n-1,n);
+                entry.setCategoryId(categoryId);
+                //entry.setCategoryId(editJournalEntryCommand.getCategoryId());
             }
             if(editJournalEntryCommand.getChildren() != null || editJournalEntryCommand.getChildren().length != 0){
                 entry.setChildren(editJournalEntryCommand.getChildren());
             }
+            String url = null;
+            if(editJournalEntryCommand.getEntryImage() != null){
+                try {
+                    String fileExt = FilenameUtils.getExtension(editJournalEntryCommand.getEntryImage().getOriginalFilename()).replaceAll("\\s", "");
+                    String fileName = "journalEntry_"+editJournalEntryCommand.getEntryId()+"."+fileExt;
+                    url = fileUploadService.saveTeamTeachFile("journalEntryImages", fileName.replaceAll("\\s", ""), IOUtils.toByteArray(editJournalEntryCommand.getEntryImage().getInputStream()));
+                } catch (IOException ioe) {
+                    return ObjectResponseDto.builder()
+                                            .success(false)
+                                            .message(ioe.getMessage())
+                                            .build();
+                }
+                entry.setEntryImage(url);
+            }            
         } else {
             return ObjectResponseDto.builder()
                         .success(false)
@@ -347,34 +377,4 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         return new ObjectListResponseDto<JournalEntriesResponse>(true, "Entry records retrieved successfully!", journalEntriesGrid);
     }
 
-    @Override
-    public ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id) {
-        Query query = new Query(Criteria.where("entryId").is(id));
-        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
-        if (entry == null) {
-            return ObjectResponseDto.builder()
-                                    .success(false)
-                                    .message("No profile record found with given entryId")
-                                    .object(entry)
-                                    .build();
-        }
-        String url = null;
-        try {
-            String fileExt = FilenameUtils.getExtension(file.getOriginalFilename()).replaceAll("\\s", "");
-            String fileName = "journalEntry_"+id+"."+fileExt;
-            url = fileUploadService.saveTeamTeachFile("journalEntryImages", fileName.replaceAll("\\s", ""), IOUtils.toByteArray(file.getInputStream()));
-        } catch (IOException ioe) {
-            return ObjectResponseDto.builder()
-                                    .success(false)
-                                    .message(ioe.getMessage())
-                                    .build();
-        }
-        entry.setEntryImage(url);
-        mongoTemplate.save(entry);
-        return ObjectResponseDto.builder()
-                                .success(true)
-                                .message("Image added successfully")
-                                .object(entry)
-                                .build();
-    }
 }

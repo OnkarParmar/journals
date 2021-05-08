@@ -12,7 +12,7 @@ import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IJournalEntryMgmt {
-    ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand);
+    //ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand);
 
     ObjectListResponseDto<JournalEntryResponse> findAllEntries();
 
@@ -22,9 +22,9 @@ public interface IJournalEntryMgmt {
 
     boolean isEditable(Date current);
 
-    ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
+    //ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 
-    ObjectResponseDto editEntry(EditJournalEntryCommand editJournalEntryCommand);
+    ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand);
 
     ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand);
 }

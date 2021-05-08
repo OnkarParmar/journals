@@ -6,11 +6,13 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 import com.teamteach.journalmgmt.domain.models.*;
 
+@NoArgsConstructor
 @Data
 @EqualsAndHashCode
 @Document(collection = "journalEntries")

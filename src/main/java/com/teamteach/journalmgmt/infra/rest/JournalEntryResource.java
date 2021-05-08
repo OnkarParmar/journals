@@ -25,11 +25,11 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     
     final IJournalEntryMgmt journalEntryMgmt;
 
-    @Override
-    @ApiOperation(value = "Creates the entry", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> saveEntry(JournalEntryCommand journalEntryCommand) {
-        return ResponseEntity.ok(journalEntryMgmt.saveEntry(journalEntryCommand));
-    }
+    // @Override
+    // @ApiOperation(value = "Creates the entry", authorizations = { @Authorization(value="jwtToken") })
+    // public ResponseEntity<ObjectResponseDto> saveEntry(JournalEntryCommand journalEntryCommand) {
+    //     return ResponseEntity.ok(journalEntryMgmt.saveEntry(journalEntryCommand));
+    // }
 
     @Override
     @ApiOperation(value = "Finds entries with search filters", authorizations = { @Authorization(value="jwtToken") })
@@ -56,14 +56,21 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     }
 
     @Override
-    @ApiOperation(value = "Edits entries", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> editEntry(EditJournalEntryCommand editJournalEntryCommand){
-        return ResponseEntity.ok(journalEntryMgmt.editEntry(editJournalEntryCommand));
+    @ApiOperation(value = "Saves entry", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> saveEntry(String journalId,
+                                                        String entryId,
+                                                        MultipartFile file,
+                                                        String mood,
+                                                        String text,
+                                                        String[] children,
+                                                        String categoryId ){        
+        EditJournalEntryCommand editJournalEntryCommand = new EditJournalEntryCommand(journalId,entryId,mood,text,children,categoryId,file);
+        return ResponseEntity.ok(journalEntryMgmt.saveEntry(editJournalEntryCommand));
     }
 
-    @Override
-    @ApiOperation(value = "Adds image", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> addImage(String entryId, MultipartFile file){
-        return ResponseEntity.ok(journalEntryMgmt.saveTeamTeachFile(file, entryId));
-    }
+    // @Override
+    // @ApiOperation(value = "Adds image", authorizations = { @Authorization(value="jwtToken") })
+    // public ResponseEntity<ObjectResponseDto> addImage(String entryId, MultipartFile file){
+    //     return ResponseEntity.ok(journalEntryMgmt.saveTeamTeachFile(file, entryId));
+    // }
 }
