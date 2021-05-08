@@ -218,11 +218,21 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             Date created = entry.getCreatedAt();
             flag = isEditable(created);
         } else {
+            Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
+            Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+            if (journal == null) {
+                return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("No journal exists with given journalId!")
+                        .build();
+            }
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
             entry.setEntryId(entryId);  
             Date date = new Date(System.currentTimeMillis());
             entry.setCreatedAt(date);
+            entry.setOwnerId(journal.getOwnerId());
+            entry.setJournalId(journal.getJournalId());
         }        
         if(flag == true){
             if(editJournalEntryCommand.getMood() != null || !editJournalEntryCommand.getMood().equals("")){
