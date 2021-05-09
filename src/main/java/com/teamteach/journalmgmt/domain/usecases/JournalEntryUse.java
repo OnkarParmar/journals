@@ -254,7 +254,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             if(editJournalEntryCommand.getEntryImage() != null){
                 try {
                     String fileExt = FilenameUtils.getExtension(editJournalEntryCommand.getEntryImage().getOriginalFilename()).replaceAll("\\s", "");
-                    String fileName = "journalEntry_"+editJournalEntryCommand.getEntryId()+"."+fileExt;
+                    String fileName = "journalEntry_"+entryId+"."+fileExt;
                     url = fileUploadService.saveTeamTeachFile("journalEntryImages", fileName.replaceAll("\\s", ""), IOUtils.toByteArray(editJournalEntryCommand.getEntryImage().getInputStream()));
                 } catch (IOException ioe) {
                     return ObjectResponseDto.builder()
