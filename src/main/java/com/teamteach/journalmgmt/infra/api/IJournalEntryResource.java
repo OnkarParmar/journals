@@ -41,6 +41,6 @@ public interface IJournalEntryResource {
                                                 @RequestParam(value = "entryImage",required=false) MultipartFile file,
                                                 @RequestParam(value = "mood",required=true) String mood,
                                                 @RequestParam(value = "text",required=false) String text,
-                                                @RequestParam(value = "children[]",required=false) String[] children,
+                                                @RequestParam(value = "children[]",required=true) String[] children,
                                                 @RequestParam(value = "categoryId",required=true) String categoryId);
 }
