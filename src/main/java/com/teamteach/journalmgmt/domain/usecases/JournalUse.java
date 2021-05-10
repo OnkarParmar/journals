@@ -57,10 +57,22 @@ public class JournalUse implements IJournalMgmt{
     Consumer<UserSignupInfo> queueConsumer = new Consumer<UserSignupInfo>() {
         @Override
         public void accept(UserSignupInfo userSignupInfo) {
-            ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
-			System.out.println(response);
+			if(userSignupInfo.getAction().equals("signup")){
+				ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
+			} else if(userSignupInfo.getAction().equals("delete")){
+				ObjectResponseDto response = deleteEntriesForOwner(userSignupInfo.getOwnerId());
+			}
         }
     };
+
+	public ObjectResponseDto deleteEntriesForOwner(String ownerId) {
+        Query query = new Query(Criteria.where("ownerId").is(ownerId));
+        mongoTemplate.remove(query, JournalEntry.class);
+		return ObjectResponseDto.builder()
+								.success(true)
+								.message("Entry deletion successful")
+								.build();
+    }
 
     @Override
     public ObjectResponseDto createJournal(JournalCommand journalCommand){
