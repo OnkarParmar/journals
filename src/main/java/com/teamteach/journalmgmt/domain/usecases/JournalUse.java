@@ -69,7 +69,7 @@ public class JournalUse implements IJournalMgmt{
         Query query = new Query(Criteria.where("ownerId").is(ownerId));
         mongoTemplate.remove(query, JournalEntry.class);
 		return ObjectResponseDto.builder()
-								.success(false)
+								.success(true)
 								.message("Entry deletion successful")
 								.build();
     }
