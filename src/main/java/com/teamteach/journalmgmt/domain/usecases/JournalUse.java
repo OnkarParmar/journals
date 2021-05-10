@@ -67,21 +67,11 @@ public class JournalUse implements IJournalMgmt{
 
 	public ObjectResponseDto deleteEntriesForOwner(String ownerId) {
         Query query = new Query(Criteria.where("ownerId").is(ownerId));
-        List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
-		if(entries.size() != 0){
-			for(JournalEntry entry: entries){
-				mongoTemplate.remove(query, JournalEntry.class);			
-			} 
-			return ObjectResponseDto.builder()
-									.success(false)
-									.message("Entry deletion successful")
-									.build();
-		} else {
-				return ObjectResponseDto.builder()
-						.success(false)
-						.message("Entry deletion failed")
-						.build();
-		}           
+        mongoTemplate.remove(query, JournalEntry.class);
+		return ObjectResponseDto.builder()
+								.success(false)
+								.message("Entry deletion successful")
+								.build();
     }
 
     @Override
