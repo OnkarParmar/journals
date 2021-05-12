@@ -224,8 +224,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                             .object(entry)
                             .build();
             }
-            date = entry.getCreatedAt();
-            flag = isEditable(date);
+            Date createdAt = entry.getCreatedAt();
+            flag = isEditable(createdAt);
+            date = new Date(System.currentTimeMillis());
         } else {
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
