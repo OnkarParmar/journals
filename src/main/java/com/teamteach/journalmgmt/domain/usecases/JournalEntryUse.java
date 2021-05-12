@@ -204,6 +204,15 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         JournalEntry entry = null;
         boolean flag = true;
         String entryId = null;
+        Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
+        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+        Date date = null;
+        if (journal == null) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("No journal exists with given journalId!")
+                    .build();
+        }
         if(editJournalEntryCommand.getEntryId() != null){
             entryId = editJournalEntryCommand.getEntryId();
             Query query = new Query(Criteria.where("_id").is(editJournalEntryCommand.getEntryId()));
@@ -215,27 +224,19 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                             .object(entry)
                             .build();
             }
-            Date created = entry.getCreatedAt();
-            flag = isEditable(created);
+            date = entry.getCreatedAt();
+            flag = isEditable(date);
         } else {
-            Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
-            Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
-            if (journal == null) {
-                return ObjectResponseDto.builder()
-                        .success(false)
-                        .message("No journal exists with given journalId!")
-                        .build();
-            }
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
             entry.setEntryId(entryId);  
-            Date date = new Date(System.currentTimeMillis());
+            date = new Date(System.currentTimeMillis());
             entry.setCreatedAt(date);
             entry.setOwnerId(journal.getOwnerId());
             entry.setJournalId(journal.getJournalId());
-            journal.setUpdatedAt(date);
-            mongoTemplate.save(journal);    
         }        
+        journal.setUpdatedAt(date);
+        mongoTemplate.save(journal);    
         if(flag == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
