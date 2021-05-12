@@ -9,4 +9,5 @@ public class UserSignupInfo {
     String ownerId;
     String profiletype;
     String relation;
+    String action;
 }
