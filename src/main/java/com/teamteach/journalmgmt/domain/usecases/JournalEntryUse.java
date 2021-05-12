@@ -235,19 +235,19 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             entry.setJournalId(journal.getJournalId());
         }        
         if(flag == true){
-            if(editJournalEntryCommand.getMood() != null || !editJournalEntryCommand.getMood().equals("")){
+            if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
             }
-            if(editJournalEntryCommand.getText() != null || !editJournalEntryCommand.getText().equals("")){
+            if(editJournalEntryCommand.getText() != null && !editJournalEntryCommand.getText().equals("")){
                 entry.setText(editJournalEntryCommand.getText());
             }
-            if(editJournalEntryCommand.getCategoryId() != null || !editJournalEntryCommand.getCategoryId().equals("")){
+            if(editJournalEntryCommand.getCategoryId() != null && !editJournalEntryCommand.getCategoryId().equals("")){
                 int n = entryId.length();
                 String categoryId = entryId.substring(n-1,n);
                 entry.setCategoryId(categoryId);
                 //entry.setCategoryId(editJournalEntryCommand.getCategoryId());
             }
-            if(editJournalEntryCommand.getChildren() != null || editJournalEntryCommand.getChildren().length != 0){
+            if(editJournalEntryCommand.getChildren() != null && editJournalEntryCommand.getChildren().length != 0){
                 entry.setChildren(editJournalEntryCommand.getChildren());
             }
             String url = null;
