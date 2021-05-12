@@ -233,6 +233,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             entry.setCreatedAt(date);
             entry.setOwnerId(journal.getOwnerId());
             entry.setJournalId(journal.getJournalId());
+            journal.setUpdatedAt(date);
+            mongoTemplate.save(journal);    
         }        
         if(flag == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
