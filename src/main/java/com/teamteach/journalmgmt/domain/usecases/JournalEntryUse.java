@@ -206,7 +206,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         String entryId = null;
         Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
         Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
-        Date date = null;
+        Date updatedAt = null;
         if (journal == null) {
             return ObjectResponseDto.builder()
                     .success(false)
@@ -226,17 +226,18 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             Date createdAt = entry.getCreatedAt();
             flag = isEditable(createdAt);
-            date = new Date(System.currentTimeMillis());
+            updatedAt = new Date(System.currentTimeMillis());
         } else {
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
             entry.setEntryId(entryId);  
-            date = new Date(System.currentTimeMillis());
-            entry.setCreatedAt(date);
+            Date createdAt = new Date(System.currentTimeMillis());
+            entry.setCreatedAt(createdAt);
             entry.setOwnerId(journal.getOwnerId());
             entry.setJournalId(journal.getJournalId());
+            updatedAt = createdAt;
         }        
-        journal.setUpdatedAt(date);
+        journal.setUpdatedAt(updatedAt);
         mongoTemplate.save(journal);    
         if(flag == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
