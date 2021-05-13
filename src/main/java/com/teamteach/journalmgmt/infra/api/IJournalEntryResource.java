@@ -9,6 +9,7 @@ import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.http.HttpHeaders;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,8 @@ public interface IJournalEntryResource {
     // ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
 
     @PostMapping("/search")
-    ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand);
+    ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
+                                                                                @RequestHeader HttpHeaders headers);
 
     // @PostMapping("/picture/{entryId}")
     // ResponseEntity<ObjectResponseDto> editImage(@PathVariable String entryId, @RequestParam("file") MultipartFile file);

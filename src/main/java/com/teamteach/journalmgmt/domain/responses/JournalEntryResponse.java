@@ -3,6 +3,7 @@ package com.teamteach.journalmgmt.domain.responses;
 import lombok.Builder;
 import lombok.Data;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.teamteach.journalmgmt.domain.models.*;
 
@@ -14,7 +15,7 @@ public class JournalEntryResponse {
     private String journalId;
     private String ownerId;
     private String mood;
-    private String[] children;
+    private List<ChildProfile> children;
     private Category category;
     private String entryImage;
 
@@ -25,10 +26,14 @@ public class JournalEntryResponse {
         this.text = journalEntry.getText();
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
         this.mood = journalEntry.getMood();
-        this.children = journalEntry.getChildren();
         this.ownerId = journalEntry.getOwnerId();
+        this.children = new ArrayList<>();
         this.journalId = journalEntry.getJournalId();
         this.entryImage = journalEntry.getEntryImage();
+    }
+
+    public void addChild(ChildProfile child){
+        children.add(child);
     }
 
 }

@@ -16,6 +16,8 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +35,9 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Finds entries with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
-        return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand));
+    public ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand,token));
     }
 
     @Override

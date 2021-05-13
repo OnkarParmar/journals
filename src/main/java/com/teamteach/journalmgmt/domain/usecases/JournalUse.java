@@ -4,10 +4,7 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
-import com.teamteach.journalmgmt.domain.responses.JournalResponse;
-import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
-import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
-import com.teamteach.journalmgmt.domain.responses.ParentProfileResponseDto;
+import com.teamteach.journalmgmt.domain.responses.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -48,6 +45,9 @@ public class JournalUse implements IJournalMgmt{
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@Autowired
+    private ProfileService profileService;
 
     @PostConstruct
     void registerWithMQ() {
@@ -151,55 +151,23 @@ public class JournalUse implements IJournalMgmt{
 		if (journals == null) {
 			return new ObjectListResponseDto<>(false, "A Journal with this ownerId does not exist!", null);
 		} else {
-			try {
-				for (Journal journal : journals) {
-					JournalResponse journalResponse = new JournalResponse(journal);
-					Aggregation aggregation = Aggregation.newAggregation(
-						Aggregation.match(Criteria.where("journalId").is(journal.getJournalId())),
-						Aggregation.project()
-									.and("mood").as("name"),
-						Aggregation.group("name")
-										.count().as("count"),
-						Aggregation.project("count").and("name").previousOperation()
-					);
-					AggregationResults<ObjectCount> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, ObjectCount.class);
-					journalResponse.setMoods(results.getMappedResults());
-					journalResponse.setEntryCount();
-
-					String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
-					HttpHeaders headers = new HttpHeaders();
-					headers.set("Authorization", "Bearer " + accessToken); 
-					headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-					HttpEntity <String> entity = new HttpEntity <> (null, headers);
-					ResponseEntity <String> response = restTemplate.exchange(parentProfileUrl, HttpMethod.GET, entity, String.class);
-					JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
-					boolean success = respoJsonNode.get("success").asBoolean();
-					if (success) {
-						JsonNode parentProfileJson = respoJsonNode.get("object");
-						JsonNode childJsonArray = parentProfileJson.get("children");
-						List<ChildProfile> children = new ArrayList<>();
-						for (JsonNode childJson : childJsonArray) {
-							children.add(new ChildProfile(childJson.get("name").asText(),
-															childJson.get("profileId").asText(),
-															childJson.get("info").asText(),
-															childJson.get("birthYear").asText(),
-															childJson.get("profileImage").asText()
-															));
-						}
-						ParentProfileResponseDto parentProfile = ParentProfileResponseDto.builder()
-																	.profileId(parentProfileJson.get("profileId").asText())
-																	.fname(parentProfileJson.get("fname").asText())
-																	.lname(parentProfileJson.get("lname").asText())
-																	.email(parentProfileJson.get("email").asText())
-																	.children(children)
-																	.build();
-						journalResponse.setParentProfile(parentProfile);
-					}
-					journalResponses.add(journalResponse);
-				}
-			} catch (IOException e) {
-				return null;
-			}
+			for (Journal journal : journals) {
+				JournalResponse journalResponse = new JournalResponse(journal);
+				Aggregation aggregation = Aggregation.newAggregation(
+					Aggregation.match(Criteria.where("journalId").is(journal.getJournalId())),
+					Aggregation.project()
+								.and("mood").as("name"),
+					Aggregation.group("name")
+									.count().as("count"),
+					Aggregation.project("count").and("name").previousOperation()
+				);
+				AggregationResults<ObjectCount> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, ObjectCount.class);
+				journalResponse.setMoods(results.getMappedResults());
+				journalResponse.setEntryCount();
+				ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
+				journalResponse.setParentProfile(parentProfile);
+				journalResponses.add(journalResponse);
+			}			
 		}
 		return new ObjectListResponseDto<>(true, "Journal records retrieved successfully!", journalResponses);
 	}

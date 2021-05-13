@@ -4,10 +4,8 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
-import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
-import com.teamteach.journalmgmt.domain.responses.JournalEntriesResponse;
-import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
-import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
+import com.teamteach.journalmgmt.domain.responses.*;
+import com.teamteach.journalmgmt.domain.usecases.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,84 +39,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Autowired
     private FileUploadService fileUploadService;
 
-    // @Override
-    // public ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand) {
-    //     if (journalEntryCommand.getChildren() == null || journalEntryCommand.getChildren().length == 0) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("Journal Entry can't be created without a child!")
-    //                 .build();
-    //     }
-    //     if (journalEntryCommand.getText() == null || journalEntryCommand.getText().equals("")) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("Journal Entry can't be created without a text!")
-    //                 .build();
-    //     }
-    //     if (journalEntryCommand.getCategoryId() == null || journalEntryCommand.getCategoryId().equals("")) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("Journal Entry can't be created without a category!")
-    //                 .build();
-    //     }
-    //     if (journalEntryCommand.getMood() == null || journalEntryCommand.getMood().equals("")) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("Journal Entry can't be created without a mood!")
-    //                 .build();
-    //     }
-    //     Date date = new Date(System.currentTimeMillis());
-    //     Query query = new Query(Criteria.where("createdAt").gte(date));
-    //     JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
-
-    //     Query journalQuery = new Query(Criteria.where("journalId").is(journalEntryCommand.getJournalId()));
-    //     Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
-    //     if (journal == null) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("No journal exists with given journalId!")
-    //                 .build();
-    //     }
-
-    //     for (String child : journalEntryCommand.getChildren()) {
-    //         if (child.equals("")) {
-    //             return ObjectResponseDto.builder()
-    //             .success(false)
-    //             .message("Child-id can not be blank!")
-    //             .build();
-    //         }
-    //     }
-
-    //     if (journalEntry != null) {
-    //         return ObjectResponseDto.builder()
-    //                 .success(false)
-    //                 .message("An entry at the same time already exists!")
-    //                 .build();
-    //     } else {
-    //         String entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
-    //         int n = entryId.length();
-    //         String categoryId = entryId.substring(n-1,n);
-    //         journalEntry = JournalEntry.builder()
-    //                 .entryId(entryId)
-    //                 .ownerId(journal.getOwnerId())
-    //                 .journalId(journalEntryCommand.getJournalId())
-    //                 .text(journalEntryCommand.getText())
-    //                 .children(journalEntryCommand.getChildren())
-    //                 .categoryId(categoryId)
-    //                 .mood(journalEntryCommand.getMood())
-    //                 .createdAt(date)
-    //                 .build();    
-                    
-    //         mongoTemplate.save(journalEntry);
-    //         journal.setUpdatedAt(date);
-    //         mongoTemplate.save(journal);
-    //         return ObjectResponseDto.builder()
-    //                 .success(true)
-    //                 .message("Entry created successfully")
-    //                 .object(journalEntry)
-    //                 .build();
-    //     }
-    // }
+    @Autowired
+    private ProfileService profileService;
 
     @Override
     public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
@@ -283,7 +205,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand) {
+    public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         Query query = new Query();
         SimpleDateFormat formatter = null;
         Date fromDate = null;
@@ -362,6 +284,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 Category category = categoryService.findById(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
+                }
+                List<ChildProfile> childProfiles = profileService.getProfile(entry.getOwnerId(), accessToken).getChildren();
+                for(ChildProfile child : childProfiles){
+                    if(Arrays.stream(entry.getChildren()).anyMatch(child.getProfileId()::equals)){
+                        journalEntryResponse.addChild(child);
+                    }
                 }
                 Date created = entry.getCreatedAt();
                 journalEntriesResponse.addEntry(journalEntryResponse);
