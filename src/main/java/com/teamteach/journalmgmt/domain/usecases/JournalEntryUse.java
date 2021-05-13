@@ -175,6 +175,11 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             if(editJournalEntryCommand.getChildren() != null && editJournalEntryCommand.getChildren().length != 0){
                 entry.setChildren(editJournalEntryCommand.getChildren());
+            } else {
+                return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("Entry cannot be created without child")
+                        .build();
             }
             String url = null;
             if(editJournalEntryCommand.getEntryImage() != null){
@@ -199,7 +204,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         mongoTemplate.save(entry);
         return ObjectResponseDto.builder()
                                 .success(true)
-                                .message("Entry edited successfully")
+                                .message("Entry saved successfully")
                                 .object(entry)
                                 .build();
     }
