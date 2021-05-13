@@ -33,12 +33,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GetProfileService {
+public class ProfileService {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    public List<ChildProfile> getProfile(String ownerId, String accessToken){
+    public ParentProfileResponseDto getProfile(String ownerId, String accessToken){
         List<ChildProfile> children = new ArrayList<>();
+        ParentProfileResponseDto parentProfile = null;
         try {
             String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
             HttpHeaders headers = new HttpHeaders();
@@ -59,11 +60,18 @@ public class GetProfileService {
                                                     childJson.get("profileImage").asText()
                                                     ));
                 }
+                parentProfile = ParentProfileResponseDto.builder()
+																.profileId(parentProfileJson.get("profileId").asText())
+																.fname(parentProfileJson.get("fname").asText())
+																.lname(parentProfileJson.get("lname").asText())
+																.email(parentProfileJson.get("email").asText())
+																.children(children)
+																.build();
             } 
         }
         catch (IOException e) {
             return null;
         }
-        return children;
+        return parentProfile;
     }    
 }
