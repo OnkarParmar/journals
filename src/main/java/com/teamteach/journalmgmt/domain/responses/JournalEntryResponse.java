@@ -15,9 +15,10 @@ public class JournalEntryResponse {
     private String journalId;
     private String ownerId;
     private String mood;
-    private List<ChildProfile> children;
+    private List<String> children;
     private Category category;
     private String entryImage;
+    private boolean editable;
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry) {
@@ -27,13 +28,8 @@ public class JournalEntryResponse {
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
         this.mood = journalEntry.getMood();
         this.ownerId = journalEntry.getOwnerId();
-        this.children = new ArrayList<>();
+        this.children = Arrays.asList(journalEntry.getChildren());
         this.journalId = journalEntry.getJournalId();
         this.entryImage = journalEntry.getEntryImage();
     }
-
-    public void addChild(ChildProfile child){
-        children.add(child);
-    }
-
 }

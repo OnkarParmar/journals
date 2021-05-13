@@ -26,5 +26,5 @@ public interface IJournalEntryMgmt {
 
     ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand);
 
-    ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String token);
+    ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String token);
 }

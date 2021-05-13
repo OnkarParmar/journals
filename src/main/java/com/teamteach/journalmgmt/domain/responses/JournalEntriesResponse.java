@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class JournalEntriesResponse  {
     private int day;
-    private boolean editable;
     private List<JournalEntryResponse> entries;
 
     public JournalEntriesResponse() {

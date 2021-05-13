@@ -210,7 +210,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectListResponseDto<JournalEntriesResponse> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
+    public ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         Query query = new Query();
         SimpleDateFormat formatter = null;
         Date fromDate = null;
@@ -258,7 +258,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
         }
         if (journalEntrySearchCommand.getOwnerId() == null || journalEntrySearchCommand.getOwnerId().equals("")) {
-           return new ObjectListResponseDto<>(
+           return new ObjectResponseDto(
                                         false,
                                         "Owner ID is necessary to search entries",
                                         null
@@ -282,6 +282,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
+        List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
@@ -290,15 +291,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
-                List<ChildProfile> childProfiles = profileService.getProfile(entry.getOwnerId(), accessToken).getChildren();
-                for(ChildProfile child : childProfiles){
-                    if(Arrays.stream(entry.getChildren()).anyMatch(child.getProfileId()::equals)){
-                        journalEntryResponse.addChild(child);
-                    }
-                }
                 Date created = entry.getCreatedAt();
+                journalEntryResponse.setEditable(isEditable(created));
                 journalEntriesResponse.addEntry(journalEntryResponse);
-                journalEntriesResponse.setEditable(isEditable(created));
                 journalEntriesGrid.add(journalEntriesResponse);
             }
         } else {
@@ -321,7 +316,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 journalEntriesResponse.addEntry(journalEntryResponse);
             }
         }
-        return new ObjectListResponseDto<JournalEntriesResponse>(true, "Entry records retrieved successfully!", journalEntriesGrid);
+        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(childProfiles, journalEntriesGrid);
+        return new ObjectResponseDto(true, "Entry records retrieved successfully!", journalEntryMatrix);
     }
 
 }

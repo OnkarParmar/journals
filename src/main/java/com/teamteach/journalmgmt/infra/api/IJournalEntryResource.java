@@ -20,7 +20,7 @@ public interface IJournalEntryResource {
     // ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
 
     @PostMapping("/search")
-    ResponseEntity<ObjectListResponseDto<JournalEntriesResponse>> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
+    ResponseEntity<ObjectResponseDto> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
                                                                                 @RequestHeader HttpHeaders headers);
 
     // @PostMapping("/picture/{entryId}")
