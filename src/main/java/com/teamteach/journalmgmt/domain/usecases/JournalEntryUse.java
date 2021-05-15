@@ -42,9 +42,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private RecommendationService recommendationService;
-
     @Override
     public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
         List<JournalEntryResponse> journalEntryResponses = new ArrayList<>();
@@ -286,12 +283,11 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
-        Map<Category> categories = recommendationService.getCategories(accessToken);
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                Category category = categories.get(entry.getCategoryId());
+                Category category = categoryService.findById(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
