@@ -43,8 +43,4 @@ public class ApplicationBeanConfig {
     IMoodMgmt moodMgmt() {
         return new MoodUse(journalRepository);
     }
-    @Bean("categoryMgmtSvc")
-    ICategoryMgmt categoryMgmt() {
-        return new CategoryUse(journalRepository);
-    }
 }

@@ -31,9 +31,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private ICategoryMgmt categoryService;
-
-    @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
@@ -41,6 +38,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private RecommendationService recommendationService;
 
     @Override
     public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
@@ -283,11 +283,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
+        Map<String, Category> categories = recommendationService.getCategories(accessToken);
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                Category category = categoryService.findById(entry.getCategoryId());
+                Category category = categories.get(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
@@ -309,7 +310,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                Category category = categoryService.findById(entry.getCategoryId());
+                Category category = categories.get(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }

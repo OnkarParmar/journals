@@ -24,7 +24,6 @@ class JournalResource extends AbstractAppController implements IJournalResource 
 
     final IJournalMgmt journalMgmt;
     final IMoodMgmt moodMgmt;
-    final ICategoryMgmt categoryMgmt;
 
     @Override
     @ApiOperation(value = "Creates the journal", authorizations = { @Authorization(value="jwtToken") })
@@ -79,41 +78,4 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     public ResponseEntity<ObjectResponseDto> deleteMood(String id) {
         return ResponseEntity.ok(moodMgmt.deleteMood(id));
     }
-
-    @Override
-    @ApiOperation(value = "Creates category", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> saveCategory(Category category) {
-        return ResponseEntity.ok(categoryMgmt.saveCategory(category));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds categories", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto> findCategories() {
-        return ResponseEntity.ok(categoryMgmt.findCategories());
-    }
-
-    @Override
-    @ApiOperation(value = "Finds category by id", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findCategoryById(String id) {
-        return ResponseEntity.ok(categoryMgmt.findCategoryById(id));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds category by title", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findCategoryByTitle(String title) {
-        return ResponseEntity.ok(categoryMgmt.findCategoryByTitle(title));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds category by colour", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findCategoryByColour(String colour) {
-        return ResponseEntity.ok(categoryMgmt.findCategoryByColour(colour));
-    }
-
-    @Override
-    @ApiOperation(value = "Deletes category", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> deleteCategory(String id) {
-        return ResponseEntity.ok(categoryMgmt.deleteCategory(id));
-    }
-
 }

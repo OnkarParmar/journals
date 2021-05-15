@@ -46,28 +46,4 @@ public interface IJournalResource {
     @ApiIgnore
     @DeleteMapping("/moods/{id}")
         ResponseEntity<ObjectResponseDto> deleteMood(@PathVariable("id") String id);
-
-    @ApiIgnore
-    @PostMapping("/categories")
-        ResponseEntity<ObjectResponseDto> saveCategory(@RequestBody Category category);
-
-    @ApiIgnore
-    @GetMapping("/categories")
-        ResponseEntity<ObjectListResponseDto> findCategories();
-
-    @ApiIgnore
-    @GetMapping("/categories/id/{id}")
-        ResponseEntity<ObjectResponseDto> findCategoryById(@PathVariable("id") String id);
-
-    @ApiIgnore
-    @GetMapping("/categories/title/{title}")
-        ResponseEntity<ObjectResponseDto> findCategoryByTitle(@PathVariable("title") String title);
-
-    @ApiIgnore
-    @GetMapping("/categories/colour/{colour}")
-        ResponseEntity<ObjectResponseDto> findCategoryByColour(@PathVariable("colour") String colour);
-
-    @ApiIgnore
-    @DeleteMapping("/categories/{id}")
-        ResponseEntity<ObjectResponseDto> deleteCategory(@PathVariable("id") String id);
 }
