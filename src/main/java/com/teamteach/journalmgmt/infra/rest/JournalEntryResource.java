@@ -35,6 +35,13 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     }
 
     @Override
+    @ApiOperation(value = "Sends entries report with search filters", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalEntrySearchCommand, token));
+    }
+
+    @Override
     @ApiOperation(value = "Finds entries", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries() {
         return ResponseEntity.ok(journalEntryMgmt.findAllEntries());

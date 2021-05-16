@@ -27,4 +27,6 @@ public interface IJournalEntryMgmt {
     ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand);
 
     ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String token);
+
+    ObjectResponseDto sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
 }

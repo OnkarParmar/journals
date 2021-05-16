@@ -6,6 +6,7 @@ import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.domain.usecases.*;
+import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,6 +42,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private RecommendationService recommendationService;
+
+    @Autowired
+    private JournalEntryReportService journalEntriesReportService;
 
     @Override
     public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
@@ -321,4 +325,21 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         return new ObjectResponseDto(true, "Entry records retrieved successfully!", journalEntryMatrix);
     }
 
+    @Override
+    public ObjectResponseDto sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
+        ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
+        String email = journalEntrySearchCommand.getEmail() != null ? 
+                            journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+        JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
+                                                                    .email(email)
+                                                                    .fname(parentProfile.getFname())
+                                                                    .lname(parentProfile.getLname())
+                                                                    .action("report")
+                                                                    .build();
+        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.email");
+        return new ObjectResponseDto(
+            true,
+            "Journal entries report sent successfully!",
+            null);
+    }
 }

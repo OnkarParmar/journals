@@ -16,23 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("journals/entry")
 public interface IJournalEntryResource {
 
-    // @PostMapping("/create")
-    // ResponseEntity<ObjectResponseDto> saveEntry(@RequestBody JournalEntryCommand journalEntryCommand);
-
     @PostMapping("/search")
     ResponseEntity<ObjectResponseDto> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
                                                                                 @RequestHeader HttpHeaders headers);
-
-    // @PostMapping("/picture/{entryId}")
-    // ResponseEntity<ObjectResponseDto> editImage(@PathVariable String entryId, @RequestParam("file") MultipartFile file);
-
     @ApiIgnore
     @GetMapping("/getAll")
     ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries();
 
     @ApiIgnore
-    @GetMapping("")
+    @GetMapping("/{id}")
     ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
+
+    @PostMapping("/report")
+    ResponseEntity<ObjectResponseDto> sendEntriesReport(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand, @RequestHeader HttpHeaders headers);
 
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);

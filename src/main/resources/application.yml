@@ -26,5 +26,5 @@ app:
 exchange:
   signup: signupexchange
 
-signup.routingkeys: event.createjournal
+signup.routingkeys: event.email
 listen.queue.names: event.createjournal

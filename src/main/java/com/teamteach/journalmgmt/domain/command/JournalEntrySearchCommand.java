@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class JournalEntrySearchCommand extends ValidatingCommand{
     @NotNull
+    private String email;
     private List<String> children;
     private String fromDate;
     private String toDate;
