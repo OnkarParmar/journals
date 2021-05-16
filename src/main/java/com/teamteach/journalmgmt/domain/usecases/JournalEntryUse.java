@@ -334,9 +334,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
-                                                                    .action("report")
+                                                                    .action("sendreport")
                                                                     .build();
-        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.email");
+        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
         return new ObjectResponseDto(
             true,
             "Journal entries report sent successfully!",
