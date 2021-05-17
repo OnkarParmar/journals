@@ -6,6 +6,11 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
+import javax.servlet.http.HttpServletResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.List;
 
 import com.teamteach.journalmgmt.domain.command.*;
@@ -39,6 +44,12 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     public ResponseEntity<ObjectResponseDto> sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalEntrySearchCommand, token));
+    }
+
+    @Override
+    @ApiOperation(value = "Uploads url of report", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<String> uploadPDF(String journalId) {
+        return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId));
     }
 
     @Override

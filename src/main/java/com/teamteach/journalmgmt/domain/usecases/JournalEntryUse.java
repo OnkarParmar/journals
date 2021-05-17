@@ -7,6 +7,7 @@ import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
+import com.lowagie.text.DocumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.io.File;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +42,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private PdfService pdfService;
 
     @Autowired
     private RecommendationService recommendationService;
@@ -336,10 +342,28 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                                                     .lname(parentProfile.getLname())
                                                                     .action("sendreport")
                                                                     .build();
+        journalEntriesReportService.setReport(journalEntryProfile);                                                   
         journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
         return new ObjectResponseDto(
             true,
             "Journal entries report sent successfully!",
             null);
+    }
+
+    @Override
+    public String uploadReport(String journalId){
+        String url = null;
+        int i=0;
+            try {
+                String fileExt = FilenameUtils.getExtension(pdfService.generatePdf().getName()).replaceAll("\\s", "");
+                String fileName = "journal_"+journalId+"_"+i+"."+fileExt;
+                url = fileUploadService.saveTeamTeachFile("reports", fileName.replaceAll("\\s", ""),Files.readAllBytes(pdfService.generatePdf().toPath()));
+                i++;
+            } catch (IOException ioe) {
+                return "failed";
+            } catch (DocumentException doe) {
+                return null;
+            }
+        return url;
     }
 }
