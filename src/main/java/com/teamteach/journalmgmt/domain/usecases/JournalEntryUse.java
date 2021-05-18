@@ -294,6 +294,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
         Map<String, Category> categories = recommendationService.getCategories(accessToken);
+        List<Category> categoryList = new ArrayList(categories.values());
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
@@ -327,7 +328,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 journalEntriesResponse.addEntry(journalEntryResponse);
             }
         }
-        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(childProfiles, journalEntriesGrid);
+        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(childProfiles, categoryList, journalEntriesGrid);
         return new ObjectResponseDto(true, "Entry records retrieved successfully!", journalEntryMatrix);
     }
 
