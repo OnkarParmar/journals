@@ -17,7 +17,7 @@ import java.io.OutputStream;
 @Service
 public class PdfService {
 
-    private static final String PDF_RESOURCES = "/pdf-resources/";
+    private static final String PDF_RESOURCES = "/static/";
     private SpringTemplateEngine templateEngine;
 
     @Autowired
