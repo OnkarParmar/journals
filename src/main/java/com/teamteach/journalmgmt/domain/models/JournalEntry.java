@@ -29,6 +29,8 @@ public class JournalEntry extends BaseModel{
     private String[] children;
     private String categoryId;
     private String entryImage;
+    private String recommendationId;
+    private String suggestionIndex;
 
     @Builder
     public JournalEntry (
@@ -40,7 +42,9 @@ public class JournalEntry extends BaseModel{
             Date updatedAt,
             String[] children,
             String categoryId,
-            String mood ) {
+            String mood,
+            String recommendationId,
+            String suggestionIndex) {
         super(createdAt, updatedAt);
 
         this.entryId = entryId;
@@ -50,5 +54,7 @@ public class JournalEntry extends BaseModel{
         this.children = children;
         this.categoryId = categoryId;
         this.mood = mood;
+        this.recommendationId = recommendationId;
+        this.suggestionIndex = suggestionIndex;
     }
 }

@@ -71,8 +71,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Query query = new Query(Criteria.where("_id").is(id));
         JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
         Date created = entry.getCreatedAt();
-        boolean flag = isEditable(created);
-        if(flag == true){
+        boolean isEditable = isEditable(created);
+        if(isEditable == true){
             try {
                 mongoTemplate.remove(query, JournalEntry.class);
                 return ObjectResponseDto.builder()
@@ -134,7 +134,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         .build();
         }
         JournalEntry entry = null;
-        boolean flag = true;
+        boolean isEditable = true;
         String entryId = null;
         Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
         Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
@@ -157,7 +157,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                             .build();
             }
             Date createdAt = entry.getCreatedAt();
-            flag = isEditable(createdAt);
+            isEditable = isEditable(createdAt);
         } else {
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
@@ -170,7 +170,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         entry.setUpdatedAt(now);
         journal.setUpdatedAt(now);
         mongoTemplate.save(journal);    
-        if(flag == true){
+        if(isEditable == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
             }
@@ -204,6 +204,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                             .build();
                 }
                 entry.setEntryImage(url);
+            }
+            if (editJournalEntryCommand.getRecommendationId() != null) {
+                entry.setRecommendationId(editJournalEntryCommand.getRecommendationId());
+            }            
+            if (editJournalEntryCommand.getSuggestionIndex() != null) {
+                entry.setSuggestionIndex(editJournalEntryCommand.getSuggestionIndex());
             }            
         } else {
             return ObjectResponseDto.builder()

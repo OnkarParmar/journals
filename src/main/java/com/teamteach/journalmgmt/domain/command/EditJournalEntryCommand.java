@@ -16,4 +16,6 @@ public class EditJournalEntryCommand {
     private String[] children;
     private String categoryId;
     private MultipartFile entryImage;
+    private String recommendationId;
+    private String suggestionIndex;
 }
