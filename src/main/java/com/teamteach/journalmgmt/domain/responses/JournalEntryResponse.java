@@ -19,6 +19,7 @@ public class JournalEntryResponse {
     private Category category;
     private String entryImage;
     private boolean editable;
+    private boolean locked;
     private String recommendationId;
     private String suggestionIndex;   
 
@@ -33,6 +34,7 @@ public class JournalEntryResponse {
         this.children = Arrays.asList(journalEntry.getChildren());
         this.journalId = journalEntry.getJournalId();
         this.entryImage = journalEntry.getEntryImage();
+        this.locked = journalEntry.isLocked();
         this.recommendationId = journalEntry.getRecommendationId();
         this.suggestionIndex = journalEntry.getSuggestionIndex();
     }
