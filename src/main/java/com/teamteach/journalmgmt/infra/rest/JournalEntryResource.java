@@ -41,15 +41,16 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Sends entries report with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
+    public ResponseEntity<ObjectResponseDto> sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalEntrySearchCommand, token));
+        return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalId, journalEntryReportCommand, token));
     }
 
     @Override
     @ApiOperation(value = "Uploads url of report", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId) {
-        return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId));
+    public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId,journalEntrySearchCommand,token));
     }
 
     @Override

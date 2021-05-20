@@ -32,12 +32,16 @@ public interface IJournalEntryResource {
     @GetMapping("/{id}")
     ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
 
-    @PostMapping("/report")
-    ResponseEntity<ObjectResponseDto> sendEntriesReport(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand, @RequestHeader HttpHeaders headers);
+    @PostMapping("/sendReport/{journalId}")
+    ResponseEntity<ObjectResponseDto> sendEntriesReport(@PathVariable String journalId, 
+                                                        @RequestBody JournalEntryReportCommand journalEntryReportCommand, 
+                                                        @RequestHeader HttpHeaders headers);
 
     @ApiIgnore
-    @PostMapping("/upload/report/{journalId}")
-    ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId);
+    @PostMapping("/getReport/{journalId}")
+    ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId, 
+                                                @RequestBody JournalEntrySearchCommand journalEntrySearchCommand, 
+                                                @RequestHeader HttpHeaders headers);
 
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);

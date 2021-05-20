@@ -16,7 +16,6 @@ import java.util.Set;
 public class JournalEntryReportService implements IJournalEntryReportService {
 
     final IMessagingPort messagingPort;
-    private JournalEntryProfile report;
 
     @Value("${exchange.signup}")
     String signupExchange;

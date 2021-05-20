@@ -9,6 +9,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import com.teamteach.journalmgmt.domain.responses.*;
 
+import lombok.Data;
+
 import com.teamteach.journalmgmt.domain.models.JournalEntryProfile;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
@@ -19,10 +21,13 @@ import java.io.OutputStream;
 import java.util.*;
 
 @Service
+@Data
 public class PdfService {
 
     private static final String PDF_RESOURCES = "/static/";
     private SpringTemplateEngine templateEngine;
+
+    private JournalEntryProfile report;
 
     @Autowired
     private JournalEntryReportService journalEntriesReportService;
@@ -36,7 +41,7 @@ public class PdfService {
     public File generatePdf() throws IOException, DocumentException {
         Context context = getContext();
         String html = loadAndFillTemplate(context);
-        System.out.println(html);
+        //System.out.println(html);
         return renderPdf(html);
     }
 
@@ -56,12 +61,10 @@ public class PdfService {
     private Context getContext() {
         Context context = new Context();
         Map<String, Object> model = new HashMap<>();
-        JournalEntryProfile report = journalEntriesReportService.getReport();
-        //List<JournalEntryResponse> entries = (List<JournalEntryResponse>)(report.getJournalEntryMatrix().get(1));
 
         model.put("fname", report.getFname());
         model.put("lname", report.getLname());
-        model.put("entries", report.getJournalEntryMatrix());
+        model.put("entries", report.getEntryList());
 
         context.setVariables(model);
         return context;

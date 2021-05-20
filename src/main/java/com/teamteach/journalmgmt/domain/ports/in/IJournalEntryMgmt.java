@@ -22,7 +22,7 @@ public interface IJournalEntryMgmt {
 
     boolean isEditable(Date current);
 
-    ObjectResponseDto uploadReport(String journalId);
+    ObjectResponseDto uploadReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
 
     //ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 
@@ -30,5 +30,5 @@ public interface IJournalEntryMgmt {
 
     ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String token);
 
-    ObjectResponseDto sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
+    ObjectResponseDto sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, String accessToken);
 }
