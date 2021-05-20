@@ -6,6 +6,11 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
+import javax.servlet.http.HttpServletResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.List;
 
 import com.teamteach.journalmgmt.domain.command.*;
@@ -42,6 +47,12 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     }
 
     @Override
+    @ApiOperation(value = "Uploads url of report", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId) {
+        return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId));
+    }
+
+    @Override
     @ApiOperation(value = "Finds entries", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries() {
         return ResponseEntity.ok(journalEntryMgmt.findAllEntries());
@@ -67,8 +78,12 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
                                                         String mood,
                                                         String text,
                                                         String[] children,
-                                                        String categoryId ){        
-        EditJournalEntryCommand editJournalEntryCommand = new EditJournalEntryCommand(journalId,entryId,mood,text,children,categoryId,file);
+                                                        String categoryId,
+                                                        String recommendationId,
+                                                        String suggestionIndex){        
+        EditJournalEntryCommand editJournalEntryCommand = new EditJournalEntryCommand(journalId,entryId,mood,
+                                                                                        text,children,categoryId,file,
+                                                                                        recommendationId,suggestionIndex);
         return ResponseEntity.ok(journalEntryMgmt.saveEntry(editJournalEntryCommand));
     }
 }

@@ -7,6 +7,7 @@ import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
+import com.lowagie.text.DocumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,6 +21,13 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.io.File;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.ResponseEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +47,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private PdfService pdfService;
 
     @Autowired
     private RecommendationService recommendationService;
@@ -65,8 +76,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Query query = new Query(Criteria.where("_id").is(id));
         JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
         Date created = entry.getCreatedAt();
-        boolean flag = isEditable(created);
-        if(flag == true){
+        boolean isEditable = isEditable(created);
+        if(isEditable == true){
             try {
                 mongoTemplate.remove(query, JournalEntry.class);
                 return ObjectResponseDto.builder()
@@ -128,7 +139,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         .build();
         }
         JournalEntry entry = null;
-        boolean flag = true;
+        boolean isEditable = true;
         String entryId = null;
         Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
         Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
@@ -151,7 +162,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                             .build();
             }
             Date createdAt = entry.getCreatedAt();
-            flag = isEditable(createdAt);
+            isEditable = isEditable(createdAt);
         } else {
             entry = new JournalEntry();
             entryId = sequenceGeneratorService.generateSequence(JournalEntry.SEQUENCE_NAME);
@@ -164,7 +175,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         entry.setUpdatedAt(now);
         journal.setUpdatedAt(now);
         mongoTemplate.save(journal);    
-        if(flag == true){
+        if(isEditable == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
             }
@@ -198,6 +209,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                             .build();
                 }
                 entry.setEntryImage(url);
+            }
+            if (editJournalEntryCommand.getRecommendationId() != null) {
+                entry.setRecommendationId(editJournalEntryCommand.getRecommendationId());
+            }            
+            if (editJournalEntryCommand.getSuggestionIndex() != null) {
+                entry.setSuggestionIndex(editJournalEntryCommand.getSuggestionIndex());
             }            
         } else {
             return ObjectResponseDto.builder()
@@ -331,16 +348,50 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
         String email = journalEntrySearchCommand.getEmail() != null ? 
                             journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+
+        ObjectResponseDto searchResponse = searchEntries(journalEntrySearchCommand, accessToken);
+        Object object = searchResponse.getObject();    
+        JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
+        List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
+
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
                                                                     .action("sendreport")
+                                                                    .journalEntryMatrix(journalEntryMatrix)
                                                                     .build();
+        journalEntriesReportService.setReport(journalEntryProfile);                                                   
         journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
         return new ObjectResponseDto(
             true,
             "Journal entries report sent successfully!",
-            null);
+            journalEntryProfile);
+    }
+
+    @Override
+    public ObjectResponseDto uploadReport(String journalId){
+        String url = null;
+        int i=0;
+            try {
+                String fileExt = FilenameUtils.getExtension(pdfService.generatePdf().getName()).replaceAll("\\s", "");
+                String fileName = "journal_"+journalId+"_"+i+"."+fileExt;
+                url = fileUploadService.saveTeamTeachFile("reports", fileName.replaceAll("\\s", ""),Files.readAllBytes(pdfService.generatePdf().toPath()));
+                i++;
+            } catch (IOException ioe) {
+                return new ObjectResponseDto(
+                    false,
+                    "URL generation failed!",
+                    null);
+            } catch (DocumentException doe) {
+                return new ObjectResponseDto(
+                    false,
+                    "URL generation failed!",
+                    null);
+            }
+        return new ObjectResponseDto(
+            true,
+            "URL generated successfully!",
+            url);
     }
 }

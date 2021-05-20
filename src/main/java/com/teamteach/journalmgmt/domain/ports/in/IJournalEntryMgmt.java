@@ -22,6 +22,8 @@ public interface IJournalEntryMgmt {
 
     boolean isEditable(Date current);
 
+    ObjectResponseDto uploadReport(String journalId);
+
     //ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 
     ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand);

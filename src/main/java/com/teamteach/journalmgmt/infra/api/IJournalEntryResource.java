@@ -6,6 +6,11 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
+import javax.servlet.http.HttpServletResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.annotations.ApiIgnore;
@@ -30,6 +35,10 @@ public interface IJournalEntryResource {
     @PostMapping("/report")
     ResponseEntity<ObjectResponseDto> sendEntriesReport(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand, @RequestHeader HttpHeaders headers);
 
+    @ApiIgnore
+    @PostMapping("/upload/report/{journalId}")
+    ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId);
+
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
 
@@ -40,5 +49,7 @@ public interface IJournalEntryResource {
                                                 @RequestParam(value = "mood",required=true) String mood,
                                                 @RequestParam(value = "text",required=false) String text,
                                                 @RequestParam(value = "children[]",required=true) String[] children,
-                                                @RequestParam(value = "categoryId",required=true) String categoryId);
+                                                @RequestParam(value = "categoryId",required=true) String categoryId,
+                                                @RequestParam(value = "categoryId",required=true) String recommendationId,
+                                                @RequestParam(value = "categoryId",required=true) String suggestionIndex);
 }

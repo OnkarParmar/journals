@@ -19,6 +19,8 @@ public class JournalEntryResponse {
     private Category category;
     private String entryImage;
     private boolean editable;
+    private String recommendationId;
+    private String suggestionIndex;   
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry) {
@@ -31,5 +33,7 @@ public class JournalEntryResponse {
         this.children = Arrays.asList(journalEntry.getChildren());
         this.journalId = journalEntry.getJournalId();
         this.entryImage = journalEntry.getEntryImage();
+        this.recommendationId = journalEntry.getRecommendationId();
+        this.suggestionIndex = journalEntry.getSuggestionIndex();
     }
 }
