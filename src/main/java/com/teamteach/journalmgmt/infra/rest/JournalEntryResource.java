@@ -78,8 +78,12 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
                                                         String mood,
                                                         String text,
                                                         String[] children,
-                                                        String categoryId ){        
-        EditJournalEntryCommand editJournalEntryCommand = new EditJournalEntryCommand(journalId,entryId,mood,text,children,categoryId,file);
+                                                        String categoryId,
+                                                        String recommendationId,
+                                                        String suggestionIndex){        
+        EditJournalEntryCommand editJournalEntryCommand = new EditJournalEntryCommand(journalId,entryId,mood,
+                                                                                        text,children,categoryId,file,
+                                                                                        recommendationId,suggestionIndex);
         return ResponseEntity.ok(journalEntryMgmt.saveEntry(editJournalEntryCommand));
     }
 }

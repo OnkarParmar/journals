@@ -49,5 +49,7 @@ public interface IJournalEntryResource {
                                                 @RequestParam(value = "mood",required=true) String mood,
                                                 @RequestParam(value = "text",required=false) String text,
                                                 @RequestParam(value = "children[]",required=true) String[] children,
-                                                @RequestParam(value = "categoryId",required=true) String categoryId);
+                                                @RequestParam(value = "categoryId",required=true) String categoryId,
+                                                @RequestParam(value = "categoryId",required=true) String recommendationId,
+                                                @RequestParam(value = "categoryId",required=true) String suggestionIndex);
 }
