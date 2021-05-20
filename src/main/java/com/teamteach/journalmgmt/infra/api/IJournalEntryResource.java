@@ -37,7 +37,6 @@ public interface IJournalEntryResource {
                                                         @RequestBody JournalEntryReportCommand journalEntryReportCommand, 
                                                         @RequestHeader HttpHeaders headers);
 
-    @ApiIgnore
     @PostMapping("/getReport/{journalId}")
     ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId, 
                                                 @RequestBody JournalEntrySearchCommand journalEntrySearchCommand, 
