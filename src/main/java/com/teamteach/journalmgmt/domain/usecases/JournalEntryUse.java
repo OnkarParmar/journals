@@ -366,7 +366,29 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectResponseDto sendEntriesReport(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
+    public ObjectResponseDto sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, String accessToken) {
+        Query query = new Query(Criteria.where("journalId").is(journalId));
+        Journal journal = mongoTemplate.findOne(query, Journal.class);
+        String ownerId = journal.getOwnerId();
+        ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
+        String email = journalEntryReportCommand.getEmail() != null ? 
+                                journalEntryReportCommand.getEmail() : parentProfile.getEmail();
+        JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
+                                                                    .email(journalEntryReportCommand.getEmail())
+                                                                    .fname(parentProfile.getFname())
+                                                                    .lname(parentProfile.getLname())
+                                                                    .action("sendreport")
+                                                                    .url(journalEntryReportCommand.getUrl())
+                                                                    .build();                                     
+        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
+        return new ObjectResponseDto(
+            true,
+            "Journal entries report URL sent successfully!",
+            journalEntryProfile);
+    }
+
+    @Override
+    public ObjectResponseDto uploadReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
         String email = journalEntrySearchCommand.getEmail() != null ? 
                             journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
@@ -375,24 +397,21 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Object object = searchResponse.getObject();    
         JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
         List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
-
+        List<JournalEntryResponse> entryList = new ArrayList<>();
+        for(JournalEntriesResponse matrixEntries : journalEntryMatrix){
+            //System.out.println(matrixEntries);
+            if(matrixEntries.getEntries() != null && !matrixEntries.getEntries().isEmpty()){
+                entryList.add(matrixEntries.getEntries().get(0));
+            }
+        }
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
-                                                                    .action("sendreport")
-                                                                    .journalEntryMatrix(journalEntryMatrix)
+                                                                    .entryList(entryList)
                                                                     .build();
-        journalEntriesReportService.setReport(journalEntryProfile);                                                   
-        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
-        return new ObjectResponseDto(
-            true,
-            "Journal entries report sent successfully!",
-            journalEntryProfile);
-    }
-
-    @Override
-    public ObjectResponseDto uploadReport(String journalId){
+        pdfService.setReport(journalEntryProfile);  
+        //System.out.println(journalEntryProfile);
         String url = null;
         int i=0;
             try {

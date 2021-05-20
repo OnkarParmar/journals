@@ -12,5 +12,6 @@ public class JournalEntryProfile {
     String fname;
     String lname;
     String email;
-    List<JournalEntriesResponse> journalEntryMatrix;
+    String url;
+    List<JournalEntryResponse> entryList;
 }
