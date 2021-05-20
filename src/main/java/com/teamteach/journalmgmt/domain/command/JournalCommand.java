@@ -1,9 +1,6 @@
 package com.teamteach.journalmgmt.domain.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

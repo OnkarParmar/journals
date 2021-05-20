@@ -65,9 +65,15 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     }
 
     @Override
-    @ApiOperation(value = "Deletes entries", authorizations = { @Authorization(value="jwtToken") })
+    @ApiOperation(value = "Deletes entry", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> deleteEntry(String id) {
         return ResponseEntity.ok(journalEntryMgmt.delete(id));
+    }
+
+    @Override
+    @ApiOperation(value = "Lock entry", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> lockEntry(String id) {
+        return ResponseEntity.ok(journalEntryMgmt.lock(id));
     }
 
     @Override

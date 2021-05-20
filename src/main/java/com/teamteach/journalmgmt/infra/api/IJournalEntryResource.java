@@ -39,6 +39,9 @@ public interface IJournalEntryResource {
     @PostMapping("/upload/report/{journalId}")
     ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId);
 
+    @PutMapping("/{id}/toggleLock")
+    ResponseEntity<ObjectResponseDto> lockEntry(@PathVariable("id") String id);
+
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
 

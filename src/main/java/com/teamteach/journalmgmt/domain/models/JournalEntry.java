@@ -29,6 +29,7 @@ public class JournalEntry extends BaseModel{
     private String[] children;
     private String categoryId;
     private String entryImage;
+    private boolean locked;
     private String recommendationId;
     private String suggestionIndex;
 
@@ -43,6 +44,7 @@ public class JournalEntry extends BaseModel{
             String[] children,
             String categoryId,
             String mood,
+            boolean locked,
             String recommendationId,
             String suggestionIndex) {
         super(createdAt, updatedAt);
@@ -54,6 +56,7 @@ public class JournalEntry extends BaseModel{
         this.children = children;
         this.categoryId = categoryId;
         this.mood = mood;
+        this.locked = locked;
         this.recommendationId = recommendationId;
         this.suggestionIndex = suggestionIndex;
     }

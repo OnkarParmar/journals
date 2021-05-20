@@ -26,7 +26,6 @@ import java.io.File;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -69,6 +68,29 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 true,
                 "Entries retrieved successfully!",
                 journalEntryResponses);
+    }
+
+    @Override
+    public ObjectResponseDto lock(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        if(entry.isLocked()){
+            entry.setLocked(false);
+            mongoTemplate.save(entry);    
+            return ObjectResponseDto.builder()
+                        .success(true)
+                        .message("Entry unlocked")
+                        .object(entry)
+                        .build();
+        } else {
+            entry.setLocked(true);
+            mongoTemplate.save(entry);    
+            return ObjectResponseDto.builder()
+                        .success(true)
+                        .message("Entry locked")
+                        .object(entry)
+                        .build();
+        }        
     }
 
     @Override

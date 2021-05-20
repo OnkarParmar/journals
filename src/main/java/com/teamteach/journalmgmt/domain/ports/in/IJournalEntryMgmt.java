@@ -12,19 +12,17 @@ import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IJournalEntryMgmt {
-    //ObjectResponseDto saveEntry(JournalEntryCommand journalEntryCommand);
-
     ObjectListResponseDto<JournalEntryResponse> findAllEntries();
 
     ObjectResponseDto findById(String id);
 
     ObjectResponseDto delete(String id);
 
+    ObjectResponseDto lock(String id);
+
     boolean isEditable(Date current);
 
     ObjectResponseDto uploadReport(String journalId);
-
-    //ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 
     ObjectResponseDto saveEntry(EditJournalEntryCommand editJournalEntryCommand);
 
