@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Welcome Screen</title>
-    <link href="/css/main.css" rel="stylesheet" />
+    <link href="../static/css/main.css" rel="stylesheet" />
 </head>
 <body>
     <header>
      <div class="banner-box">
          <h1 class="banner">Journal of Children</h1>
      </div>
-     <h2> <b>Parent</b> : Don Morrison</h2>
+     <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
      <h3><b>Period</b> : 1st Jan, 2021 – 30th April, 2021</h3>
      <h3><b>Children</b> : Tom, Kevin, Andrew</h3>
     </header>

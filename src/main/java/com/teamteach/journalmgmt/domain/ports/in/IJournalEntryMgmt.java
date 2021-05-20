@@ -22,7 +22,7 @@ public interface IJournalEntryMgmt {
 
     boolean isEditable(Date current);
 
-    String uploadReport(String journalId);
+    ObjectResponseDto uploadReport(String journalId);
 
     //ObjectResponseDto saveTeamTeachFile(MultipartFile file, String id);
 

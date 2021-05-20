@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+import com.teamteach.journalmgmt.domain.responses.*;
+
+import com.teamteach.journalmgmt.domain.models.JournalEntryProfile;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.*;
 
 @Service
 public class PdfService {
@@ -32,6 +36,7 @@ public class PdfService {
     public File generatePdf() throws IOException, DocumentException {
         Context context = getContext();
         String html = loadAndFillTemplate(context);
+        System.out.println(html);
         return renderPdf(html);
     }
 
@@ -50,7 +55,15 @@ public class PdfService {
 
     private Context getContext() {
         Context context = new Context();
-        context.setVariable("entries-report", journalEntriesReportService.getReport());
+        Map<String, Object> model = new HashMap<>();
+        JournalEntryProfile report = journalEntriesReportService.getReport();
+        //List<JournalEntryResponse> entries = (List<JournalEntryResponse>)(report.getJournalEntryMatrix().get(1));
+
+        model.put("fname", report.getFname());
+        model.put("lname", report.getLname());
+        model.put("entries", report.getJournalEntryMatrix());
+
+        context.setVariables(model);
         return context;
     }
 

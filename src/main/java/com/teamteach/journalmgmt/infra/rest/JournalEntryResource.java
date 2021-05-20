@@ -48,7 +48,7 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Uploads url of report", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<String> uploadPDF(String journalId) {
+    public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId) {
         return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId));
     }
 

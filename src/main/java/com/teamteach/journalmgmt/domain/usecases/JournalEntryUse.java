@@ -24,6 +24,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.io.File;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.ResponseEntity;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -337,22 +342,29 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
         String email = journalEntrySearchCommand.getEmail() != null ? 
                             journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+
+        ObjectResponseDto searchResponse = searchEntries(journalEntrySearchCommand, accessToken);
+        Object object = searchResponse.getObject();    
+        JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
+        List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
+
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
                                                                     .action("sendreport")
+                                                                    .journalEntryMatrix(journalEntryMatrix)
                                                                     .build();
         journalEntriesReportService.setReport(journalEntryProfile);                                                   
         journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
         return new ObjectResponseDto(
             true,
             "Journal entries report sent successfully!",
-            null);
+            journalEntryProfile);
     }
 
     @Override
-    public String uploadReport(String journalId){
+    public ObjectResponseDto uploadReport(String journalId){
         String url = null;
         int i=0;
             try {
@@ -361,10 +373,19 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 url = fileUploadService.saveTeamTeachFile("reports", fileName.replaceAll("\\s", ""),Files.readAllBytes(pdfService.generatePdf().toPath()));
                 i++;
             } catch (IOException ioe) {
-                return "failed";
+                return new ObjectResponseDto(
+                    false,
+                    "URL generation failed!",
+                    null);
             } catch (DocumentException doe) {
-                return null;
+                return new ObjectResponseDto(
+                    false,
+                    "URL generation failed!",
+                    null);
             }
-        return url;
+        return new ObjectResponseDto(
+            true,
+            "URL generated successfully!",
+            url);
     }
 }

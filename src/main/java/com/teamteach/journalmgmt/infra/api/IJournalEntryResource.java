@@ -37,7 +37,7 @@ public interface IJournalEntryResource {
 
     @ApiIgnore
     @PostMapping("/upload/report/{journalId}")
-    ResponseEntity<String> uploadPDF(@PathVariable String journalId);
+    ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId);
 
     @DeleteMapping("/{id}")
     ResponseEntity<ObjectResponseDto> deleteEntry(@PathVariable("id") String id);
