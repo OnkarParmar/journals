@@ -166,15 +166,17 @@ public class JournalUse implements IJournalMgmt{
 				);
 				AggregationResults<MoodObj> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, MoodObj.class);
 				List<MoodObj> moodObjs = results.getMappedResults();
+				List<MoodObj> moodResponseList = new ArrayList<>();
 				for (Mood mood : moods) {
 					MoodObj moodObj = moodObjs.stream().filter(m->mood.getName().equals(m.getName())).findAny().orElse(null);
-					if (moodObj == null) {
-						moodObjs.add(new MoodObj(mood.getName(), mood.getUrl(), 0));
-					} else {
+					if (moodObj != null) {
 						moodObj.setUrl(mood.getUrl());
+					} else {
+						moodObj = new MoodObj(mood.getName(), mood.getUrl(), 0);
 					}
+					moodResponseList.add(moodObj);
 				}
-				journalResponse.setMoods(moodObjs);
+				journalResponse.setMoods(moodResponseList);
 				journalResponse.setEntryCount();
 				ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
 				journalResponse.setParentProfile(parentProfile);
