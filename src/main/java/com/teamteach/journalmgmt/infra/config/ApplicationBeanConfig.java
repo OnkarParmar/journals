@@ -39,8 +39,4 @@ public class ApplicationBeanConfig {
     IJournalEntryRepository journalEntryDAL() {
         return new JournalDAL(mongoTemplate);
     }
-    @Bean("moodMgmtSvc")
-    IMoodMgmt moodMgmt() {
-        return new MoodUse(journalRepository);
-    }
 }

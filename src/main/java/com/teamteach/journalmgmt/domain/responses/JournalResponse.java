@@ -16,7 +16,7 @@ public class JournalResponse {
     private String createdAt;
     private int totalEntries;
     private String updatedAt;
-    private List<ObjectCount> moods;
+    private List<MoodObj> moods;
     private int entryCount;
     private ParentProfileResponseDto parentProfile;
 

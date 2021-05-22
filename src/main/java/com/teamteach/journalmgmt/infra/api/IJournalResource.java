@@ -26,24 +26,4 @@ public interface IJournalResource {
     @ApiIgnore
     @DeleteMapping("/{id}")
         ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable String id) ;
-
-    @ApiIgnore
-    @PostMapping("/moods")
-        ResponseEntity<ObjectResponseDto> saveMood(@RequestBody Mood mood);
-
-    @ApiIgnore
-    @GetMapping("/moods")
-        ResponseEntity<ObjectListResponseDto> findAllMoods();
-
-    @ApiIgnore
-    @GetMapping("/moods/id/{id}")
-        ResponseEntity<ObjectResponseDto> findMoodById(@PathVariable("id") String id);
-
-    @ApiIgnore
-    @GetMapping("/moods/name/{name}")
-        ResponseEntity<ObjectResponseDto> findMoodByName(@PathVariable("name") String name);
-
-    @ApiIgnore
-    @DeleteMapping("/moods/{id}")
-        ResponseEntity<ObjectResponseDto> deleteMood(@PathVariable("id") String id);
 }

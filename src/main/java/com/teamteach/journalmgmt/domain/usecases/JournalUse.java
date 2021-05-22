@@ -144,8 +144,11 @@ public class JournalUse implements IJournalMgmt{
 
 	@Override
 	public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
+		Query query = new Query();
+		List<Mood> moods = mongoTemplate.find(query, Mood.class);
+
 		List<JournalResponse> journalResponses = new ArrayList<>();
-		Query query = new Query(Criteria.where("ownerId").is(ownerId));
+		query = new Query(Criteria.where("ownerId").is(ownerId));
 
 		List<Journal> journals = mongoTemplate.find(query, Journal.class);
 		if (journals == null) {
@@ -161,8 +164,17 @@ public class JournalUse implements IJournalMgmt{
 									.count().as("count"),
 					Aggregation.project("count").and("name").previousOperation()
 				);
-				AggregationResults<ObjectCount> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, ObjectCount.class);
-				journalResponse.setMoods(results.getMappedResults());
+				AggregationResults<MoodObj> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, MoodObj.class);
+				List<MoodObj> moodObjs = results.getMappedResults();
+				for (Mood mood : moods) {
+					MoodObj moodObj = moodObjs.stream().filter(m->mood.getName().equals(m.getName())).findAny().orElse(null);
+					if (moodObj == null) {
+						moodObjs.add(new MoodObj(mood.getName(), mood.getUrl(), 0));
+					} else {
+						moodObj.setUrl(mood.getUrl());
+					}
+				}
+				journalResponse.setMoods(moodObjs);
 				journalResponse.setEntryCount();
 				ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
 				journalResponse.setParentProfile(parentProfile);

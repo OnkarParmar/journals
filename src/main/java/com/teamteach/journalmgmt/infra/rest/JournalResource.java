@@ -5,8 +5,6 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
-import com.teamteach.journalmgmt.domain.usecases.*;
-import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.infra.api.IJournalResource;
 import com.teamteach.journalmgmt.shared.AbstractAppController;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +21,6 @@ import javax.validation.Valid;
 class JournalResource extends AbstractAppController implements IJournalResource {
 
     final IJournalMgmt journalMgmt;
-    final IMoodMgmt moodMgmt;
 
     @Override
     @ApiOperation(value = "Creates the journal", authorizations = { @Authorization(value="jwtToken") })
@@ -47,35 +44,5 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId){
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalMgmt.findById(ownerId, token));
-    }
-
-    @Override
-    @ApiOperation(value = "Creates mood", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> saveMood(Mood mood) {
-        return ResponseEntity.ok(moodMgmt.saveMood(mood));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds moods", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto> findAllMoods() {
-        return ResponseEntity.ok(moodMgmt.findMoods());
-    }
-
-    @Override
-    @ApiOperation(value = "Finds mood by id", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findMoodById(String id) {
-        return ResponseEntity.ok(moodMgmt.findMoodById(id));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds mood by name", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findMoodByName(String name) {
-        return ResponseEntity.ok(moodMgmt.findByName(name));
-    }
-
-    @Override
-    @ApiOperation(value = "Deletes mood", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> deleteMood(String id) {
-        return ResponseEntity.ok(moodMgmt.deleteMood(id));
     }
 }
