@@ -205,10 +205,11 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 entry.setText(editJournalEntryCommand.getText());
             }
             if(editJournalEntryCommand.getCategoryId() != null && !editJournalEntryCommand.getCategoryId().equals("")){
+                entry.setCategoryId(editJournalEntryCommand.getCategoryId());
+            } else {
                 int n = entryId.length();
                 String categoryId = entryId.substring(n-1,n);
                 entry.setCategoryId(categoryId);
-                //entry.setCategoryId(editJournalEntryCommand.getCategoryId());
             }
             if(editJournalEntryCommand.getChildren() != null && editJournalEntryCommand.getChildren().length != 0){
                 entry.setChildren(editJournalEntryCommand.getChildren());
