@@ -13,5 +13,9 @@ public class JournalEntryProfile {
     String lname;
     String email;
     String url;
+    String fromDate;
+    String toDate;
+    List<String> filterChildren;
+    List<ChildProfile> children;
     List<JournalEntryResponse> entryList;
 }
