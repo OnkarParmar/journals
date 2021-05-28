@@ -32,6 +32,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .addFilter(new JwtTokenValidatorFilter(authenticationManager(), jwtOperationsWrapperSvc))
                     .authorizeRequests()
+                    .antMatchers("/report").permitAll()
                 .anyRequest().authenticated();
     }
 
