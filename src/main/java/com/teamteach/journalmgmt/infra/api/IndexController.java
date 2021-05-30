@@ -16,6 +16,7 @@ import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
+import org.springframework.http.HttpHeaders;
 import com.lowagie.text.DocumentException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -33,8 +34,8 @@ public class IndexController {
     private MongoTemplate mongoTemplate;
 
     @RequestMapping("/report/{journalId}")
-    public ModelAndView report(@PathVariable String journalId){
-
+    public ModelAndView report(@PathVariable String journalId,@RequestHeader HttpHeaders headers){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         Query query = new Query(Criteria.where("journalId").is(journalId));
         Journal journal = mongoTemplate.findOne(query, Journal.class);
         String ownerId = "";
@@ -47,8 +48,6 @@ public class IndexController {
 
         JournalEntrySearchCommand tempCommand = new JournalEntrySearchCommand();
         tempCommand.setOwnerId(ownerId);
-
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaXl1c2hpZ295YWxvdXRsb29rY29tIiwianRpIjoicGl5dXNoaWdveWFsb3V0bG9va2NvbSIsImlhdCI6MTYyMjIxMjcyMCwiZXhwIjoxNjIyMjk5MTIwLCJhdXRob3JpdGllcyI6W119.TGJ3RZQZrKhI5HMrB7UXS6uME59wdIGBW_P85DRop7Q";
 
         Map<String, Object> params = new HashMap<>();
 

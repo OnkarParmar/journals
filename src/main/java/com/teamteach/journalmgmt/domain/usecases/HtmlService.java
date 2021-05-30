@@ -35,6 +35,7 @@ public class HtmlService {
 
     public JournalEntryProfile returnDataReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
+        System.out.println(parentProfile);
         String email = journalEntrySearchCommand.getEmail() != null ? 
                             journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
 

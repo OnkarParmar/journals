@@ -5,7 +5,144 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    <title>Welcome Screen</title>
-   <link href="../static/css/main.css" rel="stylesheet" />
+   <style>
+      *{
+         padding: 0;
+         margin: 0;
+         box-sizing: border-box;
+      }
+      body{
+         max-width: 767px;
+         margin-left: auto;
+         margin-right: auto;
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+      header{
+         text-align: center;
+         background-color: #0D2860;
+         padding:30px;
+         color: white;
+         width: 100%;
+      }
+      b{
+         width: 700;
+      }
+      h2{
+         font-weight: 400;
+      }
+      h3{
+         font-weight: 300;
+      }
+      .banner-box{
+         padding-bottom: 20px;
+      }
+      .banner{
+         font-size:30px;
+         display: inline;
+         line-height: 25px;
+         font-weight: 700;
+         padding: 0px 30px;
+         border: 3px solid #fff;
+         border-radius: 40px;
+      }
+      .entry-container{
+         position: relative;
+         display: flex;
+         flex-direction: 'row';
+         margin: 30px 30px 30px 0;
+      }
+      .entry-emoji{
+         padding:20px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+      .entry-emoji img{
+         height: 30px;
+         width: 30px;
+      }
+      .entry-description{
+         display: flex;
+         flex-direction: row;
+         border: 3px solid #F1B7CD;
+         padding:30px 12px 18px 18px;
+         border-radius: 34px;
+         color:#0290A1
+      }
+      .entry-box{
+         flex: 7;
+      }
+      .entry-text{
+         padding-right: 16px;
+         
+      }
+      .date-time{
+         padding: 30px 0px;
+      }
+      .entry-date{
+         padding-right: 30px;
+      }
+      .children-box{
+         display: flex;
+         flex-direction: row;
+      }
+      .child{
+         padding:6px;
+         border:2px solid black;
+         border-radius: 30px;
+         display: flex;
+         flex-direction: row ;
+         align-items: center;
+         margin-right: 16px;
+         justify-content: space-between;
+      }
+      .child .name{
+         padding-right: 18px;
+         padding-bottom: 3px;
+         flex:3;
+         font-weight: 700;
+         color:#0A285F
+      }
+      .child-img{
+         flex:2  
+      }
+      .child-img img{
+         height: 25px;   
+      }
+
+      .entry-image-box{
+         flex: 4;
+         display: flex;
+         flex-direction: column;
+         justify-content: flex-start;
+         align-items: flex-end;
+         text-align: center;
+      }
+      .entry-color{
+         width: 30px;
+         height: 16px;
+         align-self: flex-end;
+         background-color: #F1B7CD;
+      }
+      .entry-image{
+         padding:20px;
+         border-radius: 10px;
+      }
+      .page-box{
+         display: flex;
+         justify-content: flex-end;
+         margin: 30px 40px;
+         font-weight: 500;
+         color:#505C6D
+      }
+      footer{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         padding:30px;
+      }
+   </style>
 </head>
 <body>
    <header>
@@ -21,10 +158,10 @@
    <main>
        <div class="entry-container" th:each="entry: ${entries}">
            <div class="entry-emoji">
-               <!-- <img th:src="${entry.entryMood}" alt=""/> -->
-               <p th:text="${entry.mood}"></p>
+               <img th:src="${entry.mood}" alt=""/>
+               <!-- <p th:text="${entry.mood}"></p> -->
            </div>
-           <div class="entry-description" style = "border: 3px solid black;">
+           <div class="entry-description">
                <div class="entry-box">
                    <div class="entry-text">
                        <p th:text="${entry.text}"></p>
@@ -33,11 +170,11 @@
                        <time class="entry-date" th:text="${entry.createdAt}"></time>
                        <!-- <time>12:00pm</time> -->
                    </div>
-                   <div class="children-box" th:each="child: ${entry.children}">
+                   <div class="children-box" th:each="child: ${entry.childProfiles}">
                        <div class="child">
-                           <span class="name" th:text="${child}"></span>
+                           <span class="name" th:text="${child.name}"></span>
                            <span class="child-img">
-                               <img height="100%" src="${child.profileImage}" alt=""/>
+                               <img height="100%" th:src="${child.profileImage}" alt=""/>
                            </span>
                        </div>
                    </div>

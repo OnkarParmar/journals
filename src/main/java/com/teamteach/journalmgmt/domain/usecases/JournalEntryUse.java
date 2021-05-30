@@ -5,7 +5,6 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
-import com.teamteach.journalmgmt.domain.usecases.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.lowagie.text.DocumentException;
 
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -22,11 +20,6 @@ import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.io.File;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.JsonNode;
-import org.springframework.http.ResponseEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,20 +48,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private JournalEntryReportService journalEntriesReportService;
-
-    @Override
-    public ObjectListResponseDto<JournalEntryResponse> findAllEntries() {
-        List<JournalEntryResponse> journalEntryResponses = new ArrayList<>();
-        Query query = new Query();
-        List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
-        for(JournalEntry journalEntry: entries){
-			journalEntryResponses.add(new JournalEntryResponse(journalEntry));
-		}
-        return new ObjectListResponseDto<>(
-                true,
-                "Entries retrieved successfully!",
-                journalEntryResponses);
-    }
 
     @Override
     public ObjectResponseDto lock(String id) {
@@ -327,12 +306,23 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
+        Map<String, ChildProfile> childTable = new HashMap<>();
+        for (ChildProfile childProfile : childProfiles) {
+            childTable.put(childProfile.getProfileId(), childProfile);
+        }
         Map<String, Category> categories = recommendationService.getCategories(accessToken);
-        List<Category> categoryList = new ArrayList(categories.values());
+        List<Category> categoryList = new ArrayList<Category>(categories.values());
+        Map<String, String> moodTable = new HashMap<>();
+        query = new Query(Criteria.where("isParent").is(true));
+        List<Mood> moods = mongoTemplate.find(query, Mood.class);
+        for (Mood mood : moods) {
+            moodTable.put(mood.getName(), mood.getUrl());
+        }
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
-                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry, moodTable);
+                journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
                 Category category = categories.get(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
@@ -354,7 +344,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 int day = cal.get(Calendar.DAY_OF_MONTH)-1;
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
-                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry, moodTable);
                 Category category = categories.get(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
@@ -375,7 +365,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         String email = journalEntryReportCommand.getEmail() != null ? 
                                 journalEntryReportCommand.getEmail() : parentProfile.getEmail();
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
-                                                                    .email(journalEntryReportCommand.getEmail())
+                                                                    .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
                                                                     .action("sendreport")

@@ -43,7 +43,7 @@ public class ProfileService {
         try {
             String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer " + accessToken); 
+            headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity <String> entity = new HttpEntity <> (null, headers);
             System.out.println(parentProfileUrl);
