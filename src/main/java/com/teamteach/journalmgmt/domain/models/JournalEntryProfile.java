@@ -16,6 +16,6 @@ public class JournalEntryProfile {
     String fromDate;
     String toDate;
     List<String> filterChildren;
-    List<ChildProfile> children;
+    String children;
     List<JournalEntryResponse> entryList;
 }

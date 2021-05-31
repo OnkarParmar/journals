@@ -63,6 +63,7 @@
       }
       .entry-description{
          display: flex;
+         width: 80%;
          flex-direction: row;
          border: 3px solid #F1B7CD;
          padding:30px 12px 18px 18px;
@@ -151,9 +152,8 @@
     </div>
     <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
     <h3 th:text="${'Period : ' + #dates.format(fromDate, 'dd MMM, yyyy') + ' - ' + #dates.format(toDate, 'dd MMM, yyyy')}"></h3>
-    <h3 th:each="kid: ${filterChildren}">
-       <div th:text="${'Children : ' + kid + ' , ' }"></div>
-    </h3>
+    <h3 th:text="${'Children : ' + children}"></h3>
+   </div>
    </header>
    <main>
        <div class="entry-container" th:each="entry: ${entries}">

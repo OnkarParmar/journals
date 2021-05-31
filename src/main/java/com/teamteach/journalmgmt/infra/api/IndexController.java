@@ -68,14 +68,13 @@ public class IndexController {
         // }
 
         List<String> filterChildren = report.getFilterChildren();
-        List<ChildProfile> children = report.getChildren();
 
         params.put("fname", report.getFname());
         params.put("lname", report.getLname());
         // params.put("fromDate", fromDate);
         // params.put("toDate", toDate);
         params.put("filterChildren", filterChildren);
-        params.put("children", children);
+        params.put("children", report.getChildren());
         params.put("entries", report.getEntryList());
 
         return new ModelAndView("report", params);

@@ -20,6 +20,7 @@ import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -50,10 +51,12 @@ public class HtmlService {
                 entryList.add(matrixEntries.getEntries().get(0));
             }
         }
+        String children = journalEntryMatrixResponse.getChildProfiles().stream().map(e -> e.getName()).collect(Collectors.joining("| "));
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
+                                                                    .children(children)                                                                    
                                                                     .entryList(entryList)
                                                                     .build();
         // JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
