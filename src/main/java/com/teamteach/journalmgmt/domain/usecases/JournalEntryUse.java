@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -381,8 +382,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectResponseDto uploadReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
-        String email = journalEntrySearchCommand.getEmail() != null ? 
-                            journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+        String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
 
         ObjectResponseDto searchResponse = searchEntries(journalEntrySearchCommand, accessToken);
         Object object = searchResponse.getObject();    
@@ -395,10 +395,14 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 entryList.add(matrixEntries.getEntries().get(0));
             }
         }
+        String children = journalEntryMatrixResponse.getChildProfiles().stream().map(e -> e.getName()).collect(Collectors.joining("| "));
         JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
+                                                                    .fromDate(journalEntrySearchCommand.getFromDate())
+                                                                    .toDate(journalEntrySearchCommand.getToDate()) 
+                                                                    .children(children)                                                                    
                                                                     .entryList(entryList)
                                                                     .build();
         pdfService.setReport(journalEntryProfile);  

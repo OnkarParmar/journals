@@ -48,31 +48,34 @@ public class IndexController {
 
         JournalEntrySearchCommand tempCommand = new JournalEntrySearchCommand();
         tempCommand.setOwnerId(ownerId);
+        tempCommand.setFromDate("2021-05-28");
+        tempCommand.setToDate("2021-05-31");
 
         Map<String, Object> params = new HashMap<>();
 
         JournalEntryProfile report = htmlService.returnDataReport(journalId,tempCommand,token);
 
-        // String fromDateStr = report.getFromDate();
-        // String toDateStr = report.getToDate();
-        // SimpleDateFormat formatter = null;
-        // Date fromDate = null;
-        // Date toDate = null;
-        // formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");
-        // try {
-        //     fromDate = formatter.parse(fromDateStr);
-        //     toDate = formatter.parse(toDateStr);
-        //     System.out.println(fromDate+" "+toDate);
-        // } catch(ParseException e){
-        //     e.printStackTrace();
-        // }
+        String fromDateStr = report.getFromDate();
+        String toDateStr = report.getToDate();
+        SimpleDateFormat formatter = null;
+        Date fromDate = null;
+        Date toDate = null;
+        System.out.println(fromDateStr+" "+toDateStr);
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            fromDate = formatter.parse(fromDateStr);
+            toDate = formatter.parse(toDateStr);
+            System.out.println(fromDate+" "+toDate);
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
 
         List<String> filterChildren = report.getFilterChildren();
 
         params.put("fname", report.getFname());
         params.put("lname", report.getLname());
-        // params.put("fromDate", fromDate);
-        // params.put("toDate", toDate);
+        params.put("fromDate", fromDate);
+        params.put("toDate", toDate);
         params.put("filterChildren", filterChildren);
         params.put("children", report.getChildren());
         params.put("entries", report.getEntryList());

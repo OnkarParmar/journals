@@ -12,7 +12,7 @@
          box-sizing: border-box;
       }
       body{
-         max-width: 767px;
+         max-width: 840px;
          margin-left: auto;
          margin-right: auto;
          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -65,7 +65,6 @@
          display: flex;
          width: 80%;
          flex-direction: row;
-         border: 3px solid #F1B7CD;
          padding:30px 12px 18px 18px;
          border-radius: 34px;
          color:#0290A1
@@ -92,6 +91,7 @@
          border:2px solid black;
          border-radius: 30px;
          display: flex;
+         width: 30%;
          flex-direction: row ;
          align-items: center;
          margin-right: 16px;
@@ -147,13 +147,12 @@
 </head>
 <body>
    <header>
-    <div class="banner-box">
-        <h1 class="banner">Journal of Children</h1>
-    </div>
-    <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
-    <h3 th:text="${'Period : ' + #dates.format(fromDate, 'dd MMM, yyyy') + ' - ' + #dates.format(toDate, 'dd MMM, yyyy')}"></h3>
-    <h3 th:text="${'Children : ' + children}"></h3>
-   </div>
+      <div class="banner-box">
+         <h1 class="banner">Journal of Children</h1>
+      </div>
+      <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
+      <h3 th:text="${'Period : ' + #dates.format(fromDate, 'dd MMM, yyyy') + ' - ' + #dates.format(toDate, 'dd MMM, yyyy')}"></h3>
+      <h3 th:text="${'Children : ' + children}"></h3>
    </header>
    <main>
        <div class="entry-container" th:each="entry: ${entries}">
@@ -161,7 +160,7 @@
                <img th:src="${entry.mood}" alt=""/>
                <!-- <p th:text="${entry.mood}"></p> -->
            </div>
-           <div class="entry-description">
+           <div class="entry-description" th:style = "'border: 3px solid '+ ${entry.category.colour}">
                <div class="entry-box">
                    <div class="entry-text">
                        <p th:text="${entry.text}"></p>
@@ -181,7 +180,7 @@
 
                </div>
                <div class="entry-image-box">
-                   <div class="entry-color" style = "background-color: black;"></div>
+                   <div class="entry-color" th:style = "'background-color: '+ ${entry.category.colour}"></div>
                    <div class="entry-image">
                        <img width="100%" th:src="${entry.entryImage}" alt=""/>
                    </div>

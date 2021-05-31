@@ -36,9 +36,7 @@ public class HtmlService {
 
     public JournalEntryProfile returnDataReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
-        System.out.println(parentProfile);
-        String email = journalEntrySearchCommand.getEmail() != null ? 
-                            journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+        String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
 
         ObjectResponseDto searchResponse = entryUse.searchEntries(journalEntrySearchCommand, accessToken);
         Object object = searchResponse.getObject();    
@@ -56,15 +54,15 @@ public class HtmlService {
                                                                     .email(email)
                                                                     .fname(parentProfile.getFname())
                                                                     .lname(parentProfile.getLname())
+                                                                    .fromDate(journalEntrySearchCommand.getFromDate())
+                                                                    .toDate(journalEntrySearchCommand.getToDate()) 
                                                                     .children(children)                                                                    
                                                                     .entryList(entryList)
                                                                     .build();
         // JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
         //                                                             .email(email)
         //                                                             .fname(parentProfile.getFname())
-        //                                                             .lname(parentProfile.getLname())
-        //                                                             .fromDate(journalEntrySearchCommand.getFromDate())
-        //                                                             .toDate(journalEntrySearchCommand.getToDate())
+        //                                                             .lname(parentProfile.getLname())                                                            
         //                                                             .filterChildren(journalEntrySearchCommand.getChildren())
         //                                                             .children(childProfiles)
         //                                                             .entryList(entryList)
