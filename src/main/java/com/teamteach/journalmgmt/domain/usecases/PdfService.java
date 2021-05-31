@@ -2,12 +2,9 @@ package com.teamteach.journalmgmt.domain.usecases;
 
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-import com.teamteach.journalmgmt.domain.responses.*;
 
 import lombok.Data;
 
@@ -15,21 +12,16 @@ import com.teamteach.journalmgmt.domain.models.JournalEntryProfile;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.io.*;  
 
-import com.itextpdf.html2pdf.HtmlConverter;
-
 @Service
 @Data
 public class PdfService {
 
-    private static final String PDF_RESOURCES = "/static/";
     private SpringTemplateEngine templateEngine;
 
     private JournalEntryProfile report;

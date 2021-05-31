@@ -22,7 +22,8 @@ public class JournalEntryResponse {
     private boolean editable;
     private boolean locked;
     private String recommendationId;
-    private String suggestionIndex;   
+    private String suggestionIndex; 
+    private String suggestion;  
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry, Map<String, String> moodTable) {

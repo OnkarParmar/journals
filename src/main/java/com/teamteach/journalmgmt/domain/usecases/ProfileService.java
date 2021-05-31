@@ -44,10 +44,8 @@ public class ProfileService {
             String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
-            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity <String> entity = new HttpEntity <> (null, headers);
-            System.out.println(parentProfileUrl);
-            System.out.println(headers);
             ResponseEntity <String> response = restTemplate.exchange(parentProfileUrl, HttpMethod.GET, entity, String.class);
             JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
             boolean success = respoJsonNode.get("success").asBoolean();

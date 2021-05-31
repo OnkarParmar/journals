@@ -328,6 +328,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 if(category != null){
                     journalEntryResponse.setCategory(category);
                 }
+                if (entry.getRecommendationId() != null) {
+                    journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                }
                 Date created = entry.getCreatedAt();
                 journalEntryResponse.setEditable(isEditable(created));
                 journalEntriesResponse.addEntry(journalEntryResponse);
@@ -349,6 +352,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 Category category = categories.get(entry.getCategoryId());
                 if(category != null){
                     journalEntryResponse.setCategory(category);
+                }
+                if (entry.getRecommendationId() != null) {
+                    journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
                 }
                 journalEntriesResponse.addEntry(journalEntryResponse);
             }
