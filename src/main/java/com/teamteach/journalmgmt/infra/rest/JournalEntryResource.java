@@ -36,13 +36,14 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     @ApiOperation(value = "Finds entries with search filters", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        System.out.println(token);
         return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand,token));
     }
 
     @Override
     @ApiOperation(value = "Sends entries report with search filters", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, HttpHeaders headers) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);        
         return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalId, journalEntryReportCommand, token));
     }
 
@@ -51,12 +52,6 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId,journalEntrySearchCommand,token));
-    }
-
-    @Override
-    @ApiOperation(value = "Finds entries", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries() {
-        return ResponseEntity.ok(journalEntryMgmt.findAllEntries());
     }
 
     @Override

@@ -2,12 +2,9 @@ package com.teamteach.journalmgmt.domain.usecases;
 
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-import com.teamteach.journalmgmt.domain.responses.*;
 
 import lombok.Data;
 
@@ -15,16 +12,16 @@ import com.teamteach.journalmgmt.domain.models.JournalEntryProfile;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.io.*;  
 
 @Service
 @Data
 public class PdfService {
 
-    private static final String PDF_RESOURCES = "/static/";
     private SpringTemplateEngine templateEngine;
 
     private JournalEntryProfile report;
@@ -47,13 +44,13 @@ public class PdfService {
 
 
     private File renderPdf(String html) throws IOException, DocumentException {
-        File file = File.createTempFile("report", ".pdf");
-        OutputStream outputStream = new FileOutputStream(file);
-        ITextRenderer renderer = new ITextRenderer(20f * 4f / 3f, 20);
-        renderer.setDocumentFromString(html, new ClassPathResource(PDF_RESOURCES).getURL().toExternalForm());
-        renderer.layout();
-        renderer.createPDF(outputStream);
-        outputStream.close();
+        File file = new File("report.html");
+
+        try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(html);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         file.deleteOnExit();
         return file;
     }
@@ -62,8 +59,27 @@ public class PdfService {
         Context context = new Context();
         Map<String, Object> model = new HashMap<>();
 
+        String fromDateStr = report.getFromDate();
+        String toDateStr = report.getToDate();
+        SimpleDateFormat formatter = null;
+        Date fromDate = null;
+        Date toDate = null;
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            fromDate = formatter.parse(fromDateStr);
+            toDate = formatter.parse(toDateStr);
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        List<String> filterChildren = report.getFilterChildren();
+
         model.put("fname", report.getFname());
         model.put("lname", report.getLname());
+        model.put("fromDate", fromDate);
+        model.put("toDate", toDate);
+        model.put("filterChildren", filterChildren);
+        model.put("children", report.getChildren());
         model.put("entries", report.getEntryList());
 
         context.setVariables(model);
@@ -71,6 +87,6 @@ public class PdfService {
     }
 
     private String loadAndFillTemplate(Context context) {
-        return templateEngine.process("entries-report", context);
+        return templateEngine.process("report", context);
     }
 }

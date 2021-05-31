@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-@Getter
 public class JournalEntrySearchCommand extends ValidatingCommand{
     @NotNull
     private String email;

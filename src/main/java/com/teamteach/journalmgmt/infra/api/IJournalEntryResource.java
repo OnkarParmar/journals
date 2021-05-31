@@ -1,15 +1,7 @@
 package com.teamteach.journalmgmt.infra.api;
 
 import com.teamteach.journalmgmt.domain.command.*;
-import com.teamteach.journalmgmt.domain.responses.JournalEntriesResponse;
-import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
-import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
-
-import javax.servlet.http.HttpServletResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +16,6 @@ public interface IJournalEntryResource {
     @PostMapping("/search")
     ResponseEntity<ObjectResponseDto> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
                                                                                 @RequestHeader HttpHeaders headers);
-    @ApiIgnore
-    @GetMapping("/getAll")
-    ResponseEntity<ObjectListResponseDto<JournalEntryResponse>> findAllEntries();
 
     @ApiIgnore
     @GetMapping("/{id}")
