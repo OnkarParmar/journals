@@ -13,25 +13,13 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.client.RestTemplate;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.web.client.RestTemplate;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import java.util.function.Consumer;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 
-import java.io.IOException;
 import java.util.*;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JournalUse implements IJournalMgmt{

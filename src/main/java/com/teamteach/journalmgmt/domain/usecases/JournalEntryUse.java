@@ -6,6 +6,8 @@ import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
+import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
+import com.teamteach.commons.security.jwt.JwtUser;
 import com.lowagie.text.DocumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Autowired
     private FileUploadService fileUploadService;
+
+    @Autowired
+    private JwtOperationsWrapperSvc jwtOperationsWrapperSvc;
 
     @Autowired
     private ProfileService profileService;
@@ -123,9 +128,11 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectResponseDto getLastSuggestion(String id) {
+    public ObjectResponseDto getLastSuggestion(String id, String token) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("recommendationId").is(id));
+        String[] tokens = token.split(" ");
+        JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
+        query.addCriteria(Criteria.where("recommendationId").is(id).and("ownerId").is(jwtUser.getPrincipal()));
         query.with(Sort.by(Sort.Direction.DESC, "updatedAt"));
 
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);

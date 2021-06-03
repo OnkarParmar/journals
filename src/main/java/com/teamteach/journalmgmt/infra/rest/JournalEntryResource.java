@@ -21,6 +21,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 
@@ -62,8 +63,9 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Finds last suggestion by id", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> getLastSuggestion(String id) {
-        return ResponseEntity.ok(journalEntryMgmt.getLastSuggestion(id));
+    public ResponseEntity<ObjectResponseDto> getLastSuggestion(String id, HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalEntryMgmt.getLastSuggestion(id, token));
     }
 
     @Override
