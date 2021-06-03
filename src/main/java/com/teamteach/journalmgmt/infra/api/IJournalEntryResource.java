@@ -22,7 +22,7 @@ public interface IJournalEntryResource {
     ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
 
     @ApiIgnore
-    @GetMapping("/lastSuggestion/{id}")
+    @GetMapping("/lastEntry/{id}")
     ResponseEntity<ObjectResponseDto> getLastSuggestion(@PathVariable("id") String id);
 
     @PostMapping("/sendReport/{journalId}")

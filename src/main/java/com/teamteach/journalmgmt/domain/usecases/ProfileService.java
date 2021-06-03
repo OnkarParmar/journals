@@ -1,21 +1,8 @@
 package com.teamteach.journalmgmt.domain.usecases;
 
-import com.teamteach.journalmgmt.domain.command.*;
-import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
-import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
 
@@ -26,10 +13,8 @@ import org.springframework.http.MediaType;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
