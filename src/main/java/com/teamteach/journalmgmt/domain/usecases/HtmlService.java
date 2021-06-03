@@ -1,24 +1,15 @@
 package com.teamteach.journalmgmt.domain.usecases;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
-import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
-import com.teamteach.journalmgmt.domain.usecases.*;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
-import com.lowagie.text.DocumentException;
 
 import lombok.Data;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 

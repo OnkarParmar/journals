@@ -8,6 +8,8 @@ import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 public interface IJournalEntryMgmt {
     ObjectResponseDto findById(String id);
 
+    ObjectResponseDto getLastSuggestion(String id);
+
     ObjectResponseDto delete(String id);
 
     ObjectResponseDto lock(String id);

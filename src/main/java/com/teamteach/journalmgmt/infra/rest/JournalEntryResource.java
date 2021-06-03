@@ -61,6 +61,12 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
     }
 
     @Override
+    @ApiOperation(value = "Finds last suggestion by id", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> getLastSuggestion(String id) {
+        return ResponseEntity.ok(journalEntryMgmt.getLastSuggestion(id));
+    }
+
+    @Override
     @ApiOperation(value = "Deletes entry", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> deleteEntry(String id) {
         return ResponseEntity.ok(journalEntryMgmt.delete(id));

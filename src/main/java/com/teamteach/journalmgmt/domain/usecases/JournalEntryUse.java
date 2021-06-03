@@ -9,6 +9,7 @@ import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.lowagie.text.DocumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -104,6 +105,28 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     public ObjectResponseDto findById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
+
+        JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+
+        if (journalEntry == null) {
+            return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("An entry with this id does not exist!")
+                    .build();
+        } else {
+            return ObjectResponseDto.builder()
+                    .success(true)
+                    .message("Entry record retrieved!")
+                    .object(journalEntry)
+                    .build();
+        }
+    }
+
+    @Override
+    public ObjectResponseDto getLastSuggestion(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("recommendationId").is(id));
+        query.with(Sort.by(Sort.Direction.DESC, "updatedAt"));
 
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
 
