@@ -166,8 +166,8 @@ public class JournalUse implements IJournalMgmt{
 				}
 				journalResponse.setMoods(moodResponseList);
 				journalResponse.setEntryCount();
-				ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
-				journalResponse.setParentProfile(parentProfile);
+				//ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
+				//journalResponse.setParentProfile(parentProfile);
 				journalResponses.add(journalResponse);
 			}			
 		}
