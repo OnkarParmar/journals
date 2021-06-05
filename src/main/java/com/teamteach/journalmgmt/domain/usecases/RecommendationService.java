@@ -29,7 +29,7 @@ public class RecommendationService {
         try {
             String categoriesUrl = "https://ms.digisherpa.ai/recommendations/categories";
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer " + accessToken); 
+            headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity <String> entity = new HttpEntity <> (null, headers);
             ResponseEntity <String> response = restTemplate.exchange(categoriesUrl, HttpMethod.GET, entity, String.class);
@@ -54,7 +54,7 @@ public class RecommendationService {
         try {
             String url = "https://ms.digisherpa.ai/recommendations";
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer " + accessToken); 
+            headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<JournalEntry> entity = new HttpEntity<>(searchParams, headers);
             System.out.println(entity);
