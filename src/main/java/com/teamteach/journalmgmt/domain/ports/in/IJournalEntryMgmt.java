@@ -6,7 +6,7 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
 public interface IJournalEntryMgmt {
-    ObjectResponseDto findById(String id);
+    ObjectResponseDto findById(String id, String token);
 
     ObjectResponseDto getLastSuggestion(String id, String token);
 

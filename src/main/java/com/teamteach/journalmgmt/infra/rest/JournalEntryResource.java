@@ -57,8 +57,9 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
 
     @Override
     @ApiOperation(value = "Finds entry by id", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> findEntryById(String id) {
-        return ResponseEntity.ok(journalEntryMgmt.findById(id));
+    public ResponseEntity<ObjectResponseDto> findEntryById(String id, HttpHeaders headers) {
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalEntryMgmt.findById(id, token));
     }
 
     @Override

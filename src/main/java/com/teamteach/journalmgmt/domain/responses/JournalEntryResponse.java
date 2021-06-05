@@ -17,7 +17,7 @@ public class JournalEntryResponse {
     private String mood;
     private List<String> children;
     private List<ChildProfile> childProfiles;
-    private Category category;
+    private String categoryId;
     private String entryImage;
     private boolean editable;
     private boolean locked;
@@ -26,15 +26,15 @@ public class JournalEntryResponse {
     private String suggestion;  
 
     @Builder
-    public JournalEntryResponse(JournalEntry journalEntry, Map<String, String> moodTable) {
+    public JournalEntryResponse(JournalEntry journalEntry) {
         SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy   hh:mm aa");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
-        this.mood = moodTable.get(journalEntry.getMood());
         this.ownerId = journalEntry.getOwnerId();
         this.children = Arrays.asList(journalEntry.getChildren());
         this.journalId = journalEntry.getJournalId();
+        this.categoryId = journalEntry.getCategoryId();
         this.entryImage = journalEntry.getEntryImage();
         this.locked = journalEntry.isLocked();
         this.recommendationId = journalEntry.getRecommendationId();

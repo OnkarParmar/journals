@@ -107,22 +107,34 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     }
 
     @Override
-    public ObjectResponseDto findById(String id) {
+    public ObjectResponseDto findById(String id, String accessToken) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
 
-        JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
 
-        if (journalEntry == null) {
+        if (entry == null) {
             return ObjectResponseDto.builder()
                     .success(false)
                     .message("An entry with this id does not exist!")
                     .build();
         } else {
+            JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+            Map<String, String> moodTable = new HashMap<>();
+            query = new Query(Criteria.where("isParent").is(true));
+            List<Mood> moods = mongoTemplate.find(query, Mood.class);
+            for (Mood mood : moods) {
+                moodTable.put(mood.getName(), mood.getUrl());
+            }
+            journalEntryResponse.setMood(moodTable.get(entry.getMood()));
+            if (entry.getRecommendationId() != null) {
+                journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+            }
+    
             return ObjectResponseDto.builder()
                     .success(true)
                     .message("Entry record retrieved!")
-                    .object(journalEntry)
+                    .object(journalEntryResponse)
                     .build();
         }
     }
@@ -338,13 +350,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
-        List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
-        Map<String, ChildProfile> childTable = new HashMap<>();
-        for (ChildProfile childProfile : childProfiles) {
-            childTable.put(childProfile.getProfileId(), childProfile);
-        }
-        Map<String, Category> categories = recommendationService.getCategories(accessToken);
-        List<Category> categoryList = new ArrayList<Category>(categories.values());
+        //List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
+        //Map<String, ChildProfile> childTable = new HashMap<>();
+        //for (ChildProfile childProfile : childProfiles) {
+            //childTable.put(childProfile.getProfileId(), childProfile);
+        //}
+        //Map<String, Category> categories = recommendationService.getCategories(accessToken);
+        //List<Category> categoryList = new ArrayList<Category>(categories.values());
         Map<String, String> moodTable = new HashMap<>();
         query = new Query(Criteria.where("isParent").is(true));
         List<Mood> moods = mongoTemplate.find(query, Mood.class);
@@ -354,17 +366,18 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getViewMonth() == null) {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
-                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry, moodTable);
-                journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
-                Category category = categories.get(entry.getCategoryId());
-                if(category != null){
-                    journalEntryResponse.setCategory(category);
-                }
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                //journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
+                //Category category = categories.get(entry.getCategoryId());
+                //if(category != null){
+                    //journalEntryResponse.setCategory(category);
+                //}
+                journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                 if (entry.getRecommendationId() != null) {
                     journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
                 }
                 Date created = entry.getCreatedAt();
-                journalEntryResponse.setEditable(isEditable(created));
+                journalEntryResponse.setEditable(isEditable(created));    
                 journalEntriesResponse.addEntry(journalEntryResponse);
                 journalEntriesGrid.add(journalEntriesResponse);
             }
@@ -380,18 +393,21 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 int day = cal.get(Calendar.DAY_OF_MONTH)-1;
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
-                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry, moodTable);
-                Category category = categories.get(entry.getCategoryId());
-                if(category != null){
-                    journalEntryResponse.setCategory(category);
-                }
-                if (entry.getRecommendationId() != null) {
-                    journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                //Category category = categories.get(entry.getCategoryId());
+                //if(category != null){
+                    //journalEntryResponse.setCategory(category);
+                //}
+                if (!journalEntrySearchCommand.isSummaryOnly()) {
+                    journalEntryResponse.setMood(moodTable.get(entry.getMood()));
+                    if (entry.getRecommendationId() != null) {
+                        journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                    }
                 }
                 journalEntriesResponse.addEntry(journalEntryResponse);
             }
         }
-        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(childProfiles, categoryList, journalEntriesGrid);
+        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(null, null, journalEntriesGrid);
         return new ObjectResponseDto(true, "Entry records retrieved successfully!", journalEntryMatrix);
     }
 

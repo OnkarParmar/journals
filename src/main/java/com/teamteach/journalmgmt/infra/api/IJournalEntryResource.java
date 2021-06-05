@@ -17,9 +17,8 @@ public interface IJournalEntryResource {
     ResponseEntity<ObjectResponseDto> searchEntries(@RequestBody JournalEntrySearchCommand journalEntrySearchCommand,
                                                                                 @RequestHeader HttpHeaders headers);
 
-    @ApiIgnore
     @GetMapping("/{id}")
-    ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id);
+    ResponseEntity<ObjectResponseDto> findEntryById(@PathVariable("id") String id, @RequestHeader HttpHeaders headers);
 
     @ApiIgnore
     @GetMapping("/lastEntry/{id}")
