@@ -8,8 +8,6 @@ import com.teamteach.journalmgmt.domain.responses.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.client.RestTemplate;
@@ -29,13 +27,13 @@ public class JournalUse implements IJournalMgmt{
 	final RestTemplate restTemplate;
 
 	@Autowired
+	private MoodsService moodsService;
+
+	@Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
-
-	@Autowired
-    private ProfileService profileService;
 
     @PostConstruct
     void registerWithMQ() {
@@ -133,8 +131,6 @@ public class JournalUse implements IJournalMgmt{
 	@Override
 	public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
 		Query query = new Query();
-		List<Mood> moods = mongoTemplate.find(query, Mood.class);
-
 		List<JournalResponse> journalResponses = new ArrayList<>();
 		query = new Query(Criteria.where("ownerId").is(ownerId));
 
@@ -144,27 +140,7 @@ public class JournalUse implements IJournalMgmt{
 		} else {
 			for (Journal journal : journals) {
 				JournalResponse journalResponse = new JournalResponse(journal);
-				Aggregation aggregation = Aggregation.newAggregation(
-					Aggregation.match(Criteria.where("journalId").is(journal.getJournalId())),
-					Aggregation.project()
-								.and("mood").as("name"),
-					Aggregation.group("name")
-									.count().as("count"),
-					Aggregation.project("count").and("name").previousOperation()
-				);
-				AggregationResults<MoodObj> results = mongoTemplate.aggregate(aggregation, JournalEntry.class, MoodObj.class);
-				List<MoodObj> moodObjs = results.getMappedResults();
-				List<MoodObj> moodResponseList = new ArrayList<>();
-				for (Mood mood : moods) {
-					MoodObj moodObj = moodObjs.stream().filter(m->mood.getName().equals(m.getName())).findAny().orElse(null);
-					if (moodObj != null) {
-						moodObj.setUrl(mood.getUrl());
-					} else {
-						moodObj = new MoodObj(mood.getName(), mood.getUrl(), 0);
-					}
-					moodResponseList.add(moodObj);
-				}
-				journalResponse.setMoods(moodResponseList);
+				journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
 				journalResponse.setEntryCount();
 				//ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
 				//journalResponse.setParentProfile(parentProfile);
