@@ -99,6 +99,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 return ObjectResponseDto.builder()
                         .success(true)
                         .message("Entry deleted successfully")
+                        .object(journalResponse)
                         .build();
             } catch (RuntimeException e) {
                 return ObjectResponseDto.builder()
