@@ -32,6 +32,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     final IJournalEntryRepository journalEntryRepository;
 
+	@Autowired
+	private MoodsService moodsService;
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -270,10 +273,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         .build();
         }
         mongoTemplate.save(entry);
+		JournalResponse journalResponse = new JournalResponse(journal);
+		journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
+		journalResponse.setEntryCount();
         return ObjectResponseDto.builder()
                                 .success(true)
                                 .message("Entry saved successfully")
-                                .object(entry)
+                                .object(journalResponse)
                                 .build();
     }
 
