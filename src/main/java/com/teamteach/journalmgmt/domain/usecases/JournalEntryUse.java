@@ -86,11 +86,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     public ObjectResponseDto delete(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
         JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        Query journalQuery = new Query(Criteria.where("journalId").is(entry.getJournalId()));
+        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
         Date created = entry.getCreatedAt();
         boolean isEditable = isEditable(created);
         if(isEditable == true){
             try {
                 mongoTemplate.remove(query, JournalEntry.class);
+                JournalResponse journalResponse = new JournalResponse(journal);
+                journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
+                journalResponse.setEntryCount();        
                 return ObjectResponseDto.builder()
                         .success(true)
                         .message("Entry deleted successfully")
