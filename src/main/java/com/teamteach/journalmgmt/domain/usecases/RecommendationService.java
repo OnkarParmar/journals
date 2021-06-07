@@ -57,7 +57,6 @@ public class RecommendationService {
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<JournalEntry> entity = new HttpEntity<>(searchParams, headers);
-            System.out.println(entity);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
             JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
             boolean success = respoJsonNode.get("success").asBoolean();

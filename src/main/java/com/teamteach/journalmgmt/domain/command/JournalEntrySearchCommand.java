@@ -21,4 +21,5 @@ public class JournalEntrySearchCommand extends ValidatingCommand{
     private List<String> moods;
     private String viewMonth;
     private boolean summaryOnly;
+    private boolean isGoalReport;
 }

@@ -24,16 +24,6 @@ public interface IJournalEntryResource {
     @GetMapping("/lastEntry/{id}")
     ResponseEntity<ObjectResponseDto> getLastSuggestion(@PathVariable("id") String id, @RequestHeader HttpHeaders headers);
 
-    @PostMapping("/sendReport/{journalId}")
-    ResponseEntity<ObjectResponseDto> sendEntriesReport(@PathVariable String journalId, 
-                                                        @RequestBody JournalEntryReportCommand journalEntryReportCommand, 
-                                                        @RequestHeader HttpHeaders headers);
-
-    @PostMapping("/getReport/{journalId}")
-    ResponseEntity<ObjectResponseDto> uploadPDF(@PathVariable String journalId, 
-                                                @RequestBody JournalEntrySearchCommand journalEntrySearchCommand, 
-                                                @RequestHeader HttpHeaders headers);
-
     @PutMapping("/{id}/toggleLock")
     ResponseEntity<ObjectResponseDto> lockEntry(@PathVariable("id") String id);
 

@@ -5,10 +5,8 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
-import com.lowagie.text.DocumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -22,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,23 +37,17 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @Autowired
-    private FileUploadService fileUploadService;
+	@Autowired
+	private ProfileService profileService;
 
     @Autowired
     private JwtOperationsWrapperSvc jwtOperationsWrapperSvc;
 
     @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private PdfService pdfService;
-
-    @Autowired
     private RecommendationService recommendationService;
 
     @Autowired
-    private JournalEntryReportService journalEntriesReportService;
+    private FileUploadService fileUploadService;
 
     @Override
     public ObjectResponseDto lock(String id) {
@@ -362,13 +352,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
-        //List<ChildProfile> childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
-        //Map<String, ChildProfile> childTable = new HashMap<>();
-        //for (ChildProfile childProfile : childProfiles) {
-            //childTable.put(childProfile.getProfileId(), childProfile);
-        //}
-        //Map<String, Category> categories = recommendationService.getCategories(accessToken);
-        //List<Category> categoryList = new ArrayList<Category>(categories.values());
+        List<ChildProfile> childProfiles = null;
+        Map<String, Category> categories = null;
+        if (journalEntrySearchCommand.isGoalReport()) {
+            childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
+            Map<String, ChildProfile> childTable = new HashMap<>();
+            for (ChildProfile childProfile : childProfiles) {
+                childTable.put(childProfile.getProfileId(), childProfile);
+            }
+            categories = recommendationService.getCategories(accessToken);
+        }
         Map<String, String> moodTable = new HashMap<>();
         query = new Query(Criteria.where("isParent").is(true));
         List<Mood> moods = mongoTemplate.find(query, Mood.class);
@@ -379,11 +372,13 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                //journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
-                //Category category = categories.get(entry.getCategoryId());
-                //if(category != null){
-                    //journalEntryResponse.setCategory(category);
-                //}
+                if (journalEntrySearchCommand.isGoalReport()) {
+                    journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
+                    Category category = categories.get(entry.getCategoryId());
+                    if(category != null){
+                        journalEntryResponse.setCategoryId(category.getCategoryId());
+                    }
+                }
                 journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                 if (entry.getRecommendationId() != null) {
                     journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
@@ -406,10 +401,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                //Category category = categories.get(entry.getCategoryId());
-                //if(category != null){
-                    //journalEntryResponse.setCategory(category);
-                //}
+                Category category = categories.get(entry.getCategoryId());
+                if(category != null){
+                    journalEntryResponse.setCategoryId(category.getCategoryId());
+                }
                 if (!journalEntrySearchCommand.isSummaryOnly()) {
                     journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                     if (entry.getRecommendationId() != null) {
@@ -419,81 +414,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 journalEntriesResponse.addEntry(journalEntryResponse);
             }
         }
-        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(null, null, journalEntriesGrid);
+        JournalEntryMatrixResponse journalEntryMatrix = new JournalEntryMatrixResponse(childProfiles, categories, journalEntriesGrid);
         return new ObjectResponseDto(true, "Entry records retrieved successfully!", journalEntryMatrix);
-    }
-
-    @Override
-    public ObjectResponseDto sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, String accessToken) {
-        Query query = new Query(Criteria.where("journalId").is(journalId));
-        Journal journal = mongoTemplate.findOne(query, Journal.class);
-        String ownerId = journal.getOwnerId();
-        ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
-        String email = journalEntryReportCommand.getEmail() != null ? 
-                                journalEntryReportCommand.getEmail() : parentProfile.getEmail();
-        JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
-                                                                    .email(email)
-                                                                    .fname(parentProfile.getFname())
-                                                                    .lname(parentProfile.getLname())
-                                                                    .action("sendreport")
-                                                                    .url(journalEntryReportCommand.getUrl())
-                                                                    .build();                                     
-        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
-        return new ObjectResponseDto(
-            true,
-            "Journal entries report URL sent successfully!",
-            journalEntryProfile);
-    }
-
-    @Override
-    public ObjectResponseDto uploadReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
-        ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
-        String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
-
-        ObjectResponseDto searchResponse = searchEntries(journalEntrySearchCommand, accessToken);
-        Object object = searchResponse.getObject();    
-        JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
-        List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
-        List<JournalEntryResponse> entryList = new ArrayList<>();
-        for(JournalEntriesResponse matrixEntries : journalEntryMatrix){
-            //System.out.println(matrixEntries);
-            if(matrixEntries.getEntries() != null && !matrixEntries.getEntries().isEmpty()){
-                entryList.add(matrixEntries.getEntries().get(0));
-            }
-        }
-        String children = journalEntryMatrixResponse.getChildProfiles().stream().map(e -> e.getName()).collect(Collectors.joining("| "));
-        JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
-                                                                    .email(email)
-                                                                    .fname(parentProfile.getFname())
-                                                                    .lname(parentProfile.getLname())
-                                                                    .fromDate(journalEntrySearchCommand.getFromDate())
-                                                                    .toDate(journalEntrySearchCommand.getToDate()) 
-                                                                    .children(children)                                                                    
-                                                                    .entryList(entryList)
-                                                                    .build();
-        pdfService.setReport(journalEntryProfile);  
-        //System.out.println(journalEntryProfile);
-        String url = null;
-        int i=0;
-            try {
-                String fileExt = FilenameUtils.getExtension(pdfService.generatePdf().getName()).replaceAll("\\s", "");
-                String fileName = "journal_"+journalId+"_"+i+"."+fileExt;
-                url = fileUploadService.saveTeamTeachFile("reports", fileName.replaceAll("\\s", ""),Files.readAllBytes(pdfService.generatePdf().toPath()));
-                i++;
-            } catch (IOException ioe) {
-                return new ObjectResponseDto(
-                    false,
-                    "URL generation failed!",
-                    null);
-            } catch (DocumentException doe) {
-                return new ObjectResponseDto(
-                    false,
-                    "URL generation failed!",
-                    null);
-            }
-        return new ObjectResponseDto(
-            true,
-            "URL generated successfully!",
-            url);
     }
 }

@@ -6,13 +6,6 @@ import com.teamteach.journalmgmt.domain.responses.JournalEntryResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
 
-import javax.servlet.http.HttpServletResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import java.util.List;
-
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.infra.api.IJournalEntryResource;
 import com.teamteach.journalmgmt.shared.AbstractAppController;
@@ -21,7 +14,6 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 
@@ -39,20 +31,6 @@ class JournalEntryResource extends AbstractAppController implements IJournalEntr
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         System.out.println(token);
         return ResponseEntity.ok(journalEntryMgmt.searchEntries(journalEntrySearchCommand,token));
-    }
-
-    @Override
-    @ApiOperation(value = "Sends entries report with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> sendEntriesReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, HttpHeaders headers) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);        
-        return ResponseEntity.ok(journalEntryMgmt.sendEntriesReport(journalId, journalEntryReportCommand, token));
-    }
-
-    @Override
-    @ApiOperation(value = "Uploads url of report", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> uploadPDF(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
-        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        return ResponseEntity.ok(journalEntryMgmt.uploadReport(journalId,journalEntrySearchCommand,token));
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.teamteach.journalmgmt.infra.api;
 
 import com.teamteach.journalmgmt.domain.command.*;
-import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
-import com.teamteach.journalmgmt.domain.usecases.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +24,16 @@ public interface IJournalResource {
     @ApiIgnore
     @DeleteMapping("/{id}")
         ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable String id) ;
+
+    @PostMapping("/sendReport/{journalId}")
+    ResponseEntity<ObjectResponseDto> sendReport(@PathVariable String journalId, 
+                                                        @RequestBody JournalEntryReportCommand journalEntryReportCommand, 
+                                                        @RequestHeader HttpHeaders headers);
+
+    @PostMapping("/buildReport/{journalId}")
+    ResponseEntity<ObjectResponseDto> buildReport(@PathVariable String journalId, 
+                                                @RequestBody JournalEntrySearchCommand journalEntrySearchCommand, 
+                                                @RequestHeader HttpHeaders headers);
+    
+    
 }

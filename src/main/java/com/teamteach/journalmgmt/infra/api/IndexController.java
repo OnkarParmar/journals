@@ -60,7 +60,6 @@ public class IndexController {
         SimpleDateFormat formatter = null;
         Date fromDate = null;
         Date toDate = null;
-        System.out.println(fromDateStr+" "+toDateStr);
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             fromDate = formatter.parse(fromDateStr);

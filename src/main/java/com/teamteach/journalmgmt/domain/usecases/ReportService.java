@@ -20,7 +20,7 @@ import java.io.*;
 
 @Service
 @Data
-public class PdfService {
+public class ReportService {
 
     private SpringTemplateEngine templateEngine;
 
@@ -30,12 +30,12 @@ public class PdfService {
     private JournalEntryReportService journalEntriesReportService;
 
     @Autowired
-    public PdfService(JournalEntryReportService journalEntriesReportService, SpringTemplateEngine templateEngine) {
+    public ReportService(JournalEntryReportService journalEntriesReportService, SpringTemplateEngine templateEngine) {
         this.journalEntriesReportService = journalEntriesReportService;
         this.templateEngine = templateEngine;
     }
 
-    public File generatePdf() throws IOException, DocumentException {
+    public File generateReport() throws IOException, DocumentException {
         Context context = getContext();
         String html = loadAndFillTemplate(context);
         //System.out.println(html);
@@ -61,23 +61,13 @@ public class PdfService {
 
         String fromDateStr = report.getFromDate();
         String toDateStr = report.getToDate();
-        SimpleDateFormat formatter = null;
-        Date fromDate = null;
-        Date toDate = null;
-        formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            fromDate = formatter.parse(fromDateStr);
-            toDate = formatter.parse(toDateStr);
-        } catch(ParseException e){
-            e.printStackTrace();
-        }
 
         List<String> filterChildren = report.getFilterChildren();
 
         model.put("fname", report.getFname());
         model.put("lname", report.getLname());
-        model.put("fromDate", fromDate);
-        model.put("toDate", toDate);
+        model.put("fromDate", fromDateStr);
+        model.put("toDate", toDateStr);
         model.put("filterChildren", filterChildren);
         model.put("children", report.getChildren());
         model.put("entries", report.getEntryList());

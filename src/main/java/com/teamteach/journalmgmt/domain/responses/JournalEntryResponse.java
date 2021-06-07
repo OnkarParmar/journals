@@ -8,10 +8,11 @@ import java.util.*;
 import com.teamteach.journalmgmt.domain.models.*;
 
 @Data
-public class JournalEntryResponse {
+public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     protected String entryId;
     private String text;
     private String createdAt;
+    private Date createdDate;
     private String journalId;
     private String ownerId;
     private String mood;
@@ -26,11 +27,12 @@ public class JournalEntryResponse {
     private String suggestion;  
 
     @Builder
-    public JournalEntryResponse(JournalEntry journalEntry) {
-        SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy   hh:mm aa");
+    public JournalEntryResponse(JournalEntry journalEntry){
+        SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
+        this.createdDate = journalEntry.getCreatedAt();
         this.ownerId = journalEntry.getOwnerId();
         this.children = Arrays.asList(journalEntry.getChildren());
         this.journalId = journalEntry.getJournalId();
@@ -39,5 +41,13 @@ public class JournalEntryResponse {
         this.locked = journalEntry.isLocked();
         this.recommendationId = journalEntry.getRecommendationId();
         this.suggestionIndex = journalEntry.getSuggestionIndex();
+    }
+
+    @Override
+    public int compareTo(JournalEntryResponse u) {
+      if (getCreatedDate() == null || u.getCreatedDate() == null) {
+        return 0;
+      }
+      return getCreatedDate().compareTo(u.getCreatedDate());
     }
 }

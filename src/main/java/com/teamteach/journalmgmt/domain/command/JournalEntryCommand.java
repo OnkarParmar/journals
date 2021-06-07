@@ -3,7 +3,6 @@ package com.teamteach.journalmgmt.domain.command;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.AllArgsConstructor;
 
@@ -22,5 +21,12 @@ public class JournalEntryCommand extends ValidatingCommand {
 
     protected void validateSelf() {
         super.validateSelf();
+    }
+    @Override
+    public int compareTo(JournalEntryCommand u) {
+      if (getCreatedDate() == null || u.getCreatedDate() == null) {
+        return 0;
+      }
+      return getCreatedOn().compareTo(u.getCreatedOn());
     }
 }

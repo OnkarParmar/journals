@@ -4,7 +4,6 @@ import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
-import com.teamteach.journalmgmt.domain.usecases.*;
 
 public interface IJournalMgmt {
     ObjectResponseDto createJournal(JournalCommand journalCommand);
@@ -13,4 +12,6 @@ public interface IJournalMgmt {
     ObjectResponseDto findByTitle(String title);
     ObjectListResponseDto findById(String id, String token);
     ObjectResponseDto savePrivate(JournalCommand journalCommand);
+    ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
+    ObjectResponseDto sendReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, String accessToken);
 }
