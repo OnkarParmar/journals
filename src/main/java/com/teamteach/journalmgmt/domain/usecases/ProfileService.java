@@ -52,9 +52,12 @@ public class ProfileService {
 																.email(parentProfileJson.get("email").asText())
 																.children(children)
 																.build();
+
             } 
+            System.out.println("Line 55:"+parentProfile+" ProfileService");
         }
         catch (IOException e) {
+            System.out.println("ProfileService.java Line 59");
             return null;
         }
         return parentProfile;

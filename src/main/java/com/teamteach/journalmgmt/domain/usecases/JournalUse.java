@@ -236,11 +236,18 @@ public class JournalUse implements IJournalMgmt{
     public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
 		journalEntrySearchCommand.setGoalReport(true);
+		System.out.println("Line 239: "+parentProfile+" JournalUse.java");
+		if(parentProfile==null){
+			return new ObjectResponseDto(
+				false,
+				"Parent profile not found!",
+				null);
+		}
 		String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
-
         ObjectResponseDto searchResponse = journalEntryMgmt.searchEntries(journalEntrySearchCommand, accessToken);
 		Object object = searchResponse.getObject();    
         JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
+		//System.out.println(object);
         List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
 		Map<String, Category> categories = journalEntryMatrixResponse.getCategories();
         List<JournalEntryResponse> entryList = new ArrayList<>();

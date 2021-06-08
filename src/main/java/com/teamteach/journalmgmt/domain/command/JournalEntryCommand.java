@@ -22,11 +22,5 @@ public class JournalEntryCommand extends ValidatingCommand {
     protected void validateSelf() {
         super.validateSelf();
     }
-    @Override
-    public int compareTo(JournalEntryCommand u) {
-      if (getCreatedDate() == null || u.getCreatedDate() == null) {
-        return 0;
-      }
-      return getCreatedOn().compareTo(u.getCreatedOn());
-    }
+
 }

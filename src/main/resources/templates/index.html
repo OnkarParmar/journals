@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Screen</title>
+    <!-- <link href="css/main.css" rel="stylesheet" > -->
+    <style>
+        *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    max-width: 767px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+/********************************* HEADER STYLE *********************************/
+header{
+    text-align: center;
+    background-color: #0D2860;
+    padding:30px;
+    color: white;
+    width: 100%;
+}
+b{
+    width: 700;
+}
+h2{
+    font-weight: 400;
+}
+h3{
+    font-weight: 300;
+}
+.banner-box{
+    padding-bottom: 20px;
+}
+.banner{
+    font-size:30px;
+    display: inline;
+    line-height: 25px;
+    font-weight: 700;
+    padding: 0px 30px;
+    border: 3px solid #fff;
+    border-radius: 40px;
+}
+
+
+/********************************* MAIN STYLE *********************************/
+.entry-container{
+    position: relative;
+    margin-top: 10px;
+}
+.entry-move{
+    display: flex;
+    justify-content: flex-end;
+}
+.entry-move img{
+    height: 30px;
+    width: 30px;
+}
+.entry-emoji{
+    display: inline-block;
+}
+.entry-emoji img{
+    height: 20px;
+    width: 20px;
+    margin-right: 15px;
+}
+.child-entry-img-box{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#lock{
+    height: 19px;
+    width: 15px;
+    margin-right: 15px;
+}
+.entry-box{
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #F1B7CD;
+    padding:10px;
+    border-radius: 34px;
+    color:#0290A1;
+    margin: 0 10px;
+}
+.entry-text{
+    padding-right: 16px;
+    color:#3B3A3C;
+    
+}
+.date-time{
+    padding: 10px 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+time{
+    font-size: 12px;
+    padding-right: 30px;
+}
+
+.children-box{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 2;
+}
+.child{
+    padding:4px;
+    border:2px solid black;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row ;
+    align-items: center;
+    margin-right: 15px;
+    justify-content: space-between;
+    height: 34px; 
+    margin-bottom: 5px;
+    
+}
+.child .name{
+    font-size: 14px;
+    padding-right: 18px;
+    padding-bottom: 3px;
+    font-weight: 700;
+    color:#0A285F
+}
+.child-img{
+    flex:2  
+}
+.child-img img{
+    margin-top: 4px;
+    height: 26px;   
+}
+
+.entry-image-box{ 
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    text-align: center;
+}
+.entry-color{
+    width: 30px;
+    height: 16px;
+    align-self: flex-end;
+    background-color: #F1B7CD;
+}
+.entry-image{
+    padding:8px 8px 0px 12px;
+    border-radius: 10px;
+    min-height: 60px;
+}
+.page-box{
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px 40px;
+    font-weight: 500;
+    color:#505C6D
+}
+
+@media screen and (max-width:540px){
+  
+    .entry-container{
+    font-size: 14px;   
+    }
+    .banner-box{
+    padding-bottom: 16px;
+    }
+    .banner{
+    font-size: 18px;
+    display: inline;
+    font-weight: 700;
+    padding: 5px 20px;
+    }
+    h2,h3{
+        font-size: 15px;
+    }
+    .date-time{
+    padding: 10px 0px;
+    font-size: 10px;
+}
+    .child-img img{
+    height: 20px;   
+}
+.child{
+    padding:4px;
+}
+}
+@media screen and (max-width:500px){
+  .entry-container{
+      margin: 14px 14px 14px 0;
+  }
+  .entry-description{
+   
+    padding:10px 6px 10px 10px;
+   
+}
+    .banner{
+    font-size:25px;
+    line-height: 20px;
+}
+    h2,h3{
+        font-size: 14px;
+    }
+    .entry-image{
+        padding:2px 0; 
+    }
+    .date-time{
+    padding: 8px 0;
+}
+}
+@media screen and (max-width:400px){
+    
+    .entry-image img{
+        min-width: 60px;
+    }
+    .child .name{
+    padding:0px;
+    font-size: 12px;
+    }
+    .child-img img{
+        margin-top: 1px;
+        height: 24px;   
+    }
+}
+
+/********************************* FOOTER STYLE *********************************/
+
+footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:30px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+     <div class="banner-box">
+         <h1 class="banner">Journal of Children</h1>
+     </div>
+     <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
+     <h3 th:text="${'Period : ' + fromDate + ' - ' + toDate}"></h3>
+     <h3 th:text="${'Children : ' + children}"></h3>
+    </header>
+    <main>
+          <div class="entry-container">
+                <div class="entry-box">
+                    <div class="entry-move">
+                            <img src="images/move.png" alt="emoji">
+                    </div>
+                    <div class="entry-text">
+                        <p th:text="${entry.text}"></p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date" th:text="${entry.createdAt}"></time>                        <time>12:00pm</time>
+                            <div class="entry-emoji">
+                                <img th:src="${entry.mood}" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" th:each="child: ${entry.childProfiles}">
+                            <div class="child">
+                                <span class="name" th:text="${child.name}"></span>
+                                <span class="child-img">
+                                    <img height="100%" th:src="${child.profileImage}" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       <div class="entry-image-box">
+                        <div class="entry-color" th:style = "'background-color: '+ ${entry.categoryId}"></div>
+                        <div class="entry-image">
+                            <img width="100%" th:src="${entry.entryImage}" alt=""/>
+                        </div>
+                    </div>
+                    </div>
+                </div>        
+        </div>
+        <div class="page-box">
+            <span>page 1 of 1</span>
+        </div>
+    </main>
+    <footer>
+        <img width="10%" style="margin-bottom: 1.2em;" src="images/logo.png" alt="">
+        <img width="40%" src="images/poweredBy.png" alt="">
+    </footer>
+    
+</body>
+</html>
