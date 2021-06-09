@@ -72,11 +72,13 @@ public class ReportService {
         model.put("children", report.getChildren());
         model.put("entries", report.getEntryList());
 
+        //System.out.println(report.getEntryList());
+
         context.setVariables(model);
         return context;
     }
 
     private String loadAndFillTemplate(Context context) {
-        return templateEngine.process("report", context);
+        return templateEngine.process("index", context);
     }
 }

@@ -234,17 +234,25 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
     public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
+
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
-		journalEntrySearchCommand.setGoalReport(true);
-		System.out.println("Line 239: "+parentProfile+" JournalUse.java");
+		//System.out.println("Line 239: "+parentProfile+" JournalUse.java");
+		
 		if(parentProfile==null){
 			return new ObjectResponseDto(
 				false,
 				"Parent profile not found!",
 				null);
 		}
+		
+		
+		journalEntrySearchCommand.setGoalReport(true);
+
 		String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
+
         ObjectResponseDto searchResponse = journalEntryMgmt.searchEntries(journalEntrySearchCommand, accessToken);
+		//System.out.println("Line 253: "+searchResponse+" JournalUse.java");
+
 		Object object = searchResponse.getObject();    
         JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
 		//System.out.println(object);
@@ -258,6 +266,7 @@ public class JournalUse implements IJournalMgmt{
 				entry = matrixEntries.getEntries().get(0);
 				entry.setCategoryId(categories.get(entry.getCategoryId()).getColour());
                 entryList.add(entry);
+				//System.out.println(entry.getText());
             }
         }
 		List<JournalEntryResponse> sortedEntries = entryList.stream().sorted(Comparator.comparing(JournalEntryResponse::getCreatedDate).reversed()).collect(Collectors.toList());		

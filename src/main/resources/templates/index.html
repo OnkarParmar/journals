@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Screen</title>
+    <title>Journal Report</title>
     <!-- <link href="css/main.css" rel="stylesheet" > -->
     <style>
         *{
@@ -63,6 +63,12 @@ h3{
     height: 30px;
     width: 30px;
 }
+.entry-move img:hover{
+    height: 30px;
+    width: 30px;
+    border: 2px solid blue;
+}
+
 .entry-emoji{
     display: inline-block;
 }
@@ -85,11 +91,12 @@ h3{
 .entry-box{
     display: flex;
     flex-direction: column;
-    border: 3px solid #F1B7CD;
-    padding:10px;
+    border: 6px solid ;
+    padding:10px 20px 10px;
     border-radius: 34px;
     color:#0290A1;
     margin: 0 10px;
+    justify-content: center;
 }
 .entry-text{
     padding-right: 16px;
@@ -114,7 +121,7 @@ time{
     flex: 2;
 }
 .child{
-    padding:4px;
+    padding:12px;
     border:2px solid black;
     border-radius: 30px;
     display: flex;
@@ -138,7 +145,8 @@ time{
 }
 .child-img img{
     margin-top: 4px;
-    height: 26px;   
+    height: 26px; 
+    border-radius: 50%;  
 }
 
 .entry-image-box{ 
@@ -155,9 +163,14 @@ time{
     background-color: #F1B7CD;
 }
 .entry-image{
-    padding:8px 8px 0px 12px;
-    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
     min-height: 60px;
+
+}
+.entry-image img{
+    border-radius: 10px
 }
 .page-box{
     display: flex;
@@ -255,10 +268,10 @@ footer{
      <h3 th:text="${'Children : ' + children}"></h3>
     </header>
     <main>
-          <div class="entry-container">
-                <div class="entry-box">
-                    <div class="entry-move">
-                            <img src="images/move.png" alt="emoji">
+          <div class="entry-container" th:each="entry: ${entries}">
+                <div class="entry-box" th:style = "'border: 3px solid '+ ${entry.categoryId}">
+                    <div class="entry-move" onclick="expand('${entry}')">
+                            <img src="https://teamteach.s3.ap-south-1.amazonaws.com/image/move.png" alt="emoji">
                     </div>
                     <div class="entry-text">
                         <p th:text="${entry.text}"></p>
@@ -287,12 +300,13 @@ footer{
                        </div>
                         
                        <div class="entry-image-box">
-                        <div class="entry-color" th:style = "'background-color: '+ ${entry.categoryId}"></div>
-                        <div class="entry-image">
-                            <img width="100%" th:src="${entry.entryImage}" alt=""/>
+                            <div class="entry-image">
+                                <img width="100%" th:src="${entry.entryImage}" alt=""/>
+                            </div>
                         </div>
                     </div>
-                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
                 </div>        
         </div>
         <div class="page-box">
@@ -300,9 +314,26 @@ footer{
         </div>
     </main>
     <footer>
-        <img width="10%" style="margin-bottom: 1.2em;" src="images/logo.png" alt="">
-        <img width="40%" src="images/poweredBy.png" alt="">
+        <img width="10%" style="margin-bottom: 1.2em;" src="https://teamteach.s3.ap-south-1.amazonaws.com/images/logo.png" alt=""/>
+        <img width="40%" src="https://teamteach.s3.ap-south-1.amazonaws.com/images/poweredBy.png" alt=""/>
     </footer>
-    
+    <script>
+        function expand(entry){
+            const ref = document.getElementsByClassName("entry-image-box")
+            console.log(ref);
+            for(let i=0;i<ref.length;i++){
+                if(ref[i].outerHTML.includes(entry.entryImage)){
+                    ref[i];
+                }
+            }
+            /**
+            if(ref==="block"){
+                document.getElementById("entry-img").style.display= "none";
+            } else{
+                document.getElementById("entry-img").style.display= "block";
+            }*/
+        }
+    </script>
+  
 </body>
 </html>
