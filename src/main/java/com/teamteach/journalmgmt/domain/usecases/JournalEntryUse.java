@@ -401,10 +401,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
-                Category category = categories.get(entry.getCategoryId());
-                if(category != null){
-                    journalEntryResponse.setCategoryId(category.getCategoryId());
-                }
+
+                journalEntryResponse.setCategoryId(entry.getCategoryId());
                 if (!journalEntrySearchCommand.isSummaryOnly()) {
                     journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                     if (entry.getRecommendationId() != null) {
