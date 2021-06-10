@@ -1,6 +1,7 @@
 package com.teamteach.journalmgmt.infra.rest;
 
 import com.teamteach.journalmgmt.domain.command.*;
+import com.teamteach.journalmgmt.domain.models.SendReportInfo;
 import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
@@ -48,9 +49,9 @@ class JournalResource extends AbstractAppController implements IJournalResource 
 
     @Override
     @ApiOperation(value = "Sends entries report with search filters", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectResponseDto> sendReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, HttpHeaders headers) {
+    public ResponseEntity<ObjectResponseDto> sendReport(SendReportInfo sendReportInfo, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);        
-        return ResponseEntity.ok(journalMgmt.sendReport(journalId, journalEntryReportCommand, token));
+        return ResponseEntity.ok(journalMgmt.sendReport(sendReportInfo, token));
     }
 
     @Override

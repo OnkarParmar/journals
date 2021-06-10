@@ -141,10 +141,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     @Override
     public ObjectResponseDto getLastSuggestion(String id, String token) {
         Query query = new Query();
-        System.out.println(token);
         String[] tokens = token.split(" ");
         JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
-        System.out.println(jwtUser);
         query.addCriteria(Criteria.where("recommendationId").is(id).and("ownerId").is(jwtUser.getPrincipal()));
         query.with(Sort.by(Sort.Direction.DESC, "updatedAt"));
 

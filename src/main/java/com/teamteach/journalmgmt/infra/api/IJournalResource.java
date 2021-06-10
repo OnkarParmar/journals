@@ -1,6 +1,7 @@
 package com.teamteach.journalmgmt.infra.api;
 
 import com.teamteach.journalmgmt.domain.command.*;
+import com.teamteach.journalmgmt.domain.models.SendReportInfo;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
@@ -25,10 +26,8 @@ public interface IJournalResource {
     @DeleteMapping("/{id}")
         ResponseEntity<ObjectResponseDto> deleteJournal(@PathVariable String id) ;
 
-    @PostMapping("/sendReport/{journalId}")
-    ResponseEntity<ObjectResponseDto> sendReport(@PathVariable String journalId, 
-                                                        @RequestBody JournalEntryReportCommand journalEntryReportCommand, 
-                                                        @RequestHeader HttpHeaders headers);
+    @PostMapping("/sendReport")
+    ResponseEntity<ObjectResponseDto> sendReport(@RequestBody SendReportInfo sendReportInfo, @RequestHeader HttpHeaders headers);
 
     @PostMapping("/buildReport/{journalId}")
     ResponseEntity<ObjectResponseDto> buildReport(@PathVariable String journalId, 

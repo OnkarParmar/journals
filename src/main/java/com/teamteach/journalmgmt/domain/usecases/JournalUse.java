@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 
 import com.lowagie.text.DocumentException;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
+import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
+import com.teamteach.commons.security.jwt.JwtUser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,28 +34,31 @@ public class JournalUse implements IJournalMgmt{
 
     final IJournalRepository journalRepository;
     final IMessagingPort messagingPort;
-	final RestTemplate restTemplate;
+    final RestTemplate restTemplate;
 
-	@Autowired
-	private MoodsService moodsService;
+    @Autowired
+    private MoodsService moodsService;
 
-	@Autowired
+    @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-	@Autowired
+    @Autowired
     private JournalEntryReportService journalEntriesReportService;
 
     @Autowired
     private ReportService reportService;
 
-	@Autowired
-	private ProfileService profileService;
+    @Autowired
+    private ProfileService profileService;
 
-	@Autowired
-	private IJournalEntryMgmt journalEntryMgmt;
+    @Autowired
+    private IJournalEntryMgmt journalEntryMgmt;
+
+    @Autowired
+    private JwtOperationsWrapperSvc jwtOperationsWrapperSvc;
 
     @Autowired
     private FileUploadService fileUploadService;
@@ -211,25 +216,20 @@ public class JournalUse implements IJournalMgmt{
 	}
 
     @Override
-    public ObjectResponseDto sendReport(String journalId, JournalEntryReportCommand journalEntryReportCommand, String accessToken) {
-        Query query = new Query(Criteria.where("journalId").is(journalId));
-        Journal journal = mongoTemplate.findOne(query, Journal.class);
-        String ownerId = journal.getOwnerId();
-        ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
-        String email = journalEntryReportCommand.getEmail() != null ? 
-                                journalEntryReportCommand.getEmail() : parentProfile.getEmail();
-        JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
-                                                                    .email(email)
-                                                                    .fname(parentProfile.getFname())
-                                                                    .lname(parentProfile.getLname())
-                                                                    .action("sendreport")
-                                                                    .url(journalEntryReportCommand.getUrl())
-                                                                    .build();                                     
-        journalEntriesReportService.sendJournalEntryReportEvent(journalEntryProfile, "event.sendreport");
+    public ObjectResponseDto sendReport(SendReportInfo sendReportInfo, String token) {
+        String[] tokens = token.split(" ");
+        JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
+        String ownerId = jwtUser.getPrincipal();
+        ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, token);
+        if (sendReportInfo.getEmail() == null) {
+            sendReportInfo.setEmail(parentProfile.getEmail());
+	}
+	sendReportInfo.setFname(parentProfile.getFname());
+        journalEntriesReportService.sendJournalEntryReportEvent(sendReportInfo, "event.sendreport");
         return new ObjectResponseDto(
             true,
             "Journal entries report URL sent successfully!",
-            journalEntryProfile);
+            sendReportInfo);
     }
 
     @Override
