@@ -289,8 +289,8 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box" th:each="child: ${entry.childProfiles}">
-                            <div class="child">
+                         <div class="children-box" >
+                            <div class="child" th:each="child: ${entry.childProfiles}">
                                 <span class="name" th:text="${child.name}"></span>
                                 <span class="child-img">
                                     <img height="100%" th:src="${child.profileImage}" alt=""/>

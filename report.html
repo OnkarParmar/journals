@@ -289,23 +289,19 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box">
+                         <div class="children-box" >
                             <div class="child">
                                 <span class="name">Arsh </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100035.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Roseleen </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100039.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Appy </span>
                                 <span class="child-img">
@@ -346,23 +342,19 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box">
+                         <div class="children-box" >
                             <div class="child">
                                 <span class="name">Arsh </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100035.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Roseleen </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100039.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Appy </span>
                                 <span class="child-img">
@@ -403,23 +395,19 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box">
+                         <div class="children-box" >
                             <div class="child">
                                 <span class="name">Arsh </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100035.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Roseleen </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100039.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Appy </span>
                                 <span class="child-img">
@@ -460,23 +448,19 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box">
+                         <div class="children-box" >
                             <div class="child">
                                 <span class="name">Arsh </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100035.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Roseleen </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100039.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Appy </span>
                                 <span class="child-img">
@@ -517,23 +501,19 @@ footer{
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box">
+                         <div class="children-box" >
                             <div class="child">
                                 <span class="name">Arsh </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100035.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Roseleen </span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100039.jpg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                         <div class="children-box">
                             <div class="child">
                                 <span class="name">Appy </span>
                                 <span class="child-img">
@@ -563,10 +543,12 @@ footer{
     </footer>
     <script>
         function expand(entry){
-            const ref = document.getElementsByClassName("entry-box")
+            const ref = document.getElementsByClassName("entry-image-box")
             console.log(ref);
             for(let i=0;i<ref.length;i++){
-                if(entry.entryImage==ref[i]){}
+                if(ref[i].outerHTML.includes(entry.entryImage)){
+                    ref[i];
+                }
             }
             /**
             if(ref==="block"){
