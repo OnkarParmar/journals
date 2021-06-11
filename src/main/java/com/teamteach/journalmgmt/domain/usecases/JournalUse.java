@@ -233,10 +233,11 @@ public class JournalUse implements IJournalMgmt{
         }
 
     @Override
-        public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
-
-            ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
-            //System.out.println("Line 239: "+parentProfile+" JournalUse.java");
+        public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String token) {
+            String[] tokens = token.split(" ");
+            JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
+            String ownerId = jwtUser.getPrincipal();
+            ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, token);
 
             if(parentProfile==null){
                 return new ObjectResponseDto(
@@ -251,22 +252,18 @@ public class JournalUse implements IJournalMgmt{
             String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
 
             ObjectResponseDto searchResponse = journalEntryMgmt.searchEntries(journalEntrySearchCommand, accessToken);
-            //System.out.println("Line 253: "+searchResponse+" JournalUse.java");
 
             Object object = searchResponse.getObject();    
             JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
-            //System.out.println(object);
             List<JournalEntriesResponse> journalEntryMatrix = journalEntryMatrixResponse.getJournalEntryMatrix();
             Map<String, Category> categories = journalEntryMatrixResponse.getCategories();
             List<JournalEntryResponse> entryList = new ArrayList<>();
             JournalEntryResponse entry = null;
             for(JournalEntriesResponse matrixEntries : journalEntryMatrix){
-                //System.out.println(matrixEntries);
                 if(matrixEntries.getEntries() != null && !matrixEntries.getEntries().isEmpty()){
                     entry = matrixEntries.getEntries().get(0);
                     entry.setCategoryId(categories.get(entry.getCategoryId()).getColour());
                     entryList.add(entry);
-                    //System.out.println(entry.getText());
                 }
             }
             List<JournalEntryResponse> sortedEntries = entryList.stream().sorted(Comparator.comparing(JournalEntryResponse::getCreatedDate).reversed()).collect(Collectors.toList());        
@@ -283,7 +280,6 @@ public class JournalUse implements IJournalMgmt{
                 .entryList(sortedEntries)
                 .build();
             reportService.setReport(journalEntryProfile);  
-            //System.out.println(journalEntryProfile);
             String url = null;
             int i=0;
             try {
