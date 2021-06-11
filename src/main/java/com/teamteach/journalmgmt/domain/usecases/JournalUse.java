@@ -251,7 +251,7 @@ public class JournalUse implements IJournalMgmt{
 
             String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
 
-            ObjectResponseDto searchResponse = journalEntryMgmt.searchEntries(journalEntrySearchCommand, accessToken);
+            ObjectResponseDto searchResponse = journalEntryMgmt.searchEntries(journalEntrySearchCommand, token);
 
             Object object = searchResponse.getObject();    
             JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
