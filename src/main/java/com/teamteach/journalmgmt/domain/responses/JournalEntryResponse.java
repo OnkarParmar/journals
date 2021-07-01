@@ -41,6 +41,12 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
         this.locked = journalEntry.isLocked();
         this.recommendationId = journalEntry.getRecommendationId();
         this.suggestionIndex = journalEntry.getSuggestionIndex();
+
+        this.childProfiles = new ArrayList<>();
+    }
+
+    public void setChildProfile(ChildProfile childprofile){
+      this.childProfiles.add(childprofile);
     }
 
     @Override

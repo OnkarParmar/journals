@@ -352,9 +352,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = null;
         Map<String, Category> categories = null;
+        Map<String, ChildProfile> childTable = new HashMap<>();
         if (journalEntrySearchCommand.isGoalReport()) {
             childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
-            Map<String, ChildProfile> childTable = new HashMap<>();
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
@@ -371,7 +371,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
                 if (journalEntrySearchCommand.isGoalReport()) {
-                    journalEntryResponse.setChildProfiles(childProfiles); //TODO : filter childProfiles as per entry.children
+                    for(String child : entry.getChildren()){
+                        journalEntryResponse.setChildProfile(childTable.get(child));
+                    }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){
                         journalEntryResponse.setCategoryId(category.getCategoryId());
