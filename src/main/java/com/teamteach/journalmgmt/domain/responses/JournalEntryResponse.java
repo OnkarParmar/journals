@@ -45,7 +45,8 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
         this.childProfiles = new ArrayList<>();
     }
 
-    public void setChildProfile(ChildProfile childProfile){
+    public void addChildProfile(String name, String profileImage){
+      ChildProfile childProfile = new ChildProfile(name, "", "", "", profileImage);
       this.childProfiles.add(childProfile);
     }
 

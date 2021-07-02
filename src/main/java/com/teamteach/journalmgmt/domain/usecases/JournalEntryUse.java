@@ -383,8 +383,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         } else {
                           shortName = childProfile.getName(); 
                         }
-                        childProfile.setName(shortName);
-                        journalEntryResponse.setChildProfile(childProfile);
+                        journalEntryResponse.addChildProfile(shortName, childProfile.getProfileImage());
                     }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){
