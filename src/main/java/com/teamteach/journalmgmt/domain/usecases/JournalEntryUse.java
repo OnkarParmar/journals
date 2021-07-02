@@ -370,7 +370,11 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 } else {
                   shortName = childProfile.getName(); 
                 }
-                childProfiles.add((ChildProfile) childProfile.clone());
+                childProfiles.add(ChildProfile.builder()
+                                            .name(childProfile.getName())
+                                            .profileImage(childProfile.getProfileImage())
+                                            .build()
+                                    );
                 childProfile.setName(shortName);
             }
             categories = recommendationService.getCategories(accessToken);
