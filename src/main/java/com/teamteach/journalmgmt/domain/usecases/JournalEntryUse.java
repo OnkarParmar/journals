@@ -358,6 +358,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
+            childProfiles = new ArrayList<ChildProfile>(childTable.getValueSet());
             categories = recommendationService.getCategories(accessToken);
         }
         Map<String, String> moodTable = new HashMap<>();
@@ -383,7 +384,8 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         } else {
                           shortName = childProfile.getName(); 
                         }
-                        journalEntryResponse.addChildProfile(shortName, childProfile.getProfileImage());
+                        childProfile.setName(shortName);
+                        journalEntryResponse.addChildProfile(childProfile);
                     }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){

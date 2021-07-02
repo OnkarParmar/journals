@@ -45,12 +45,11 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
         this.childProfiles = new ArrayList<>();
     }
 
-    public void addChildProfile(String name, String profileImage){
-      ChildProfile childProfile = new ChildProfile(name, "", "", "", profileImage);
+    public void addChildProfile(ChildProfile childProfile){
       this.childProfiles.add(childProfile);
     }
 
-    @Override
+    @Override 
     public int compareTo(JournalEntryResponse u) {
       if (getCreatedDate() == null || u.getCreatedDate() == null) {
         return 0;
