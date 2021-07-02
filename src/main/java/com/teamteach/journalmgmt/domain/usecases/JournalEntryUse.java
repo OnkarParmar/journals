@@ -372,7 +372,19 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
                 if (journalEntrySearchCommand.isGoalReport()) {
                     for(String child : entry.getChildren()){
-                        journalEntryResponse.setChildProfile(childTable.get(child));
+                        ChildProfile childProfile = childTable.get(child);
+                        int nameLength = childProfile.getName().indexOf(' ');
+                        String dotDotDot = "...";
+                        String shortName;
+                        if(nameLength > 6){
+                          shortName = childProfile.getName().substring(0,4) + dotDotDot;
+                        } else if(nameLength > 0){
+                          shortName = childProfile.getName().substring(0, nameLength);
+                        } else {
+                          shortName = childProfile.getName(); 
+                        }
+                        childProfile.setName(shortName);
+                        journalEntryResponse.setChildProfile(childProfile);
                     }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){
