@@ -52,8 +52,11 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
       if(l > 6){
         shortName = childprofile.getName().substring(0,3) + dot;
       }
-      else{
+      else if(l>0){
         shortName = childprofile.getName().substring(0,l);
+      }
+      else{
+        shortName = childprofile.getName(); 
       }
       childprofile.setName(shortName);
       this.childProfiles.add(childprofile);
