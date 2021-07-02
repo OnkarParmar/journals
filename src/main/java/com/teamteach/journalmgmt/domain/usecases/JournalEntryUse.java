@@ -358,7 +358,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
-            childProfiles = new ArrayList<ChildProfile>(childTable.getValueSet());
+            childProfiles = new ArrayList<ChildProfile>(childTable.values());
             categories = recommendationService.getCategories(accessToken);
         }
         Map<String, String> moodTable = new HashMap<>();
