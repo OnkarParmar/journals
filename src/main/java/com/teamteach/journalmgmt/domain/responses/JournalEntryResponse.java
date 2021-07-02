@@ -46,6 +46,18 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     }
 
     public void setChildProfile(ChildProfile childprofile){
+      String temp = childprofile.getName();
+      String[] words = temp.split(" ");
+      int l = words[0].length();
+      String dot = "...";
+      if(l > 6){
+        char[] temp2 = {words[0].charAt(0),words[0].charAt(1),words[0].charAt(2),words[0].charAt(3),dot.charAt(0),dot.charAt(0),dot.charAt(0)};
+        String temp3 = new String(temp2);
+        childprofile.setName(temp3);
+        this.childProfiles.add(childprofile);
+        return;
+      }
+      childprofile.setName(words[0]);
       this.childProfiles.add(childprofile);
     }
 
