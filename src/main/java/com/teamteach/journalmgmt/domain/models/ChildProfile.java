@@ -2,6 +2,7 @@ package com.teamteach.journalmgmt.domain.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Builder;
 
 @Data
 @AllArgsConstructor
