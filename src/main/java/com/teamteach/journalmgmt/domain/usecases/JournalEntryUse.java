@@ -358,7 +358,21 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
-            childProfiles = new ArrayList<ChildProfile>(childTable.values());
+            childProfiles = new ArrayList<ChildProfile>();
+            for (ChildProfile childProfile :  childTable.values()) {
+                int nameLength = childProfile.getName().indexOf(' ');
+                String dotDotDot = "...";
+                String shortName;
+                if(nameLength > 6){
+                  shortName = childProfile.getName().substring(0,4) + dotDotDot;
+                } else if(nameLength > 0){
+                  shortName = childProfile.getName().substring(0, nameLength);
+                } else {
+                  shortName = childProfile.getName(); 
+                }
+                childProfiles.add(childProfile.clone());
+                childProfile.setName(shortName);
+            }
             categories = recommendationService.getCategories(accessToken);
         }
         Map<String, String> moodTable = new HashMap<>();
@@ -373,19 +387,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
                 if (journalEntrySearchCommand.isGoalReport()) {
                     for(String child : entry.getChildren()){
-                        ChildProfile childProfile = childTable.get(child);
-                        int nameLength = childProfile.getName().indexOf(' ');
-                        String dotDotDot = "...";
-                        String shortName;
-                        if(nameLength > 6){
-                          shortName = childProfile.getName().substring(0,4) + dotDotDot;
-                        } else if(nameLength > 0){
-                          shortName = childProfile.getName().substring(0, nameLength);
-                        } else {
-                          shortName = childProfile.getName(); 
-                        }
-                        childProfile.setName(shortName);
-                        journalEntryResponse.addChildProfile(childProfile);
+                        journalEntryResponse.addChildProfile(childTable.get(child));
                     }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){
