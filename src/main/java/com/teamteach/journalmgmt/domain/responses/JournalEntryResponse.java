@@ -12,6 +12,7 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     protected String entryId;
     private String text;
     private String createdAt;
+    private String createdAtTime;
     private Date createdDate;
     private String journalId;
     private String ownerId;
@@ -29,9 +30,11 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry){
         SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
+        SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
+        this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
         this.createdDate = journalEntry.getCreatedAt();
         this.ownerId = journalEntry.getOwnerId();
         this.children = Arrays.asList(journalEntry.getChildren());
