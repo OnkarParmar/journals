@@ -4,7 +4,7 @@ spring:
     mongodb:
       uri: mongodb+srv://teamteach:TeamTeach2021@cluster0.h80qy.mongodb.net/teamteach?retryWrites=true&w=majority
   rabbitmq:
-    host: 49.50.107.94
+    host: 13.126.110.243
     port: 5672
     virtual-host: teamteach
     username: admin
