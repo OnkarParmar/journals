@@ -363,9 +363,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 int nameLength = childProfile.getName().indexOf(' ');
                 String dotDotDot = "...";
                 String shortName;
-                if(nameLength > 6){
-                  shortName = childProfile.getName().substring(0,4) + dotDotDot;
-                } else if(nameLength > 0){
+                // if(nameLength > 6){
+                //   shortName = childProfile.getName().substring(0,4) + dotDotDot;
+                // } else 
+                if(nameLength > 0){
                   shortName = childProfile.getName().substring(0, nameLength);
                 } else {
                   shortName = childProfile.getName(); 

@@ -19,7 +19,7 @@ body{
     margin-right: auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-/********************************* HEADER STYLE *********************************/
+/**** HEADER STYLE ****/
 header{
     text-align: center;
     background-color: #0D2860;
@@ -49,7 +49,7 @@ h3{
 }
 
 
-/********************************* MAIN STYLE *********************************/
+/**** MAIN STYLE ****/
 .entry-container{
     position: relative;
     margin-top: 10px;
@@ -92,7 +92,10 @@ h3{
 .entry-text{
     padding-right: 16px;
     color:#3B3A3C;
-    
+    word-wrap: break-word;
+}
+.date-child-box{
+    flex:2;
 }
 .date-time{
     padding: 10px 0px;
@@ -128,7 +131,7 @@ time{
     
 }
 .child .name{
-    font-size: 14px;
+    font-size: 10px;
     padding-right: 5px;
     padding-bottom: 3px;
     font-weight: 700;
@@ -306,7 +309,7 @@ time{
 
 
 
-/********************************* FOOTER STYLE *********************************/
+/**** FOOTER STYLE ****/
 
 footer{
     display: flex;
@@ -334,20 +337,18 @@ footer{
                         <p th:text="${entry.text}"></p>
                     </div>
                     <div class="child-entry-img-box">
-                       <div class="date-child-box">
+                       <div class="date-child-box" >
+                       
                         <div class="date-time">
-                           
-                            <!-- <time>12:00pm</time> -->
-                        </div>
-                        <div class="date-time">
-                            <time class="entry-date" th:text="${entry.createdAt}"></time>             <time class="date-time" th:text="${entry.createdAtTime}"></time>             
+                            <time class="entry-date" th:text="${entry.createdAt}"></time>             
+                            <time class="date-time" th:text="${entry.createdAtTime}"></time>             
                             <div class="entry-emoji">
                                 <img th:src="${entry.mood}" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box" >
-                            <div class="child" th:each="child: ${entry.childProfiles}">
+                         <div class="children-box"  >
+                            <div class="child" style="width: 30%;" th:each="child: ${entry.childProfiles}">
                                 <span class="name" th:text="${child.name}"></span>
                                 <span class="child-img">
                                     <img height="100%" th:src="${child.profileImage}" alt=""/>
@@ -362,6 +363,7 @@ footer{
                             </div>
                         </div>
                     </div>
+                    
                     <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
 
                 </div>        
