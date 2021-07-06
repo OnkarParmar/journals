@@ -19,6 +19,7 @@ body{
     margin-right: auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+/********************************* HEADER STYLE *********************************/
 header{
     text-align: center;
     background-color: #0D2860;
@@ -41,12 +42,14 @@ h3{
 .banner{
     font-size:30px;
     display: inline;
-    line-height: 25px;
     font-weight: 700;
-    padding: 0px 30px;
+    padding: 0px 4%;
     border: 3px solid #fff;
     border-radius: 40px;
 }
+
+
+/********************************* MAIN STYLE *********************************/
 .entry-container{
     position: relative;
     margin-top: 10px;
@@ -81,12 +84,10 @@ h3{
 .entry-box{
     display: flex;
     flex-direction: column;
-    border: 6px solid ;
-    padding:10px 20px 10px;
+    border: 3px solid #F1B7CD;
+    padding:10px;
     border-radius: 34px;
     color:#0290A1;
-    margin: 0 10px;
-    justify-content: center;
 }
 .entry-text{
     padding-right: 16px;
@@ -108,35 +109,44 @@ time{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 2;
+    flex: 3;
+    width: 100%;
 }
 .child{
-    padding:12px;
+    padding:4px;
     border:2px solid black;
     border-radius: 30px;
     display: flex;
     flex-direction: row ;
     align-items: center;
-    margin-right: 15px;
+    margin-right: 2%;
     justify-content: space-between;
     height: 34px; 
     margin-bottom: 5px;
+    /* width: 30%; */
+    /* flex: 1; */
     
 }
 .child .name{
     font-size: 14px;
-    padding-right: 18px;
+    padding-right: 5px;
     padding-bottom: 3px;
     font-weight: 700;
-    color:#0A285F
+    color:#0A285F;
+    flex:3;
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .child-img{
-    flex:2  
+    flex:1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;  
 }
 .child-img img{
-    margin-top: 4px;
     height: 26px; 
-    border-radius: 50%;  
+    border-radius:26px;  
 }
 
 .entry-image-box{ 
@@ -153,14 +163,14 @@ time{
     background-color: #F1B7CD;
 }
 .entry-image{
-    width: 150px;
-    height: 150px;
-    border-radius: 20px;
+    padding:8px 8px 0px 12px;
     min-height: 60px;
-
 }
 .entry-image img{
-    border-radius: 10px
+    height: 100%;
+    width: auto;
+    max-height: 100px;
+    border-radius: 10px;
 }
 .page-box{
     display: flex;
@@ -169,15 +179,6 @@ time{
     font-weight: 500;
     color:#505C6D
 }
-
-footer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding:30px;
-}
-
 
 @media screen and (max-width:540px){
   
@@ -199,17 +200,17 @@ footer{
     .date-time{
     padding: 10px 0px;
     font-size: 10px;
-}
-    .child-img img{
-    height: 20px;   
-}
-.child{
-    padding:4px;
-}
+    }
+        .child-img img{
+        height: 20px;   
+    }
+    .child{
+        padding:4px;
+    }
 }
 @media screen and (max-width:500px){
   .entry-container{
-      margin: 14px 14px 14px 0;
+      margin: 14px;
   }
   .entry-description{
    
@@ -221,7 +222,7 @@ footer{
     line-height: 20px;
 }
     h2,h3{
-        font-size: 14px;
+        font-size: 80%;
     }
     .entry-image{
         padding:2px 0; 
@@ -231,38 +232,89 @@ footer{
 }
 }
 @media screen and (max-width:400px){
-
+    .banner,h2,h3{
+        font-size:75%;
+    }
     .banner{
-    font-size:80%;
-    padding: 0% 5%;
+        border-width: 1.5px;
     }
-
-    h2,h3{
-        font-size: 70%;
+    .child{
+        height:26px;   
     }
+    .child-img img{
+        height: 18px;   
+    }
+    .entry-move img{
+    height: 24px;
+    width: 24px;
+    }
+        
+    .entry-emoji img{
+        height: 15px;
+        width: 15px;
+        margin-right: 8px;
+    }
+    #lock{
+        height: 15px;
+        width: 15px;
+        margin-right: 8px;
+    }
+    
     
     .entry-image img{
         min-width: 60px;
     }
     .child .name{
-    padding:0px;
-    font-size: 12px;
+        padding:0px;
+        font-size: 80%;
     }
-    .child-img img{
-        margin-top: 1px;
-        height: 24px;   
-    }
+    
 }
 
-@media screen and (max-width:300px){
-
-    .banner{
-        font-size:50%;
-        padding: 0% 5%;
-        border: 1px solid white;
+@media screen and (max-width:300px) {
+   .banner,h2,h3{
+        font-size:65%;
+    } 
+    .child{
+        border:1px solid black;
     }
+    .entry-emoji img{
+        height: 10px;
+        width: 10px;
+        margin-right: 4px;
+    }
+    #lock{
+        height: 10px;
+        width: 10px;
+        margin-right: 4px;
+    }
+    
 }
 
+
+@media screen and (max-width:300px) {
+   .banner,h2,h3{
+        font-size:70%;
+    } 
+    .child .name,.date-time time{
+         font-size:70%;
+    }
+   
+    
+}
+
+
+
+
+/********************************* FOOTER STYLE *********************************/
+
+footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:30px;
+}
 
     </style>
 </head>
@@ -271,15 +323,15 @@ footer{
      <div class="banner-box">
          <h1 class="banner">Journal of Children</h1>
      </div>
-     <h2>Parent : Ayush Goyal</h2>
-     <h3>Period : 30 Jun, 2021 - 03 Jul, 2021</h3>
-     <h3>Children : Divesh | Hayworth | Abhishek Mukherjee</h3>
+     <h2>Parent : Naushad Alam</h2>
+     <h3>Period : 29 Jun, 2021 - 03 Jul, 2021</h3>
+     <h3>Children : Cgild Sg| eererere | rer | Ajit Arip| rtrtrtddf | rf | Wang | Tassjr | More from| Last Child| Hhg | Honda | Mona Sili| Mogo Moris| Some Child</h3>
     </header>
     <main>
           <div class="entry-container">
-                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                <div class="entry-box" style = "border: 3px solid #42434D">
                     <div class="entry-text">
-                        <p>This is 5th entry.</p>
+                        <p>Working in on crash of app</p>
                     </div>
                     <div class="child-entry-img-box">
                        <div class="date-child-box">
@@ -288,45 +340,7 @@ footer{
                             <!-- <time>12:00pm</time> -->
                         </div>
                         <div class="date-time">
-                            <time class="entry-date">03 Jul, 2021</time>             <time class="date-time">11:31 AM</time>             
-                            <div class="entry-emoji">
-                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/frustrated.png" alt=""/>
-                                <!-- <p th:text="${entry.mood}"></p> -->
-                            </div>
-                         </div>
-                         <div class="children-box" >
-                            <div class="child">
-                                <span class="name">Hayw...</span>
-                                <span class="child-img">
-                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
-                                </span>
-                            </div>
-                        </div>
-                       </div>
-                        
-                       <div class="entry-image-box">
-                            <div class="entry-image">
-                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000076.jpg" alt=""/>
-                            </div>
-                        </div>
-                    </div>
-                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
-
-                </div>        
-        </div>
-          <div class="entry-container">
-                <div class="entry-box" style = "border: 3px solid #D3D3D3">
-                    <div class="entry-text">
-                        <p>He is good</p>
-                    </div>
-                    <div class="child-entry-img-box">
-                       <div class="date-child-box">
-                        <div class="date-time">
-                           
-                            <!-- <time>12:00pm</time> -->
-                        </div>
-                        <div class="date-time">
-                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">3:57 PM</time>             
+                            <time class="entry-date">03 Jul, 2021</time>             <time class="date-time">2:15 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
@@ -334,75 +348,13 @@ footer{
                          </div>
                          <div class="children-box" >
                             <div class="child">
-                                <span class="name">Abhi...</span>
+                                <span class="name">Ajit</span>
                                 <span class="child-img">
-                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100159.jpg" alt=""/>
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
                                 </span>
                             </div>
-                        </div>
-                       </div>
-                        
-                       
-                    </div>
-                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
-
-                </div>        
-        </div>
-          <div class="entry-container">
-                <div class="entry-box" style = "border: 3px solid #D3D3D3">
-                    <div class="entry-text">
-                        <p>He was doing alright.</p>
-                    </div>
-                    <div class="child-entry-img-box">
-                       <div class="date-child-box">
-                        <div class="date-time">
-                           
-                            <!-- <time>12:00pm</time> -->
-                        </div>
-                        <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             <time class="date-time">6:09 PM</time>             
-                            <div class="entry-emoji">
-                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/so_so.png" alt=""/>
-                                <!-- <p th:text="${entry.mood}"></p> -->
-                            </div>
-                         </div>
-                         <div class="children-box" >
                             <div class="child">
-                                <span class="name">Abhi...</span>
-                                <span class="child-img">
-                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100159.jpg" alt=""/>
-                                </span>
-                            </div>
-                        </div>
-                       </div>
-                        
-                       
-                    </div>
-                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
-
-                </div>        
-        </div>
-          <div class="entry-container">
-                <div class="entry-box" style = "border: 3px solid #9195B8">
-                    <div class="entry-text">
-                        <p>He is sad Today</p>
-                    </div>
-                    <div class="child-entry-img-box">
-                       <div class="date-child-box">
-                        <div class="date-time">
-                           
-                            <!-- <time>12:00pm</time> -->
-                        </div>
-                        <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             <time class="date-time">6:00 PM</time>             
-                            <div class="entry-emoji">
-                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/sad.png" alt=""/>
-                                <!-- <p th:text="${entry.mood}"></p> -->
-                            </div>
-                         </div>
-                         <div class="children-box" >
-                            <div class="child">
-                                <span class="name">Divesh</span>
+                                <span class="name">Mona</span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
                                 </span>
@@ -419,7 +371,7 @@ footer{
           <div class="entry-container">
                 <div class="entry-box" style = "border: 3px solid #D3D3D3">
                     <div class="entry-text">
-                        <p>He is feeling great today</p>
+                        <p>Testing crash is changed but changing agian and again 2</p>
                     </div>
                     <div class="child-entry-img-box">
                        <div class="date-child-box">
@@ -428,7 +380,7 @@ footer{
                             <!-- <time>12:00pm</time> -->
                         </div>
                         <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             <time class="date-time">5:59 PM</time>             
+                            <time class="entry-date">03 Jul, 2021</time>             <time class="date-time">1:50 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
@@ -436,9 +388,21 @@ footer{
                          </div>
                          <div class="children-box" >
                             <div class="child">
-                                <span class="name">Abhi...</span>
+                                <span class="name">Mona</span>
                                 <span class="child-img">
-                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100159.jpg" alt=""/>
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Wang</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
                                 </span>
                             </div>
                         </div>
@@ -446,7 +410,887 @@ footer{
                         
                        <div class="entry-image-box">
                             <div class="entry-image">
-                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000044.jpg" alt=""/>
+                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000078.jpg" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>Entry to test crash</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">03 Jul, 2021</time>             <time class="date-time">1:47 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Hhg</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>Rttttttttttttttttt and I will be there at the same time I don&#39;t have to go to the store and get some
+
+Ccccccccc</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:10 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">rf</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Tassjr</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #F1B7CD">
+                    <div class="entry-text">
+                        <p>Really good time to call you back but I don&#39;t have a car so I can get it to you by the</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:09 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>3tt Vivek and I will be there at the same time I don&#39;t</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:07 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Wang</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>Www is in my car now so I&#39;ll have a better day for you and your mom</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:06 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>We&#39;re going to go to the same place as last time I don&#39;t have a good time with you</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:05 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>Rrrrrrrrrrr and I will be in the same time zone as well as the same is not a good</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:04 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>ER is a good time to come by and see you soon ???</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:04 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>Uuuuu and I will be there at the same time I don&#39;t</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:03 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">rer</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Wang</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>Yyyyy and I will be there at the same time I don&#39;t have</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:02 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Last</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #42434D">
+                    <div class="entry-text">
+                        <p>Some Entry that is used to work</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">6:02 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Hhg</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Honda</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #F1B7CD">
+                    <div class="entry-text">
+                        <p>You can come over and get back to you on that one and the other is a good time</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">5:57 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Ajit</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #DDE2AD">
+                    <div class="entry-text">
+                        <p>Just a happy text</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">5:51 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Tassjr</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>fsdfasd and I will be there at the same time I don&#39;t have to go to</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">5:50 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Last</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">rf</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>Someone is in my room now waiting to get a few minutes ago ?</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">5:49 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">rer</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">rtrt...</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mogo</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Some</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #FFEFB5">
+                    <div class="entry-text">
+                        <p>Something to do with the fact that I have to go to the store and</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">5:48 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Ajit</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #D3D3D3">
+                    <div class="entry-text">
+                        <p>THis situation and entry forms and I will be there at the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who was the guy who</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">01 Jul, 2021</time>             <time class="date-time">3:15 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Ajit</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Honda</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Wang</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Hhg</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Some</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mogo</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">eere...</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">rer</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Cgild</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">rtrt...</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       <div class="entry-image-box">
+                            <div class="entry-image">
+                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000050.jpg" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #DDE2AD">
+                    <div class="entry-text">
+                        <p>Happy birthday to you</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">30 Jun, 2021</time>             <time class="date-time">3:18 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/so_so.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Honda</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mogo</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Hhg</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Wang</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Ajit</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">More</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100145.jpg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       <div class="entry-image-box">
+                            <div class="entry-image">
+                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000042.jpg" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #42434D">
+                    <div class="entry-text">
+                        <p>Sometimes I feel like it is great and else bad</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">30 Jun, 2021</time>             <time class="date-time">1:26 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Ajit</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       
+                    </div>
+                    <!--div class="entry-color" th:stylene = "'background-color: '+ ${entry.categoryId}"></div-->
+
+                </div>        
+        </div>
+          <div class="entry-container">
+                <div class="entry-box" style = "border: 3px solid #DDE2AD">
+                    <div class="entry-text">
+                        <p>Some information regarding child Happy</p>
+                    </div>
+                    <div class="child-entry-img-box">
+                       <div class="date-child-box">
+                        <div class="date-time">
+                           
+                            <!-- <time>12:00pm</time> -->
+                        </div>
+                        <div class="date-time">
+                            <time class="entry-date">29 Jun, 2021</time>             <time class="date-time">1:11 PM</time>             
+                            <div class="entry-emoji">
+                                <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
+                                <!-- <p th:text="${entry.mood}"></p> -->
+                            </div>
+                         </div>
+                         <div class="children-box" >
+                            <div class="child">
+                                <span class="name">Mona</span>
+                                <span class="child-img">
+                                    <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                       </div>
+                        
+                       <div class="entry-image-box">
+                            <div class="entry-image">
+                                <img width="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/journalEntryImages/journalEntry_100000040.jpg" alt=""/>
                             </div>
                         </div>
                     </div>
