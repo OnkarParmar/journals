@@ -32,6 +32,7 @@ public class JournalEntry extends BaseModel{
     private boolean locked;
     private String recommendationId;
     private String suggestionIndex;
+    private String timezone;
 
     @Builder
     public JournalEntry (

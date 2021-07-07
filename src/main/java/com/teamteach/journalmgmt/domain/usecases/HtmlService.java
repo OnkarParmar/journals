@@ -28,7 +28,6 @@ public class HtmlService {
     public JournalEntryProfile returnDataReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
         ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
         String email = journalEntrySearchCommand.getEmail() != null ? journalEntrySearchCommand.getEmail() : parentProfile.getEmail();
-
         ObjectResponseDto searchResponse = entryUse.searchEntries(journalEntrySearchCommand, accessToken);
         Object object = searchResponse.getObject();    
         JournalEntryMatrixResponse journalEntryMatrixResponse = (JournalEntryMatrixResponse)object;
