@@ -10,6 +10,7 @@ import com.teamteach.commons.security.jwt.JwtUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -348,6 +349,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         } else if (fromDate != null) {
             query.addCriteria(Criteria.where("createdAt").gte(fromDate));
         }
+        query.with(Sort.by(Direction.DESC, "createdAt"));
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = null;
