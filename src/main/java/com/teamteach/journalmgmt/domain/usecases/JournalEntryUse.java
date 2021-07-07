@@ -350,6 +350,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             query.addCriteria(Criteria.where("createdAt").gte(fromDate));
         }
         query.with(Sort.by(Direction.DESC, "createdAt"));
+        System.out.println(query);
         List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = null;
