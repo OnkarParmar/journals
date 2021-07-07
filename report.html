@@ -98,14 +98,14 @@ h3{
     flex:2;
 }
 .date-time{
-    padding: 10px 20px;
+    padding: 10px 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
 time{
     font-size: 12px;
-    padding-right: 10px;
+    padding-right: 30px;
 }
 
 .children-box{
@@ -235,11 +235,12 @@ time{
 }
 }
 @media screen and (max-width:400px){
-    .banner,h2,h3{
+    h2,h3{
         font-size:75%;
     }
     .banner{
         border-width: 1.5px;
+        font-size:85%;
     }
     .child{
         height:26px;   
@@ -275,9 +276,6 @@ time{
 }
 
 @media screen and (max-width:300px) {
-   .banner,h2,h3{
-        font-size:65%;
-    } 
     .child{
         border:1px solid black;
     }
@@ -291,22 +289,13 @@ time{
         width: 10px;
         margin-right: 4px;
     }
-    
-}
-
-
-@media screen and (max-width:300px) {
-   .banner,h2,h3{
+    .banner,h2,h3{
         font-size:70%;
     } 
     .child .name,.date-time time{
          font-size:70%;
     }
-   
-    
 }
-
-
 
 
 /**** FOOTER STYLE ****/
@@ -317,6 +306,10 @@ footer{
     justify-content: center;
     align-items: center;
     padding:30px;
+}
+
+footer img{
+    height:auto;
 }
 
     </style>
@@ -340,14 +333,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">06 Jul, 2021</time>             
-                            <time class="date-time">4:36 PM</time>             
+                            <time class="entry-date">06 Jul, 2021</time>
+                            <time class="entry-date">12:06 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/frustrated.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Hayworth</span>
                                 <span class="child-img">
@@ -373,14 +367,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">06 Jul, 2021</time>             
-                            <time class="date-time">11:44 AM</time>             
+                            <time class="entry-date">06 Jul, 2021</time>
+                            <time class="entry-date">7:14 AM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/frustrated.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Divesh</span>
                                 <span class="child-img">
@@ -412,14 +407,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">03 Jul, 2021</time>             
-                            <time class="date-time">2:08 PM</time>             
+                            <time class="entry-date">03 Jul, 2021</time>
+                            <time class="entry-date">9:38 AM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/so_so.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Divesh</span>
                                 <span class="child-img">
@@ -445,21 +441,22 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">03 Jul, 2021</time>             
-                            <time class="date-time">11:31 AM</time>             
+                            <time class="entry-date">03 Jul, 2021</time>
+                            <time class="entry-date">7:01 AM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/frustrated.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
-                            <div class="child" style="width: 30%;">
+                         <div class="children-box">
+                            <div class="child" style="width: 45%;">
                                 <span class="name">Hayworth</span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImage/defaultProfileImage.jpeg" alt=""/>
                                 </span>
                             </div>
                         </div>
+                        
                        </div>
                         
                        <div class="entry-image-box">
@@ -482,14 +479,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">01 Jul, 2021</time>             
-                            <time class="date-time">3:57 PM</time>             
+                            <time class="entry-date">01 Jul, 2021</time>
+                            <time class="entry-date">11:27 AM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/happy.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Abhishek</span>
                                 <span class="child-img">
@@ -515,14 +513,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             
-                            <time class="date-time">6:09 PM</time>             
+                            <time class="entry-date">30 Jun, 2021</time>
+                            <time class="entry-date">1:39 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/so_so.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Abhishek</span>
                                 <span class="child-img">
@@ -548,14 +547,15 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             
-                            <time class="date-time">6:00 PM</time>             
+                            <time class="entry-date">30 Jun, 2021</time>
+                            <time class="entry-date">1:30 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/sad.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         
+                        <div class="children-box">
                             <div class="child" style="width: 30%;">
                                 <span class="name">Divesh</span>
                                 <span class="child-img">
@@ -581,21 +581,22 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date">30 Jun, 2021</time>             
-                            <time class="date-time">5:59 PM</time>             
+                            <time class="entry-date">30 Jun, 2021</time>
+                            <time class="entry-date">1:29 PM</time>             
                             <div class="entry-emoji">
                                 <img src="https://teamteach.s3.ap-south-1.amazonaws.com/images/great.png" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
-                            <div class="child" style="width: 30%;">
+                         <div class="children-box">
+                            <div class="child" style="width: 45%;">
                                 <span class="name">Abhishek</span>
                                 <span class="child-img">
                                     <img height="100%" src="https://teamteach.s3.ap-south-1.amazonaws.com/profileImages/profile_100159.jpg" alt=""/>
                                 </span>
                             </div>
                         </div>
+                        
                        </div>
                         
                        <div class="entry-image-box">

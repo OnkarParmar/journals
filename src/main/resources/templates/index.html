@@ -98,14 +98,14 @@ h3{
     flex:2;
 }
 .date-time{
-    padding: 10px 20px;
+    padding: 10px 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
 time{
     font-size: 12px;
-    padding-right: 10px;
+    padding-right: 30px;
 }
 
 .children-box{
@@ -235,11 +235,12 @@ time{
 }
 }
 @media screen and (max-width:400px){
-    .banner,h2,h3{
+    h2,h3{
         font-size:75%;
     }
     .banner{
         border-width: 1.5px;
+        font-size:85%;
     }
     .child{
         height:26px;   
@@ -275,9 +276,6 @@ time{
 }
 
 @media screen and (max-width:300px) {
-   .banner,h2,h3{
-        font-size:65%;
-    } 
     .child{
         border:1px solid black;
     }
@@ -291,22 +289,13 @@ time{
         width: 10px;
         margin-right: 4px;
     }
-    
-}
-
-
-@media screen and (max-width:300px) {
-   .banner,h2,h3{
+    .banner,h2,h3{
         font-size:70%;
     } 
     .child .name,.date-time time{
          font-size:70%;
     }
-   
-    
 }
-
-
 
 
 /**** FOOTER STYLE ****/
@@ -317,6 +306,10 @@ footer{
     justify-content: center;
     align-items: center;
     padding:30px;
+}
+
+footer img{
+    height:auto;
 }
 
     </style>
@@ -340,14 +333,22 @@ footer{
                        <div class="date-child-box" >
                        
                         <div class="date-time">
-                            <time class="entry-date" th:text="${entry.createdAt}"></time>             
-                            <time class="date-time" th:text="${entry.createdAtTime}"></time>             
+                            <time class="entry-date" th:text="${entry.createdAt}"></time>
+                            <time class="entry-date" th:text="${entry.createdAtTime}"></time>             
                             <div class="entry-emoji">
                                 <img th:src="${entry.mood}" alt=""/>
                                 <!-- <p th:text="${entry.mood}"></p> -->
                             </div>
                          </div>
-                         <div class="children-box"  >
+                         <div class="children-box"  th:if="${entry.entryImage}!=null">
+                            <div class="child" style="width: 45%;" th:each="child: ${entry.childProfiles}">
+                                <span class="name" th:text="${child.name}"></span>
+                                <span class="child-img">
+                                    <img height="100%" th:src="${child.profileImage}" alt=""/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="children-box"  th:if="${entry.entryImage}==null">
                             <div class="child" style="width: 30%;" th:each="child: ${entry.childProfiles}">
                                 <span class="name" th:text="${child.name}"></span>
                                 <span class="child-img">
