@@ -30,12 +30,9 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry){
         SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
-        SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
-        formattertime.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
-        this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
         this.createdDate = journalEntry.getCreatedAt();
         this.ownerId = journalEntry.getOwnerId();
         this.children = Arrays.asList(journalEntry.getChildren());
@@ -45,9 +42,28 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
         this.locked = journalEntry.isLocked();
         this.recommendationId = journalEntry.getRecommendationId();
         this.suggestionIndex = journalEntry.getSuggestionIndex();
-
         this.childProfiles = new ArrayList<>();
     }
+
+    public JournalEntryResponse(JournalEntry journalEntry, String timeZone){
+      SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
+      SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
+      this.entryId = journalEntry.getEntryId();
+      this.text = journalEntry.getText();
+      formattertime.setTimeZone(TimeZone.getTimeZone(timeZone));
+      this.createdAt = formatter.format(journalEntry.getCreatedAt());
+      this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
+      this.createdDate = journalEntry.getCreatedAt();
+      this.ownerId = journalEntry.getOwnerId();
+      this.children = Arrays.asList(journalEntry.getChildren());
+      this.journalId = journalEntry.getJournalId();
+      this.categoryId = journalEntry.getCategoryId();
+      this.entryImage = journalEntry.getEntryImage();
+      this.locked = journalEntry.isLocked();
+      this.recommendationId = journalEntry.getRecommendationId();
+      this.suggestionIndex = journalEntry.getSuggestionIndex();
+      this.childProfiles = new ArrayList<>();
+  }
 
     public void addChildProfile(ChildProfile childProfile){
       this.childProfiles.add(childProfile);
