@@ -46,23 +46,10 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     }
 
     public JournalEntryResponse(JournalEntry journalEntry, String timeZone){
-      SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
+      this(journalEntry);
       SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
-      this.entryId = journalEntry.getEntryId();
-      this.text = journalEntry.getText();
       formattertime.setTimeZone(TimeZone.getTimeZone(timeZone));
-      this.createdAt = formatter.format(journalEntry.getCreatedAt());
       this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
-      this.createdDate = journalEntry.getCreatedAt();
-      this.ownerId = journalEntry.getOwnerId();
-      this.children = Arrays.asList(journalEntry.getChildren());
-      this.journalId = journalEntry.getJournalId();
-      this.categoryId = journalEntry.getCategoryId();
-      this.entryImage = journalEntry.getEntryImage();
-      this.locked = journalEntry.isLocked();
-      this.recommendationId = journalEntry.getRecommendationId();
-      this.suggestionIndex = journalEntry.getSuggestionIndex();
-      this.childProfiles = new ArrayList<>();
   }
 
     public void addChildProfile(ChildProfile childProfile){
