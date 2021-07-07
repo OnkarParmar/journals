@@ -33,6 +33,7 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
         SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
+        formatter.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         this.createdAt = formatter.format(journalEntry.getCreatedAt());
         this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
         this.createdDate = journalEntry.getCreatedAt();
