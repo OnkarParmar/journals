@@ -357,9 +357,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Map<String, Category> categories = null;
         Map<String, ChildProfile> childTable = new HashMap<>();
         String timeZone = "UTC";
+        timeZone = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getTimezone();
         if (journalEntrySearchCommand.isGoalReport()) {
             childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
-            timeZone = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getTimezone();
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
@@ -425,7 +425,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 int day = cal.get(Calendar.DAY_OF_MONTH)-1;
                 JournalEntriesResponse journalEntriesResponse = journalEntriesGrid.get(firstDay+day);
 
-                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
+                JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry,timeZone);
 
                 journalEntryResponse.setCategoryId(entry.getCategoryId());
                 if (!journalEntrySearchCommand.isSummaryOnly()) {
