@@ -2,6 +2,8 @@ package com.teamteach.journalmgmt.domain.responses;
 
 import lombok.Builder;
 import lombok.Data;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,10 +31,8 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry){
-        SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
         this.entryId = journalEntry.getEntryId();
         this.text = journalEntry.getText();
-        this.createdAt = formatter.format(journalEntry.getCreatedAt());
         this.createdDate = journalEntry.getCreatedAt();
         this.ownerId = journalEntry.getOwnerId();
         this.children = Arrays.asList(journalEntry.getChildren());
@@ -47,6 +47,9 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
 
     public JournalEntryResponse(JournalEntry journalEntry, String timeZone){
       this(journalEntry);
+      SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
+      formatter.setTimeZone(TimeZone.getTimeZone(timeZone));
+      this.createdAt = formatter.format(journalEntry.getCreatedAt());
       SimpleDateFormat formattertime = new SimpleDateFormat("h:mm a");
       formattertime.setTimeZone(TimeZone.getTimeZone(timeZone));
       this.createdAtTime = formattertime.format(journalEntry.getCreatedAt());
