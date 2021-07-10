@@ -365,23 +365,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             childProfiles = new ArrayList<ChildProfile>();
             for (ChildProfile childProfile :  childTable.values()) {
-                int nameLength = childProfile.getName().indexOf(' ');
-                String dotDotDot = "...";
-                String shortName;
-                // if(nameLength > 6){
-                //   shortName = childProfile.getName().substring(0,4) + dotDotDot;
-                // } else 
-                if(nameLength > 0){
-                  shortName = childProfile.getName().substring(0, nameLength);
-                } else {
-                  shortName = childProfile.getName(); 
-                }
                 childProfiles.add(ChildProfile.builder()
                                             .name(childProfile.getName())
                                             .profileImage(childProfile.getProfileImage())
                                             .build()
                                     );
-                childProfile.setName(shortName);
+                childProfile.setName(childProfile.getName());
             }
             categories = recommendationService.getCategories(accessToken);
         }
@@ -395,9 +384,15 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             for (JournalEntry entry : entries) {
                 JournalEntriesResponse journalEntriesResponse = new JournalEntriesResponse();
                 JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry,timeZone);
+                ArrayList<ChildProfile> listChild = new ArrayList<ChildProfile>();
+
                 if (journalEntrySearchCommand.isGoalReport()) {
-                    for(String child : entry.getChildren()){
-                        journalEntryResponse.addChildProfile(childTable.get(child));
+                    for(String child: entry.getChildren()) {
+                        listChild.add(childTable.get(child));
+                    }
+                    listChild.sort((o1, o2)-> o1.getName().compareTo(o2.getName()));
+                    for(ChildProfile child: listChild) {
+                        journalEntryResponse.addChildProfile(child);
                     }
                     Category category = categories.get(entry.getCategoryId());
                     if(category != null){
