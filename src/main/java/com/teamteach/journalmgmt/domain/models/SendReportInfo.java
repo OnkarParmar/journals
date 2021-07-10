@@ -6,5 +6,5 @@ import lombok.Data;
 public class SendReportInfo {	
     String fname;
     String email;
-    String htmlUrl;
+    String url;
 }

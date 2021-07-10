@@ -55,7 +55,6 @@ public class ProfileService {
 																.build();
 
             } 
-            System.out.println("Line 55: "+parentProfile+" ProfileService");
         }
         catch (IOException e) {
             System.out.println("ProfileService.java Line 59");
