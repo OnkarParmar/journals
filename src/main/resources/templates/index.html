@@ -183,6 +183,22 @@ time{
     color:#505C6D
 }
 
+/**** FOOTER STYLE ****/
+
+footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:30px;
+}
+
+.logo{
+    margin-bottom: 1.2em;
+    height:30px;
+    width:35px;
+}
+
 @media screen and (max-width:540px){
   
     .entry-container{
@@ -295,21 +311,11 @@ time{
     .child .name,.date-time time{
          font-size:70%;
     }
-}
-
-
-/**** FOOTER STYLE ****/
-
-footer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding:30px;
-}
-
-footer img{
-    height:auto;
+    .logo{
+        margin-bottom: 1.2em;
+        height:25px;
+        width:28px;
+    }
 }
 
     </style>
@@ -374,7 +380,7 @@ footer img{
         </div>
     </main>
     <footer>
-        <img width="10%" style="margin-bottom: 1.2em;" src="https://teamteach.s3.ap-south-1.amazonaws.com/images/logo.png" alt=""/>
+        <img class='logo' src="https://teamteach.s3.ap-south-1.amazonaws.com/images/logo.png" alt=""/>
         <img width="40%" src="https://teamteach.s3.ap-south-1.amazonaws.com/images/poweredBy.png" alt=""/>
     </footer>
     <script>
