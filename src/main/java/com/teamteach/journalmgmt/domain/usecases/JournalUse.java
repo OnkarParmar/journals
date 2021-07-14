@@ -269,7 +269,7 @@ public class JournalUse implements IJournalMgmt{
             List<JournalEntryResponse> sortedEntries = entryList.stream().sorted(Comparator.comparing(JournalEntryResponse::getCreatedDate).reversed()).collect(Collectors.toList());        
             String fromDate = sortedEntries.get(sortedEntries.size()-1).getCreatedAt();
             String toDate = sortedEntries.get(0).getCreatedAt();
-            String children = journalEntryMatrixResponse.getChildProfiles().stream().map(e -> e.getName()).collect(Collectors.joining("| "));
+            String children = journalEntryMatrixResponse.getChildProfiles().stream().map(e -> e.getName()).collect(Collectors.joining(" | "));
             JournalEntryProfile journalEntryProfile = JournalEntryProfile.builder()
                 .email(email)
                 .fname(parentProfile.getFname())
