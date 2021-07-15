@@ -7,6 +7,9 @@ import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime; 
+
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -170,6 +173,7 @@ public class JournalUse implements IJournalMgmt{
                     JournalResponse journalResponse = new JournalResponse(journal);
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
+                    journalResponse.setDesc(addDescription());
                     //ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
                     //journalResponse.setParentProfile(parentProfile);
                     journalResponses.add(journalResponse);
@@ -177,6 +181,28 @@ public class JournalUse implements IJournalMgmt{
             }
             return new ObjectListResponseDto<>(true, "Journal records retrieved successfully!", journalResponses);
         }
+
+    public String addDescription(){
+        String des;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
+        LocalDateTime now = LocalDateTime.now();
+        int hourTime = Integer.parseInt(dtf.format(now));
+        int timeArea;
+        if(hourTime > 3 && hourTime < 12) timeArea = 0;
+        else if(hourTime >= 12 && hourTime < 20) timeArea = 1;
+        else timeArea = 2;
+        switch(timeArea){
+            case 0 : des = "Good Morning! How are you doing today?";
+                     break;
+            case 1 : des = "Good Afternoon! How are you doing today?";
+                     break;
+            case 2 : des = "Good Evening! How are you doing today?";
+                     break;
+            default : des = "How are you doing today?";
+                      break; 
+        }
+        return des;
+    }
 
     @Override
         public ObjectResponseDto findByTitle(String title) {
