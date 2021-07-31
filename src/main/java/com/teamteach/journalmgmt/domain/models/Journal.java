@@ -24,6 +24,7 @@ public class Journal extends BaseModel {
     private String desc;
     private List<Category> categories;
     private List<Mood> moods;
+    private String name;
 
     @Builder
     public Journal(
@@ -33,13 +34,15 @@ public class Journal extends BaseModel {
             Date createdAt,
             Date updatedAt,
             String title,
-            String desc) 
+            String desc,
+            String name) 
             {
                 super(createdAt, updatedAt);
                 this.journalId = journalId;
                 this.title = title;
                 this.desc = desc;
                 this.journalType = journalType;
-                this.ownerId = ownerId;                
+                this.ownerId = ownerId;
+                this.name = name;
             }
 }
