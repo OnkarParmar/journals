@@ -19,6 +19,7 @@ public class JournalResponse {
     private List<MoodObj> moods;
     private int entryCount;
     private ParentProfileResponseDto parentProfile;
+    private String name;
 
     @Builder
     public JournalResponse(Journal journal) {
@@ -29,6 +30,7 @@ public class JournalResponse {
         this.createdAt = formatter.format(journal.getCreatedAt());
         this.updatedAt = formatter.format(journal.getUpdatedAt());
         this.parentProfile = null;
+        this.name = journal.getName();
     }
     public void setEntryCount() {
         this.entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
