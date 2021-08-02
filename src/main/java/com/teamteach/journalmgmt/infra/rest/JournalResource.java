@@ -3,6 +3,7 @@ package com.teamteach.journalmgmt.infra.rest;
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.models.SendReportInfo;
 import com.teamteach.journalmgmt.domain.ports.in.*;
+import com.teamteach.journalmgmt.domain.responses.JournalDashboardResponse;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
@@ -59,5 +60,12 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     public ResponseEntity<ObjectResponseDto> buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalMgmt.buildReport(journalId,journalEntrySearchCommand,token));
+    }
+
+    @Override
+    @ApiOperation(value = "Gets Journal Dashboard", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectListResponseDto<JournalDashboardResponse>> getJournalDashboard(HttpHeaders headers){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalMgmt.getJournalDashboard(token));
     }
 }

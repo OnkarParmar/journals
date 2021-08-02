@@ -9,6 +9,8 @@ import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import com.teamteach.commons.security.jwt.JwtUser;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -175,6 +178,7 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription());
+                    journalResponse.setName(journal.getName());
                     //ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
                     //journalResponse.setParentProfile(parentProfile);
                     journalResponses.add(journalResponse);
@@ -329,5 +333,52 @@ public class JournalUse implements IJournalMgmt{
                     true,
                     "URL generated successfully!",
                     url);
+        }
+    
+    // @Override
+    //     public ObjectListResponseDto<JournalDashboardResponse> getJournalDashboard(String accessToken){
+    //         return new ObjectListResponseDto<JournalDashboardResponse>(true, "Journal Dashboard retrieved successfully!", null);
+    //     }
+
+    @Override
+        public ObjectListResponseDto<JournalDashboardResponse> getJournalDashboard(String accessToken){
+
+            Query query = new Query();
+            List<Journal> journals = mongoTemplate.findAll(Journal.class);
+            List<JournalDashboardResponse> journalDashboardResponses = new ArrayList<>();
+            JournalDashboardResponse journalDashboardResponse;
+            List<MoodObj> moods;
+            int entryCount;
+            JournalEntry journalEntry;
+            Date cur;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");  
+            String strDate = "it is null by default";
+
+            if (journals == null) {
+                return new ObjectListResponseDto<>(false, "No journals found!", null);
+            } else {
+                for (Journal journal : journals) {
+                    if(journal.getOwnerId() == "0") continue;
+                    moods = moodsService.getMoodsCount(journal.getJournalId());
+                    entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
+                    query = new Query();
+                    query.addCriteria(Criteria.where("ownerId").is(journal.getOwnerId()));
+                    query.addCriteria(Criteria.where("journalId").is(journal.getJournalId()));
+                    query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
+                    journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+                    if(journalEntry != null){
+                        cur = journalEntry.getCreatedAt();
+                        strDate = formatter.format(cur);
+                    }
+                    if(entryCount == 0) strDate = "null";
+                    journalDashboardResponse = new JournalDashboardResponse(journal.getOwnerId(),
+                                                                            journal.getName(),
+                                                                            "", 
+                                                                            entryCount,
+                                                                            strDate);
+                    journalDashboardResponses.add(journalDashboardResponse);
+                }            
+            }
+            return new ObjectListResponseDto<JournalDashboardResponse>(true, "Journal Dashboard retrieved successfully!", journalDashboardResponses);
         }
 }
