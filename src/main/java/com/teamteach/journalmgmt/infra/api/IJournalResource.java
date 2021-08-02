@@ -2,6 +2,7 @@ package com.teamteach.journalmgmt.infra.api;
 
 import com.teamteach.journalmgmt.domain.command.*;
 import com.teamteach.journalmgmt.domain.models.SendReportInfo;
+import com.teamteach.journalmgmt.domain.responses.JournalDashboardResponse;
 import com.teamteach.journalmgmt.domain.responses.JournalResponse;
 import com.teamteach.journalmgmt.domain.responses.ObjectListResponseDto;
 import com.teamteach.journalmgmt.domain.responses.ObjectResponseDto;
@@ -34,5 +35,6 @@ public interface IJournalResource {
                                                 @RequestBody JournalEntrySearchCommand journalEntrySearchCommand, 
                                                 @RequestHeader HttpHeaders headers);
     
-    
+    @GetMapping("/admin/dashboard")
+        ResponseEntity<ObjectListResponseDto<JournalDashboardResponse>> getJournalDashboard(@RequestHeader HttpHeaders headers) ;
 }
