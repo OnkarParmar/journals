@@ -4,4 +4,5 @@ import com.teamteach.journalmgmt.domain.models.*;
 
 public interface IJournalEntryRepository {
    void saveJournalEntry(JournalEntry journalEntry);
+   void removeJournalEntries(String type, String id);
 }

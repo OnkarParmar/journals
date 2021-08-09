@@ -5,6 +5,7 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
+import com.teamteach.journalmgmt.infra.persistence.dal.JournalDAL;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
 
@@ -36,6 +37,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
     private MongoTemplate mongoTemplate;
 
     @Autowired
+    private JournalDAL journalDAL;
+
+    @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
 	@Autowired
@@ -56,7 +60,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
         if(entry.isLocked()){
             entry.setLocked(false);
-            mongoTemplate.save(entry);    
+            journalDAL.saveJournalEntry(entry);
             return ObjectResponseDto.builder()
                         .success(true)
                         .message("Entry unlocked")
@@ -64,7 +68,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         .build();
         } else {
             entry.setLocked(true);
-            mongoTemplate.save(entry);    
+            journalDAL.saveJournalEntry(entry);
             return ObjectResponseDto.builder()
                         .success(true)
                         .message("Entry locked")
@@ -83,7 +87,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         boolean isEditable = isEditable(created);
         if(isEditable == true){
             try {
-                mongoTemplate.remove(query, JournalEntry.class);
+                journalDAL.removeJournalEntries("_id", id);
                 JournalResponse journalResponse = new JournalResponse(journal);
                 journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                 journalResponse.setEntryCount();        
@@ -218,7 +222,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }        
         entry.setUpdatedAt(now);
         journal.setUpdatedAt(now);
-        mongoTemplate.save(journal);    
+        journalDAL.saveJournal(journal);
         if(isEditable == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
@@ -267,7 +271,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                         .message("Entries older than 24 hours cannot be edited!")
                         .build();
         }
-        mongoTemplate.save(entry);
+        journalDAL.saveJournalEntry(entry);
 		JournalResponse journalResponse = new JournalResponse(journal);
 		journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
 		journalResponse.setEntryCount();

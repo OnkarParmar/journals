@@ -6,9 +6,8 @@ import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
+import com.teamteach.journalmgmt.infra.persistence.dal.JournalDAL;
 
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime; 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -49,6 +48,9 @@ public class JournalUse implements IJournalMgmt{
         private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
+        private JournalDAL journalDAL;
+
+    @Autowired
         private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -86,8 +88,7 @@ public class JournalUse implements IJournalMgmt{
     };
 
     public ObjectResponseDto deleteEntriesForOwner(String ownerId) {
-        Query query = new Query(Criteria.where("ownerId").is(ownerId));
-        mongoTemplate.remove(query, JournalEntry.class);
+        journalDAL.removeJournalEntries("ownerId",ownerId);
         return ObjectResponseDto.builder()
             .success(true)
             .message("Entry deletion successful")
@@ -123,7 +124,7 @@ public class JournalUse implements IJournalMgmt{
                     .updatedAt(date)
                     .name(journalCommand.getName())
                     .build();
-                mongoTemplate.save(journal);
+                journalDAL.saveJournal(journal);
                 return ObjectResponseDto.builder()
                     .success(true)
                     .message("Journal created successfully")
@@ -148,9 +149,8 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectResponseDto delete(String id) {
-            Query query = new Query(Criteria.where("id").is(id));
             try {
-                mongoTemplate.remove(query, "journals");
+                journalDAL.removeJournal(id);
                 return ObjectResponseDto.builder()
                     .success(true)
                     .message("Journal deleted successfully")
