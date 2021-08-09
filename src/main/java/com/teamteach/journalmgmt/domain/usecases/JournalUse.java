@@ -165,6 +165,8 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
+            ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
+            String timezone = parentProfile.getTimezone();
             Query query = new Query();
             List<JournalResponse> journalResponses = new ArrayList<>();
             query = new Query(Criteria.where("ownerId").is(ownerId));
@@ -177,7 +179,7 @@ public class JournalUse implements IJournalMgmt{
                     JournalResponse journalResponse = new JournalResponse(journal);
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
-                    journalResponse.setDesc(addDescription());
+                    journalResponse.setDesc(addDescription(timezone));
                     journalResponse.setName(journal.getName());
                     //ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
                     //journalResponse.setParentProfile(parentProfile);
@@ -187,11 +189,12 @@ public class JournalUse implements IJournalMgmt{
             return new ObjectListResponseDto<>(true, "Journal records retrieved successfully!", journalResponses);
         }
 
-    public String addDescription(){
+    public String addDescription(String timezone){
         String des;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
-        LocalDateTime now = LocalDateTime.now();
-        int hourTime = Integer.parseInt(dtf.format(now));
+        SimpleDateFormat formatter = new SimpleDateFormat("HH");
+        Date now = new Date(System.currentTimeMillis());
+        formatter.setTimeZone(TimeZone.getTimeZone(timezone));
+        int hourTime = Integer.parseInt(formatter.format(now));
         int timeArea;
         if(hourTime > 3 && hourTime < 12) timeArea = 0;
         else if(hourTime >= 12 && hourTime < 20) timeArea = 1;
