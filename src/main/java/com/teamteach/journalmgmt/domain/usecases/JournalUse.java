@@ -8,14 +8,8 @@ import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.teamteach.journalmgmt.infra.persistence.dal.JournalDAL;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.function.Consumer;
@@ -49,9 +43,6 @@ public class JournalUse implements IJournalMgmt{
 
     @Autowired
         private JournalDAL journalDAL;
-
-    @Autowired
-        private MongoTemplate mongoTemplate;
 
     @Autowired
         private JournalEntryReportService journalEntriesReportService;
@@ -99,8 +90,10 @@ public class JournalUse implements IJournalMgmt{
         public ObjectResponseDto createJournal(JournalCommand journalCommand){
             Journal journal = null;
             if(journalCommand.getOwnerId() != null){
-                Query query = new Query(Criteria.where("ownerId").is(journalCommand.getOwnerId()));
-                journal = mongoTemplate.findOne(query, Journal.class);
+                HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+                searchCriteria.put(new SearchKey("ownerId",false),journalCommand.getOwnerId());
+                List<Journal> journals = journalDAL.getJournals(searchCriteria);
+                journal = journals.isEmpty() ? null : journals.get(0);
             }
             else {
                 journalCommand.setOwnerId("0");
@@ -136,8 +129,7 @@ public class JournalUse implements IJournalMgmt{
     @Override
         public ObjectListResponseDto<JournalResponse> findAll() {
             List<JournalResponse> journalResponses = new ArrayList<>();
-            Query query = new Query();
-            List<Journal> journals = mongoTemplate.find(query, Journal.class);
+            List<Journal> journals = journalDAL.getJournals(null);
             for(Journal journal: journals){
                 journalResponses.add(new JournalResponse(journal));
             }
@@ -167,11 +159,12 @@ public class JournalUse implements IJournalMgmt{
         public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
             ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
             String timezone = parentProfile.getTimezone();
-            Query query = new Query();
             List<JournalResponse> journalResponses = new ArrayList<>();
-            query = new Query(Criteria.where("ownerId").is(ownerId));
+            HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("ownerId",false),ownerId);
+            List<Journal> journals = journalDAL.getJournals(searchCriteria);
+            journals = journals.isEmpty() ? null : journals;
 
-            List<Journal> journals = mongoTemplate.find(query, Journal.class);
             if (journals == null) {
                 return new ObjectListResponseDto<>(false, "A Journal with this ownerId does not exist!", null);
             } else {
@@ -181,8 +174,6 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription(timezone));
                     journalResponse.setName(journal.getName());
-                    //ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
-                    //journalResponse.setParentProfile(parentProfile);
                     journalResponses.add(journalResponse);
                 }            
             }
@@ -214,8 +205,10 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectResponseDto findByTitle(String title) {
-            Query query = new Query(Criteria.where("title").is(title));
-            Journal journal = mongoTemplate.findOne(query, Journal.class);
+            HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("title",false),title);
+            List<Journal> journals = journalDAL.getJournals(searchCriteria);
+            Journal journal = journals.isEmpty() ? null : journals.get(0);
 
             if (journal == null) {
                 return ObjectResponseDto.builder()
@@ -233,10 +226,12 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectResponseDto savePrivate(JournalCommand journalCommand) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("ownerId").is("0"));
-            query.addCriteria(Criteria.where("journalType").is(journalCommand.getJournalType()));
-            Journal journal = mongoTemplate.findOne(query, Journal.class);
+            HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("ownerId",false),"0");
+            searchCriteria.put(new SearchKey("journalType",false),journalCommand.getJournalType());
+            List<Journal> journals = journalDAL.getJournals(searchCriteria);
+            Journal journal = journals.isEmpty() ? null : journals.get(0);
+
             if(journal == null)
             {
                 return ObjectResponseDto.builder()
@@ -337,17 +332,12 @@ public class JournalUse implements IJournalMgmt{
                     "URL generated successfully!",
                     url);
         }
-    
-    // @Override
-    //     public ObjectListResponseDto<JournalDashboardResponse> getJournalDashboard(String accessToken){
-    //         return new ObjectListResponseDto<JournalDashboardResponse>(true, "Journal Dashboard retrieved successfully!", null);
-    //     }
 
     @Override
         public ObjectListResponseDto<JournalDashboardResponse> getJournalDashboard(String accessToken){
 
-            Query query = new Query();
-            List<Journal> journals = mongoTemplate.findAll(Journal.class);
+            List<Journal> journals = journalDAL.getJournals(null);
+            journals = journals.isEmpty() ? null : journals;
             List<JournalDashboardResponse> journalDashboardResponses = new ArrayList<>();
             JournalDashboardResponse journalDashboardResponse;
             List<MoodObj> moods;
@@ -364,11 +354,7 @@ public class JournalUse implements IJournalMgmt{
                     if(journal.getOwnerId() == "0") continue;
                     moods = moodsService.getMoodsCount(journal.getJournalId());
                     entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
-                    query = new Query();
-                    query.addCriteria(Criteria.where("ownerId").is(journal.getOwnerId()));
-                    query.addCriteria(Criteria.where("journalId").is(journal.getJournalId()));
-                    query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
-                    journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+                    journalEntry = journalDAL.getJournalDashboardEntries(journal.getOwnerId(), journal.getJournalId());
                     if(journalEntry != null){
                         cur = journalEntry.getCreatedAt();
                         strDate = formatter.format(cur);
