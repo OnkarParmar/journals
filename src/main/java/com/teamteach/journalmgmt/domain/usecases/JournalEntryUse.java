@@ -10,11 +10,6 @@ import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -32,9 +27,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
 	@Autowired
 	private MoodsService moodsService;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     @Autowired
     private JournalDAL journalDAL;
@@ -56,8 +48,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto lock(String id) {
-        Query query = new Query(Criteria.where("_id").is(id));
-        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("_id",false),id);
+        List<JournalEntry> journalEntries = journalDAL.getJournalEntries(searchCriteria);
+        JournalEntry entry = journalEntries.isEmpty() ? null : journalEntries.get(0);
         if(entry.isLocked()){
             entry.setLocked(false);
             journalDAL.saveJournalEntry(entry);
@@ -79,10 +73,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto delete(String id) {
-        Query query = new Query(Criteria.where("_id").is(id));
-        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
-        Query journalQuery = new Query(Criteria.where("journalId").is(entry.getJournalId()));
-        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+        HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("_id",false),id);
+        List<JournalEntry> journalEntries = journalDAL.getJournalEntries(searchCriteria);
+        JournalEntry entry = journalEntries.isEmpty() ? null : journalEntries.get(0);
+
+        searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("journalId",false),entry.getJournalId());
+        List<Journal> journals = journalDAL.getJournals(searchCriteria);
+        Journal journal = journals.isEmpty() ? null : journals.get(0);
+
         Date created = entry.getCreatedAt();
         boolean isEditable = isEditable(created);
         if(isEditable == true){
@@ -112,10 +112,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto findById(String id, String accessToken) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(id));
-
-        JournalEntry entry = mongoTemplate.findOne(query, JournalEntry.class);
+        HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("_id",false),id);
+        List<JournalEntry> journalEntries = journalDAL.getJournalEntries(searchCriteria);
+        JournalEntry entry = journalEntries.isEmpty() ? null : journalEntries.get(0);
 
         if (entry == null) {
             return ObjectResponseDto.builder()
@@ -125,8 +125,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         } else {
             JournalEntryResponse journalEntryResponse = new JournalEntryResponse(entry);
             Map<String, String> moodTable = new HashMap<>();
-            query = new Query(Criteria.where("isParent").is(true));
-            List<Mood> moods = mongoTemplate.find(query, Mood.class);
+            searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("isParent",false),true);
+            List<Mood> moods = journalDAL.getMoods(searchCriteria);
             for (Mood mood : moods) {
                 moodTable.put(mood.getName(), mood.getUrl());
             }
@@ -145,13 +146,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto getLastSuggestion(String id, String token) {
-        Query query = new Query();
         String[] tokens = token.split(" ");
         JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
-        query.addCriteria(Criteria.where("recommendationId").is(id).and("ownerId").is(jwtUser.getPrincipal()));
-        query.with(Sort.by(Sort.Direction.DESC, "updatedAt"));
-
-        JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
+        JournalEntry journalEntry = journalDAL.getLastSuggestionEntry(id, jwtUser.getPrincipal());
 
         if (journalEntry == null) {
             return ObjectResponseDto.builder()
@@ -189,8 +186,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         JournalEntry entry = null;
         boolean isEditable = true;
         String entryId = null;
-        Query journalQuery = new Query(Criteria.where("journalId").is(editJournalEntryCommand.getJournalId()));
-        Journal journal = mongoTemplate.findOne(journalQuery, Journal.class);
+        HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("journalId",false),editJournalEntryCommand.getJournalId());
+        List<Journal> journals = journalDAL.getJournals(searchCriteria);
+        Journal journal = journals.isEmpty() ? null : journals.get(0);
         Date now = new Date(System.currentTimeMillis());
         if (journal == null) {
             return ObjectResponseDto.builder()
@@ -200,8 +199,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }
         if(editJournalEntryCommand.getEntryId() != null){
             entryId = editJournalEntryCommand.getEntryId();
-            Query query = new Query(Criteria.where("_id").is(editJournalEntryCommand.getEntryId()));
-            entry = mongoTemplate.findOne(query, JournalEntry.class);
+            searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("_id",false),editJournalEntryCommand.getEntryId());
+            List<JournalEntry> journalEntries = journalDAL.getJournalEntries(searchCriteria);
+            entry = journalEntries.isEmpty() ? null : journalEntries.get(0);
             if (entry == null) {
                 return ObjectResponseDto.builder()
                             .success(false)
@@ -284,7 +285,6 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
-        Query query = new Query();
         SimpleDateFormat formatter = null;
         Date fromDate = null;
         Date toDate = null;
@@ -327,8 +327,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 e.printStackTrace();
             }
         }
+
+        HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+        HashMap<SearchKey,Object> containCriteria = new HashMap<>();
+
         if (journalEntrySearchCommand.getEntryId() != null) {
-            query.addCriteria(Criteria.where("entryId").is(journalEntrySearchCommand.getEntryId()));
+            searchCriteria.put(new SearchKey("entryId",false),journalEntrySearchCommand.getEntryId());
         }
         if (journalEntrySearchCommand.getOwnerId() == null || journalEntrySearchCommand.getOwnerId().equals("")) {
            return new ObjectResponseDto(
@@ -337,25 +341,18 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                         null
            );
         } else {
-            query.addCriteria(Criteria.where("ownerId").is(journalEntrySearchCommand.getOwnerId()));
+            searchCriteria.put(new SearchKey("ownerId",false),journalEntrySearchCommand.getOwnerId());
         }
         if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
-            query.addCriteria(Criteria.where("mood").in(journalEntrySearchCommand.getMoods()));
+            containCriteria.put(new SearchKey("mood",false),journalEntrySearchCommand.getMoods());
         }
         if (journalEntrySearchCommand.getCategories() != null && !journalEntrySearchCommand.getCategories().isEmpty()) {
-            query.addCriteria(Criteria.where("categoryId").in(journalEntrySearchCommand.getCategories()));
+            containCriteria.put(new SearchKey("categoryId",false),journalEntrySearchCommand.getCategories());
         }
         if (journalEntrySearchCommand.getChildren() != null && !journalEntrySearchCommand.getChildren().isEmpty()) {
-            query.addCriteria(Criteria.where("children").in(journalEntrySearchCommand.getChildren()));
+            containCriteria.put(new SearchKey("children",false),journalEntrySearchCommand.getChildren());
         }
-        if (fromDate != null && toDate != null) {
-            query.addCriteria(Criteria.where("createdAt").lte(toDate).gte(fromDate));
-        } else if (fromDate != null) {
-            query.addCriteria(Criteria.where("createdAt").gte(fromDate));
-        }
-        query.with(Sort.by(Direction.DESC, "createdAt"));
-        // System.out.println(query);
-        List<JournalEntry> entries = mongoTemplate.find(query, JournalEntry.class);
+        List<JournalEntry> entries = journalDAL.getSearchJournalEntries(searchCriteria, containCriteria, fromDate, toDate);
         List<JournalEntriesResponse> journalEntriesGrid = new ArrayList<>();
         List<ChildProfile> childProfiles = null;
         Map<String, Category> categories = null;
@@ -379,8 +376,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             categories = recommendationService.getCategories(accessToken);
         }
         Map<String, String> moodTable = new HashMap<>();
-        query = new Query(Criteria.where("isParent").is(true));
-        List<Mood> moods = mongoTemplate.find(query, Mood.class);
+        searchCriteria = new HashMap<>();
+        searchCriteria.put(new SearchKey("isParent",false),true);
+        List<Mood> moods = journalDAL.getMoods(searchCriteria);
         for (Mood mood : moods) {
             moodTable.put(mood.getName(), mood.getUrl());
         }
