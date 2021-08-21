@@ -346,6 +346,7 @@ public class JournalUse implements IJournalMgmt{
             Date cur;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");  
             String strDate = "it is null by default";
+            int id = 0;
 
             if (journals == null) {
                 return new ObjectListResponseDto<>(false, "No journals found!", null);
@@ -360,7 +361,8 @@ public class JournalUse implements IJournalMgmt{
                         strDate = formatter.format(cur);
                     }
                     if(entryCount == 0) strDate = "null";
-                    journalDashboardResponse = new JournalDashboardResponse(journal.getOwnerId(),
+                    journalDashboardResponse = new JournalDashboardResponse(id++,
+                                                                            journal.getOwnerId(),
                                                                             journal.getName(),
                                                                             "", 
                                                                             entryCount,
