@@ -20,6 +20,7 @@
 		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
                 <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
                 <swagger-annotations-version>1.6.1</swagger-annotations-version>
+		<branch> ${branch} </branch>
 	</properties>
 
 	<dependencies>
@@ -198,7 +199,7 @@
 					<verbose>true</verbose>
 					<images>
 						<image>
-							<name>${project.groupId}/${project.artifactId}</name>
+							<name>${project.groupId}-${project.artifactId}:${branch}</name>
 							<build>
 								<from>openjdk:11-jre-slim-buster</from>
 								<entryPoint>
