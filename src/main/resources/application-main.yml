@@ -1,0 +1,30 @@
+server.port: 8083
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://teamteach:DigiSherpa2021@cluster0.h80qy.mongodb.net/teamteach?retryWrites=true&w=majority
+  rabbitmq:
+    host: 13.126.110.243
+    port: 5672
+    virtual-host: teamteach
+    username: admin
+    password: DigiSherpa21
+
+app:
+  security:
+    jwt:
+      authtype: Bearer
+      expirationmins: 1440
+      uri: asd
+      header: jjh
+    authentication:
+      type: DBBASED
+    key:
+      keytype: shared
+      signingsecret: fe80::6184:62f1:2b9e:5b8313:8666:1qaz
+
+exchange:
+  signup: signupexchange
+
+signup.routingkeys: event.email
+listen.queue.names: event.createjournal

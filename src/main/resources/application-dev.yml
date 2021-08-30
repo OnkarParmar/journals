@@ -1,0 +1,34 @@
+server.port: 8083
+spring:
+  data:
+    mongodb:
+      username: teamteach
+      password: DigiSherpa2021
+      database: teamteach
+      port: 27017
+      host: dev.myfamilycoach.ml
+  rabbitmq:
+    host: 13.126.110.243
+    port: 5672
+    virtual-host: teamteach
+    username: admin
+    password: DigiSherpa21
+
+app:
+  security:
+    jwt:
+      authtype: Bearer
+      expirationmins: 1440
+      uri: asd
+      header: jjh
+    authentication:
+      type: DBBASED
+    key:
+      keytype: shared
+      signingsecret: fe80::6184:62f1:2b9e:5b8313:8666:1qaz
+
+exchange:
+  signup: signupexchange
+
+signup.routingkeys: event.email
+listen.queue.names: event.createjournal
