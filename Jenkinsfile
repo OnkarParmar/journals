@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'echo $GIT_BRANCH'
+                sh "cp src/main/resources/application-${GIT_BRANCH}.yml src/main/resources/application.yml"
                 sh "mvn install -Ddocker -Dbranch=${GIT_BRANCH}"
             }
         }
