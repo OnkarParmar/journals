@@ -8,7 +8,7 @@ spring:
       port: 27017
       host: dev.myfamilycoach.ml
   rabbitmq:
-    host: 13.126.110.243
+    host: dev.digisherpa.ai
     port: 5672
     virtual-host: teamteach
     username: admin
