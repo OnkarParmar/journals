@@ -4,12 +4,13 @@ pipeline {
         REPO = "333490196116.dkr.ecr.ap-south-1.amazonaws.com"
         PROJECT = "teamteach-journals"
         USER = "ec2-user"
-        DOMAIN = "myfamilycoach.ml"
+        DOMAIN = "digisherpa.ai"
     }
     stages{
         stage('Build') {
             steps {
                 sh 'echo $GIT_BRANCH'
+                sh "cp src/main/resources/application-${GIT_BRANCH}.yml src/main/resources/application.yml"
                 sh "mvn install -Ddocker -Dbranch=${GIT_BRANCH}"
             }
         }
@@ -25,7 +26,7 @@ pipeline {
                 sh 'echo \'$(aws ecr get-login --no-include-email --region ap-south-1)\' > ${GIT_BRANCH}.sh'
                 sh 'echo docker pull $REPO/$PROJECT:$GIT_BRANCH >> ${GIT_BRANCH}.sh'
                 sh 'echo docker rm -f $PROJECT >> ${GIT_BRANCH}.sh'
-                sh 'echo docker run -p 8083:8083 -d --name $PROJECT $REPO/$PROJECT:$GIT_BRANCH >> ${GIT_BRANCH}.sh'
+                sh 'echo docker run -e TZ=Asia/Kolkata -p 8083:8083 -d --name $PROJECT $REPO/$PROJECT:$GIT_BRANCH >> ${GIT_BRANCH}.sh'
                 sh 'cat ${GIT_BRANCH}.sh | ssh ${USER}@$GIT_BRANCH.$DOMAIN' 
             }
         }
