@@ -26,7 +26,7 @@ public class ProfileService {
         List<ChildProfile> children = new ArrayList<>();
         ParentProfileResponseDto parentProfile = null;
         try {
-            String parentProfileUrl = "http://localhost:8082/profiles/owner/"+ownerId;
+            String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
