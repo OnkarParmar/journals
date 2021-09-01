@@ -2,7 +2,11 @@ server.port: 8083
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://teamteach:DigiSherpa2021@cluster0.h80qy.mongodb.net/teamteach?retryWrites=true&w=majority
+      username: teamteach
+      password: DigiSherpa2021
+      database: teamteach
+      port: 27017
+      host: main.digisherpa.ai
   rabbitmq:
     host: main.digisherpa.ai
     port: 5672
