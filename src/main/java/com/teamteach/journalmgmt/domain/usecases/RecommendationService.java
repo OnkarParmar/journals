@@ -27,7 +27,7 @@ public class RecommendationService {
         Map<String, Category> categories = new HashMap<>();
         Category category = null;
         try {
-            String categoriesUrl = "https://ms.digisherpa.ai/recommendations/categories";
+            String categoriesUrl = "http://localhost:8086/recommendations/categories";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
