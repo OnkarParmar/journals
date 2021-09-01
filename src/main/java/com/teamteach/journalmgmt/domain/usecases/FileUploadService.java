@@ -8,8 +8,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class FileUploadService {
-    RestTemplate restTemplate = new RestTemplate();
-    private final String S3_POSTURL = "https://ms.digisherpa.ai/files/upload/";
+    @Value("${gateway.url}")
+    String gateway;    RestTemplate restTemplate = new RestTemplate();
+    private final String S3_POSTURL = gateway+"/files/upload/";
 
     public String saveTeamTeachFile(String folder, String filename, byte[] fileByteArray) {
         HttpHeaders headers = new HttpHeaders();

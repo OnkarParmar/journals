@@ -15,19 +15,21 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecommendationService {
-
+    @Value("${gateway.url}")
+    String gateway;
     RestTemplate restTemplate = new RestTemplate();
 
     public Map<String, Category> getCategories(String accessToken){
         Map<String, Category> categories = new HashMap<>();
         Category category = null;
         try {
-            String categoriesUrl = "https://ms.digisherpa.ai/recommendations/categories";
+            String categoriesUrl = gateway+"/recommendations/categories";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -52,7 +54,7 @@ public class RecommendationService {
     public String getSuggestion(String accessToken, JournalEntry searchParams){
         String suggestion = null;
         try {
-            String url = "https://ms.digisherpa.ai/recommendations";
+            String url = gateway+"/recommendations";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
