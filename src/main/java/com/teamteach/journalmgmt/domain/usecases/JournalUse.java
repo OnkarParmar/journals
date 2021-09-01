@@ -158,6 +158,9 @@ public class JournalUse implements IJournalMgmt{
     @Override
         public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
             ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
+            if (parentProfile == null) {
+                return new ObjectListResponseDto<>(false, "A Parent with this ownerId does not exist!", null);
+            }
             String timezone = parentProfile.getTimezone();
             List<JournalResponse> journalResponses = new ArrayList<>();
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
