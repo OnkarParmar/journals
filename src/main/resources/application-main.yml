@@ -30,5 +30,7 @@ app:
 exchange:
   signup: signupexchange
 
+gateway.url: "https://ms.digisherpa.ai"
+
 signup.routingkeys: event.email
 listen.queue.names: event.createjournal

@@ -14,11 +14,15 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProfileService {
+    @Value("${gateway.url}")
+    String gateway;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -26,7 +30,7 @@ public class ProfileService {
         List<ChildProfile> children = new ArrayList<>();
         ParentProfileResponseDto parentProfile = null;
         try {
-            String parentProfileUrl = "https://ms.digisherpa.ai/profiles/owner/"+ownerId;
+            String parentProfileUrl = gateway+"/profiles/owner/"+ownerId;
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
