@@ -15,7 +15,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 

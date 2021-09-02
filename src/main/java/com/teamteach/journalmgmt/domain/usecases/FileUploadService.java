@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class FileUploadService {
