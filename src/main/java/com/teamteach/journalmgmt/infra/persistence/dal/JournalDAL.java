@@ -29,11 +29,16 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
 
     @Override
     public void saveJournalEntry(JournalEntry journalEntry) {
+        journalEntry.setOwnerId(AnonymizeService.anonymizeData(journalEntry.getOwnerId())); 
+        System.out.println(journalEntry.getOwnerId());
         mongoTemplate.save(journalEntry);
     }
 
     @Override
     public void saveJournal(Journal journal) {
+        System.out.println(journal.getOwnerId());
+        System.out.println(AnonymizeService.anonymizeData(journal.getOwnerId()));
+        journal.setOwnerId(AnonymizeService.anonymizeData(journal.getOwnerId()));
         mongoTemplate.save(journal);
     }
 
@@ -100,7 +105,7 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
     @Override
     public JournalEntry getLastSuggestionEntry(String id, String ownerId){
         Query query = new Query();
-        query.addCriteria(Criteria.where("recommendationId").is(id).and("ownerId").is(ownerId));
+        query.addCriteria(Criteria.where("recommendationId").is(id).and("ownerId").is(AnonymizeService.anonymizeData(ownerId)));
         query.with(Sort.by(Sort.Direction.DESC, "updatedAt"));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);
         return journalEntry;
@@ -136,7 +141,7 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
     @Override
     public JournalEntry getJournalDashboardEntries(String ownerId, String journalId){
         Query query = new Query();
-        query.addCriteria(Criteria.where("ownerId").is(ownerId));
+        query.addCriteria(Criteria.where("ownerId").is(AnonymizeService.anonymizeData(ownerId)));
         query.addCriteria(Criteria.where("journalId").is(journalId));
         query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
         JournalEntry journalEntry = mongoTemplate.findOne(query, JournalEntry.class);

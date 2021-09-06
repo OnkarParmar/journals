@@ -91,7 +91,7 @@ public class JournalUse implements IJournalMgmt{
             Journal journal = null;
             if(journalCommand.getOwnerId() != null){
                 HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
-                searchCriteria.put(new SearchKey("ownerId",false),journalCommand.getOwnerId());
+                searchCriteria.put(new SearchKey("ownerId",true),journalCommand.getOwnerId());
                 List<Journal> journals = journalDAL.getJournals(searchCriteria);
                 journal = journals.isEmpty() ? null : journals.get(0);
             }
@@ -164,7 +164,7 @@ public class JournalUse implements IJournalMgmt{
             String timezone = parentProfile.getTimezone();
             List<JournalResponse> journalResponses = new ArrayList<>();
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
-            searchCriteria.put(new SearchKey("ownerId",false),ownerId);
+            searchCriteria.put(new SearchKey("ownerId",true),ownerId);
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             journals = journals.isEmpty() ? null : journals;
 
