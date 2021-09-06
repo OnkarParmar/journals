@@ -341,7 +341,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                                         null
            );
         } else {
-            searchCriteria.put(new SearchKey("ownerId",false),journalEntrySearchCommand.getOwnerId());
+            searchCriteria.put(new SearchKey("ownerId",true),journalEntrySearchCommand.getOwnerId());
         }
         if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
             containCriteria.put(new SearchKey("mood",false),journalEntrySearchCommand.getMoods());
