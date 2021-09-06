@@ -223,7 +223,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         }        
         entry.setUpdatedAt(now);
         journal.setUpdatedAt(now);
-        journalDAL.saveJournal(journal);
+        journalDAL.saveJournal(journal, false);
         if(isEditable == true){
             if(editJournalEntryCommand.getMood() != null && !editJournalEntryCommand.getMood().equals("")){
                 entry.setMood(editJournalEntryCommand.getMood());
