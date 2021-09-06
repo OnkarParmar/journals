@@ -71,7 +71,6 @@ public class JournalUse implements IJournalMgmt{
         @Override
             public void accept(UserSignupInfo userSignupInfo) {
                 if(userSignupInfo.getAction().equals("signup")){
-                    System.out.println(userSignupInfo);
                     ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
                 } else if(userSignupInfo.getAction().equals("delete")){
                     ObjectResponseDto response = deleteEntriesForOwner(userSignupInfo.getOwnerId());
@@ -231,7 +230,7 @@ public class JournalUse implements IJournalMgmt{
     @Override
         public ObjectResponseDto savePrivate(JournalCommand journalCommand) {
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
-            searchCriteria.put(new SearchKey("ownerId",true),"0");
+            searchCriteria.put(new SearchKey("ownerId",false),"0");
             searchCriteria.put(new SearchKey("journalType",false),journalCommand.getJournalType());
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             Journal journal = journals.isEmpty() ? null : journals.get(0);
