@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import com.teamteach.commons.utils.AnonymizeService;
 
@@ -123,7 +124,8 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
         }
         if(containCriteria != null){
             for(Map.Entry<SearchKey,Object> criteria : containCriteria.entrySet()){
-                query.addCriteria(Criteria.where(criteria.getKey().getField()).in(criteria.getValue()));
+                ArrayList<String> list = (ArrayList)criteria.getValue();
+                query.addCriteria(Criteria.where(criteria.getKey().getField()).in(list.toArray(new String[list.size()])));
             }
         }
         if (fromDate != null && toDate != null) {
