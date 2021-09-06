@@ -29,15 +29,16 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
 
     @Override
     public void saveJournalEntry(JournalEntry journalEntry) {
-        journalEntry.setOwnerId(AnonymizeService.anonymizeData(journalEntry.getOwnerId()));
+        journalEntry.setOwnerId(AnonymizeService.anonymizeData(journalEntry.getOwnerId())); 
         System.out.println(journalEntry.getOwnerId());
         mongoTemplate.save(journalEntry);
     }
 
     @Override
     public void saveJournal(Journal journal) {
-        journal.setOwnerId(AnonymizeService.anonymizeData(journal.getOwnerId()));
         System.out.println(journal.getOwnerId());
+        System.out.println(AnonymizeService.anonymizeData(journal.getOwnerId()));
+        journal.setOwnerId(AnonymizeService.anonymizeData(journal.getOwnerId()));
         mongoTemplate.save(journal);
     }
 
