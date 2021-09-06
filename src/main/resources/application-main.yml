@@ -12,7 +12,7 @@ spring:
     port: 5672
     virtual-host: teamteach
     username: admin
-    password: DigiSherpa21
+    password: DigiSherpa2021
 
 app:
   security:
