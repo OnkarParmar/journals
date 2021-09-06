@@ -36,7 +36,6 @@ public class ProfileService {
             HttpEntity <String> entity = new HttpEntity <> (null, headers);
             System.out.println(parentProfileUrl);
             ResponseEntity <String> response = restTemplate.exchange(parentProfileUrl, HttpMethod.GET, entity, String.class);
-            System.out.println(response);
             JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
             boolean success = respoJsonNode.get("success").asBoolean();
             if (success) {

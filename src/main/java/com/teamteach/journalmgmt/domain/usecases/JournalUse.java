@@ -117,7 +117,7 @@ public class JournalUse implements IJournalMgmt{
                     .updatedAt(date)
                     .name(journalCommand.getName())
                     .build();
-                journalDAL.saveJournal(journal);
+                journalDAL.saveJournal(journal, true);
                 return ObjectResponseDto.builder()
                     .success(true)
                     .message("Journal created successfully")
