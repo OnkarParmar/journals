@@ -71,6 +71,7 @@ public class JournalUse implements IJournalMgmt{
         @Override
             public void accept(UserSignupInfo userSignupInfo) {
                 if(userSignupInfo.getAction().equals("signup")){
+                    System.out.println(userSignupInfo);
                     ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
                 } else if(userSignupInfo.getAction().equals("delete")){
                     ObjectResponseDto response = deleteEntriesForOwner(userSignupInfo.getOwnerId());
