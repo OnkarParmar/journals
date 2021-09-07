@@ -232,8 +232,8 @@ public class JournalUse implements IJournalMgmt{
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             Journal journal = journals.isEmpty() ? null : journals.get(0);
 
-            if(journal == null)
-            {
+            if(journal == null) {
+                System.out.println("Oops, how come there is no master journal!");
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("No master journal found with type " + journalCommand.getJournalType())
@@ -241,6 +241,7 @@ public class JournalUse implements IJournalMgmt{
             }
             journalCommand.setTitle(journal.getTitle());
             journalCommand.setDesc(journal.getDesc());
+            System.out.println(journalCommand);
             return createJournal(journalCommand);
         }
 
