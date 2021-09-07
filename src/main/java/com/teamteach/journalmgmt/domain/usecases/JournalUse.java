@@ -68,6 +68,8 @@ public class JournalUse implements IJournalMgmt{
         @Override
             public void accept(UserSignupInfo userSignupInfo) {
                 if(userSignupInfo.getAction().equals("signup")){
+                    JournalCommand journalCommand = new JournalCommand(userSignupInf);
+                    journalCommand.setJournalType("PARENT");
                     ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
                 } else if(userSignupInfo.getAction().equals("delete")){
                     ObjectResponseDto response = deleteEntriesForOwner(userSignupInfo.getOwnerId());
