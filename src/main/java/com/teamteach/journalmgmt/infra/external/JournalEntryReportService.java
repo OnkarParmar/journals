@@ -20,6 +20,6 @@ public class JournalEntryReportService implements IJournalEntryReportService {
 
     @Override
     public void sendJournalEntryReportEvent(SendReportInfo sendReportInfo, String q) {
-        messagingPort.sendMessage(signupExchange, q , sendReportInfo);
+        messagingPort.sendMessage(sendReportInfo, q);
     }
 }
