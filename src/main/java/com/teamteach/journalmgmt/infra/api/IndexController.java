@@ -15,7 +15,6 @@ import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
 import com.teamteach.journalmgmt.domain.usecases.*;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import org.springframework.http.HttpHeaders;
 import com.lowagie.text.DocumentException;
 import org.springframework.data.mongodb.core.MongoTemplate;

@@ -32,5 +32,4 @@ exchange:
 
 gateway.url: "https://dms.digisherpa.ai"
 
-signup.routingkeys: event.email
 listen.queue.names: event.createjournal

@@ -5,7 +5,6 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.teamteach.journalmgmt.infra.persistence.dal.JournalDAL;
 
 import org.apache.commons.io.FilenameUtils;
@@ -22,6 +21,7 @@ import com.lowagie.text.DocumentException;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
+import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,9 +43,6 @@ public class JournalUse implements IJournalMgmt{
 
     @Autowired
         private JournalDAL journalDAL;
-
-    @Autowired
-        private JournalEntryReportService journalEntriesReportService;
 
     @Autowired
         private ReportService reportService;
@@ -71,7 +68,9 @@ public class JournalUse implements IJournalMgmt{
         @Override
             public void accept(UserSignupInfo userSignupInfo) {
                 if(userSignupInfo.getAction().equals("signup")){
-                    ObjectResponseDto response = savePrivate(new JournalCommand(userSignupInfo));
+                    JournalCommand journalCommand = new JournalCommand(userSignupInfo);
+                    journalCommand.setJournalType("PARENT");
+                    ObjectResponseDto response = savePrivate(journalCommand);
                 } else if(userSignupInfo.getAction().equals("delete")){
                     ObjectResponseDto response = deleteEntriesForOwner(userSignupInfo.getOwnerId());
                 }
@@ -235,8 +234,8 @@ public class JournalUse implements IJournalMgmt{
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             Journal journal = journals.isEmpty() ? null : journals.get(0);
 
-            if(journal == null)
-            {
+            if(journal == null) {
+                System.out.println("Oops, how come there is no master journal!");
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("No master journal found with type " + journalCommand.getJournalType())
@@ -244,6 +243,7 @@ public class JournalUse implements IJournalMgmt{
             }
             journalCommand.setTitle(journal.getTitle());
             journalCommand.setDesc(journal.getDesc());
+            System.out.println(journalCommand);
             return createJournal(journalCommand);
         }
 
@@ -257,7 +257,7 @@ public class JournalUse implements IJournalMgmt{
                 sendReportInfo.setEmail(parentProfile.getEmail());
             }
             sendReportInfo.setFname(parentProfile.getFname());
-            journalEntriesReportService.sendJournalEntryReportEvent(sendReportInfo, "event.sendreport");
+            messagingPort.sendMessage(sendReportInfo, "event.sendreport");
             return new ObjectResponseDto(
                     true,
                     "Journal entries report URL sent successfully!",
