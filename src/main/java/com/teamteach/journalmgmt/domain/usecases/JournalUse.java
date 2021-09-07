@@ -5,7 +5,6 @@ import com.teamteach.journalmgmt.domain.ports.in.*;
 import com.teamteach.journalmgmt.domain.models.*;
 import com.teamteach.journalmgmt.domain.ports.out.*;
 import com.teamteach.journalmgmt.domain.responses.*;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 import com.teamteach.journalmgmt.infra.persistence.dal.JournalDAL;
 
 import org.apache.commons.io.FilenameUtils;
@@ -22,6 +21,7 @@ import com.lowagie.text.DocumentException;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
+import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,9 +43,6 @@ public class JournalUse implements IJournalMgmt{
 
     @Autowired
         private JournalDAL journalDAL;
-
-    @Autowired
-        private JournalEntryReportService journalEntriesReportService;
 
     @Autowired
         private ReportService reportService;
@@ -257,7 +254,7 @@ public class JournalUse implements IJournalMgmt{
                 sendReportInfo.setEmail(parentProfile.getEmail());
             }
             sendReportInfo.setFname(parentProfile.getFname());
-            journalEntriesReportService.sendJournalEntryReportEvent(sendReportInfo, "event.sendreport");
+            messagingPort.sendMessage(sendReportInfo, "event.sendreport");
             return new ObjectResponseDto(
                     true,
                     "Journal entries report URL sent successfully!",

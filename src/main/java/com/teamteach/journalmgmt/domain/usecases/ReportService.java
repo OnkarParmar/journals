@@ -9,7 +9,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import lombok.Data;
 
 import com.teamteach.journalmgmt.domain.models.JournalEntryProfile;
-import com.teamteach.journalmgmt.infra.external.JournalEntryReportService;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +26,7 @@ public class ReportService {
     private JournalEntryProfile report;
 
     @Autowired
-    private JournalEntryReportService journalEntriesReportService;
-
-    @Autowired
-    public ReportService(JournalEntryReportService journalEntriesReportService, SpringTemplateEngine templateEngine) {
-        this.journalEntriesReportService = journalEntriesReportService;
+    public ReportService(SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
