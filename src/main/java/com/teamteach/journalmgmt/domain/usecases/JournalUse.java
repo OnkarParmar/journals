@@ -257,12 +257,22 @@ public class JournalUse implements IJournalMgmt{
                 sendReportInfo.setEmail(parentProfile.getEmail());
             }
             sendReportInfo.setFname(parentProfile.getFname());
-            messagingPort.sendMessage(sendReportInfo, "event.sendreport");
-            return new ObjectResponseDto(
-                    true,
-                    "Journal entries report URL sent successfully!",
-                    sendReportInfo);
+            String pdfUrl = PdfRenderingService.renderPdf(token, sendReportInfo);
+            if (pdfUrl != null) {
+                sendReportInfo.setUrl(pdfUrl);
+                messagingPort.sendMessage(sendReportInfo, "event.sendreport");
+                return new ObjectResponseDto(
+                        true,
+                        "Journal entries report URL sent successfully!",
+                        sendReportInfo);
+            } else {
+                return new ObjectResponseDto(
+                        false,
+                        "Journal entries report creation failed!",
+                        null);
+            }
         }
+
 
     @Override
         public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String token) {
@@ -313,12 +323,11 @@ public class JournalUse implements IJournalMgmt{
                 .build();
             reportService.setReport(journalEntryProfile);  
             String url = null;
-            int i=0;
+            int i=1;
             try {
                 String fileExt = FilenameUtils.getExtension(reportService.generateReport().getName()).replaceAll("\\s", "");
                 String fileName = "journal_"+journalId+"_"+i+"."+fileExt;
                 url = fileUploadService.saveTeamTeachFile("reports", fileName.replaceAll("\\s", ""),Files.readAllBytes(reportService.generateReport().toPath()));
-                i++;
             } catch (IOException ioe) {
                 return new ObjectResponseDto(
                         false,
