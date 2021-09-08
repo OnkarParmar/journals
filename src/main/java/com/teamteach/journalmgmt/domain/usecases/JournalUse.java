@@ -257,7 +257,7 @@ public class JournalUse implements IJournalMgmt{
                 sendReportInfo.setEmail(parentProfile.getEmail());
             }
             sendReportInfo.setFname(parentProfile.getFname());
-            String pdfUrl = PdfRenderingService.renderPdf(token, sendReportInfo);
+            String pdfUrl = sendReportInfo.getUrl(); //PdfRenderingService.renderPdf(token, sendReportInfo);
             if (pdfUrl != null) {
                 sendReportInfo.setUrl(pdfUrl);
                 messagingPort.sendMessage(sendReportInfo, "event.sendreport");
