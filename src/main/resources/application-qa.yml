@@ -6,9 +6,9 @@ spring:
       password: DigiSherpa2021
       database: teamteach
       port: 27017
-      host: main.digisherpa.ai
+      host: qa.digisherpa.ai
   rabbitmq:
-    host: main.digisherpa.ai
+    host: qa.digisherpa.ai
     port: 5672
     virtual-host: teamteach
     username: admin
@@ -30,6 +30,6 @@ app:
 exchange:
   signup: signupexchange
 
-gateway.url: "https://main.digisherpa.ai"
+gateway.url: "https://qa.digisherpa.ai"
 
 listen.queue.names: event.createjournal
