@@ -249,6 +249,7 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectResponseDto sendReport(SendReportInfo sendReportInfo, String token) {
+            System.out.println(sendReportInfo.getUrl());
             String[] tokens = token.split(" ");
             JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
             String ownerId = jwtUser.getPrincipal();
@@ -339,6 +340,7 @@ public class JournalUse implements IJournalMgmt{
                         "URL generation failed!",
                         null);
             }
+            System.out.println(url);
             return new ObjectResponseDto(
                     true,
                     "URL generated successfully!",
