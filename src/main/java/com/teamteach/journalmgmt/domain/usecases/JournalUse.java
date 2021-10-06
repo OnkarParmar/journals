@@ -360,7 +360,11 @@ public class JournalUse implements IJournalMgmt{
             Date cur;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");  
             String strDate = "it is null by default";
+            String strDate2="";
             int id = 0;
+            Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");  
+            String strDate1 = formatter1.format(date);
 
             if (journals == null) {
                 return new ObjectListResponseDto<>(false, "No journals found!", null);
@@ -371,16 +375,16 @@ public class JournalUse implements IJournalMgmt{
                     entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
                     journalEntry = journalDAL.getJournalDashboardEntries(journal.getOwnerId(), journal.getJournalId());
                     if(journalEntry != null){
-                        cur = journalEntry.getCreatedAt();
-                        strDate = formatter.format(cur);
+                        cur = journal.getCreatedAt();
+                        strDate2 = formatter.format(cur);
                     }
-                    if(entryCount == 0) strDate = "null";
+                    if(entryCount == 0) strDate = strDate2;
                     journalDashboardResponse = new JournalDashboardResponse(id++,
                                                                             journal.getOwnerId(),
                                                                             journal.getName(),
-                                                                            "", 
+                                                                            strDate1, 
                                                                             entryCount,
-                                                                            strDate);
+                                                                            strDate1);
                     journalDashboardResponses.add(journalDashboardResponse);
                 }            
             }
