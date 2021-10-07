@@ -7,4 +7,5 @@ public class SendReportInfo {
     String fname;
     String email;
     String url;
+    String action;
 }
