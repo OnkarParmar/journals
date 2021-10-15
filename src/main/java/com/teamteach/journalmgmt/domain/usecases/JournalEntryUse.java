@@ -133,7 +133,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             journalEntryResponse.setMood(moodTable.get(entry.getMood()));
             if (entry.getRecommendationId() != null) {
-                journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
+                journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                journalEntryResponse.setUrl(recommendation.getUrl());
             }
     
             return ObjectResponseDto.builder()
@@ -403,7 +405,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 }
                 journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                 if (entry.getRecommendationId() != null) {
-                    journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                    Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
+                    journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                    journalEntryResponse.setUrl(recommendation.getUrl());
                 }
                 Date created = entry.getCreatedAt();
                 journalEntryResponse.setEditable(isEditable(created));    
@@ -428,7 +432,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 if (!journalEntrySearchCommand.isSummaryOnly()) {
                     journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                     if (entry.getRecommendationId() != null) {
-                        journalEntryResponse.setSuggestion(recommendationService.getSuggestion(accessToken, entry));
+                        Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
+                        journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                        journalEntryResponse.setUrl(recommendation.getUrl());
                     }
                 }
                 journalEntriesResponse.addEntry(journalEntryResponse);
