@@ -134,8 +134,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             journalEntryResponse.setMood(moodTable.get(entry.getMood()));
             if (entry.getRecommendationId() != null) {
                 Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
-                journalEntryResponse.setSuggestion(recommendation.getSuggestion());
-                journalEntryResponse.setUrl(recommendation.getUrl());
+                if (recommendation != null) {
+                    journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                    journalEntryResponse.setUrl(recommendation.getUrl());    
+                }
             }
     
             return ObjectResponseDto.builder()
@@ -406,8 +408,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                 journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                 if (entry.getRecommendationId() != null) {
                     Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
-                    journalEntryResponse.setSuggestion(recommendation.getSuggestion());
-                    journalEntryResponse.setUrl(recommendation.getUrl());
+                    if (recommendation != null) {
+                        journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                        journalEntryResponse.setUrl(recommendation.getUrl());    
+                    }
                 }
                 Date created = entry.getCreatedAt();
                 journalEntryResponse.setEditable(isEditable(created));    
@@ -433,8 +437,10 @@ public class JournalEntryUse implements IJournalEntryMgmt {
                     journalEntryResponse.setMood(moodTable.get(entry.getMood()));
                     if (entry.getRecommendationId() != null) {
                         Recommendation recommendation = recommendationService.getSuggestion(accessToken, entry);
-                        journalEntryResponse.setSuggestion(recommendation.getSuggestion());
-                        journalEntryResponse.setUrl(recommendation.getUrl());
+                        if (recommendation != null) {
+                            journalEntryResponse.setSuggestion(recommendation.getSuggestion());
+                            journalEntryResponse.setUrl(recommendation.getUrl());    
+                        }
                     }
                 }
                 journalEntriesResponse.addEntry(journalEntryResponse);
