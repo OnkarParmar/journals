@@ -28,6 +28,7 @@ public class JournalEntryResponse  implements Comparable<JournalEntryResponse> {
     private String recommendationId;
     private String suggestionIndex; 
     private String suggestion;  
+    private String url;  
 
     @Builder
     public JournalEntryResponse(JournalEntry journalEntry){

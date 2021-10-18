@@ -51,8 +51,8 @@ public class RecommendationService {
         }
         return categories;
     }    
-    public String getSuggestion(String accessToken, JournalEntry searchParams){
-        String suggestion = null;
+    public Recommendation getSuggestion(String accessToken, JournalEntry searchParams){
+        Recommendation recommendation = null;
         try {
             System.out.println(searchParams);
             String url = gateway+"/recommendations";
@@ -64,13 +64,14 @@ public class RecommendationService {
             JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
             boolean success = respoJsonNode.get("success").asBoolean();
             if (success) {
-                JsonNode recommendation = respoJsonNode.get("object");
-                suggestion = recommendation.get("recommendation").asText();
+                JsonNode recommendationJson = respoJsonNode.get("object");
+                String suggestion = recommendationJson.get("recommendation").asText();
+                recommendation = new Recommendation(suggestion,recommendationJson.get("url").asText());
             } 
         }
         catch (IOException e) {
             return null;
         }
-        return suggestion;
+        return recommendation;
     }    
 }
