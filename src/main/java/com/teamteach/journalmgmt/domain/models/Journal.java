@@ -12,7 +12,7 @@ import java.util.*;
 
 @Data
 @Document(collection = "journals")
-public class Journal extends BaseModel {
+public class Journal  {
     @Transient
         public static final String SEQUENCE_NAME = "journals_sequence";
 
@@ -25,6 +25,8 @@ public class Journal extends BaseModel {
     private List<Category> categories;
     private List<Mood> moods;
     private String name;
+    private Date createdAt;
+    private Date updatedAt;
 
     @Builder
     public Journal(
@@ -37,7 +39,8 @@ public class Journal extends BaseModel {
             String desc,
             String name) 
             {
-                super(createdAt, updatedAt);
+                this.createdAt = createdAt;
+                this.updatedAt = updatedAt;
                 this.journalId = journalId;
                 this.title = title;
                 this.desc = desc;
