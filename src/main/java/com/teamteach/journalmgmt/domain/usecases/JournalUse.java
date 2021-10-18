@@ -359,7 +359,8 @@ public class JournalUse implements IJournalMgmt{
             int entryCount;
             JournalEntry journalEntry;
             Date cur;
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS\'Z\'");  
+            Date cur1;
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");  
             String strDate = "it is null by default";
             String strDate2="";
             int id = 0;
@@ -377,15 +378,16 @@ public class JournalUse implements IJournalMgmt{
                     journalEntry = journalDAL.getJournalDashboardEntries(journal.getOwnerId(), journal.getJournalId());
                     if(journalEntry != null){
                         cur = journal.getCreatedAt();
-                        strDate2 = formatter.format(cur);
+                        cur1 = journal.getUpdatedAt();
+                        strDate = formatter.format(cur);
                     }
                     if(entryCount == 0) strDate = strDate2;
                     journalDashboardResponse = new JournalDashboardResponse(id++,
                                                                             journal.getOwnerId(),
                                                                             journal.getName(),
-                                                                            strDate1, 
+                                                                            journal.getCreatedAt()==null?" " :formatter.format(journal.getCreatedAt()), 
                                                                             entryCount,
-                                                                            strDate1);
+                                                                            journal.getUpdatedAt() == null ? " ":formatter.format(journal.getUpdatedAt()));
                     journalDashboardResponses.add(journalDashboardResponse);
                 }            
             }
