@@ -243,13 +243,11 @@ public class JournalUse implements IJournalMgmt{
             }
             journalCommand.setTitle(journal.getTitle());
             journalCommand.setDesc(journal.getDesc());
-            System.out.println(journalCommand);
             return createJournal(journalCommand);
         }
 
     @Override
         public ObjectResponseDto sendReport(SendReportInfo sendReportInfo, String token) {
-            System.out.println(sendReportInfo.getUrl());
             String[] tokens = token.split(" ");
             JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
             String ownerId = jwtUser.getPrincipal();

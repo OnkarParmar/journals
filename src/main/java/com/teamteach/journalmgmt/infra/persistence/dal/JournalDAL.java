@@ -134,7 +134,6 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
             query.addCriteria(Criteria.where("createdAt").gte(fromDate));
         }
         query.with(Sort.by(Direction.DESC, "createdAt"));
-        System.out.println(query);
         List<JournalEntry> journalEntries = mongoTemplate.find(query,JournalEntry.class);
         return journalEntries;
     }

@@ -33,7 +33,6 @@ public class ReportService {
     public File generateReport() throws IOException, DocumentException {
         Context context = getContext();
         String html = loadAndFillTemplate(context);
-        //System.out.println(html);
         return renderPdf(html);
     }
 
@@ -67,7 +66,6 @@ public class ReportService {
         model.put("children", report.getChildren());
         model.put("entries", report.getEntryList());
 
-        //System.out.println(report.getEntryList());
 
         context.setVariables(model);
         return context;
