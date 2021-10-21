@@ -235,7 +235,6 @@ public class JournalUse implements IJournalMgmt{
             Journal journal = journals.isEmpty() ? null : journals.get(0);
 
             if(journal == null) {
-                System.out.println("Oops, how come there is no master journal!");
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("No master journal found with type " + journalCommand.getJournalType())
@@ -339,7 +338,6 @@ public class JournalUse implements IJournalMgmt{
                         "URL generation failed!",
                         null);
             }
-            System.out.println(url);
             return new ObjectResponseDto(
                     true,
                     "URL generated successfully!",
