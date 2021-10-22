@@ -362,7 +362,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Map<String, Category> categories = null;
         Map<String, ChildProfile> childTable = new HashMap<>();
         String timeZone = "UTC";
-        ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getTimezone();
+        ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
         if (parentProfile != null) {
             timeZone = parentProfile.getTimezone();
         } else {
