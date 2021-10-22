@@ -275,10 +275,8 @@ public class JournalUse implements IJournalMgmt{
 
     @Override
         public ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String token) {
-            System.out.println(token);
             String[] tokens = token.split(" ");
             JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
-            System.out.println(jwtUser);
             String ownerId = jwtUser.getPrincipal();
             ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, token);
 

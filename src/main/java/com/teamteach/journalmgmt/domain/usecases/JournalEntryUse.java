@@ -289,6 +289,17 @@ public class JournalEntryUse implements IJournalEntryMgmt {
 
     @Override
     public ObjectResponseDto searchEntries(JournalEntrySearchCommand journalEntrySearchCommand, String accessToken) {
+        String[] tokens = accessToken.split(" ");
+        JwtUser jwtUser = jwtOperationsWrapperSvc.validateToken(tokens[1]);
+        String ownerId = jwtUser.getPrincipal();
+        if (ownerId == null || ownerId.equals("")) {
+            return new ObjectResponseDto(
+                                         false,
+                                         "Owner ID is necessary to search entries",
+                                         null
+            );
+        }
+
         SimpleDateFormat formatter = null;
         Date fromDate = null;
         Date toDate = null;
@@ -338,15 +349,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getEntryId() != null) {
             searchCriteria.put(new SearchKey("entryId",false),journalEntrySearchCommand.getEntryId());
         }
-        if (journalEntrySearchCommand.getOwnerId() == null || journalEntrySearchCommand.getOwnerId().equals("")) {
-           return new ObjectResponseDto(
-                                        false,
-                                        "Owner ID is necessary to search entries",
-                                        null
-           );
-        } else {
-            searchCriteria.put(new SearchKey("ownerId",true),journalEntrySearchCommand.getOwnerId());
-        }
+        searchCriteria.put(new SearchKey("ownerId",true),ownerId);
         if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
             containCriteria.put(new SearchKey("mood",false),journalEntrySearchCommand.getMoods());
         }
@@ -362,7 +365,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         Map<String, Category> categories = null;
         Map<String, ChildProfile> childTable = new HashMap<>();
         String timeZone = "UTC";
-        ParentProfileResponseDto parentProfile = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken);
+        ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
         if (parentProfile != null) {
             timeZone = parentProfile.getTimezone();
         } else {
@@ -370,7 +373,7 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             System.out.println(journalEntrySearchCommand);
         }
         if (journalEntrySearchCommand.isGoalReport()) {
-            childProfiles = profileService.getProfile(journalEntrySearchCommand.getOwnerId(), accessToken).getChildren();
+            childProfiles = profileService.getProfile(ownerId, accessToken).getChildren();
             for (ChildProfile childProfile : childProfiles) {
                 childTable.put(childProfile.getProfileId(), childProfile);
             }
