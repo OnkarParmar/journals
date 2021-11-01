@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RequestMapping("journals")
 public interface IJournalResource {
 
-    @ApiIgnore
     @PostMapping("/create")
         ResponseEntity<ObjectResponseDto> createJournal(@RequestBody @Valid JournalCommand journalCommand);
 
