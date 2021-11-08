@@ -68,4 +68,11 @@ class JournalResource extends AbstractAppController implements IJournalResource 
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalMgmt.getJournalDashboard(token));
     }
+
+    @Override
+    @ApiOperation(value = "Edits Journal ", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> editJournal(HttpHeaders headers, String id, EditJournalCommand editJournalCommand ){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalMgmt.editJournal(editJournalCommand,id));
+    }
 }

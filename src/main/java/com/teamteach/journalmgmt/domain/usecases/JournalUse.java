@@ -117,6 +117,10 @@ public class JournalUse implements IJournalMgmt{
                     .name(journalCommand.getName())
                     .journalYear(journalCommand.getJournalYear())
                     .build();
+
+                if(journalCommand.getJournalType().equals("Class")||journalCommand.getJournalType().equals("Student")){
+                    journal.setActive(true);
+                }
                 journalDAL.saveJournal(journal, true);
                 return ObjectResponseDto.builder()
                     .success(true)
@@ -124,6 +128,57 @@ public class JournalUse implements IJournalMgmt{
                     .object(journal)
                     .build();
             }
+        }
+
+    @Override
+        public ObjectResponseDto editJournal(EditJournalCommand editJournalCommand ,String journalId){
+            if (editJournalCommand.getJournalType() == null) {
+                return ObjectResponseDto.builder()
+                                        .success(false)
+                                        .message("Please provide JournalType in the requestBody")
+                                        .object(editJournalCommand)
+                                        .build();
+            }
+            HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("journalId",false),journalId);
+            List<Journal> journals = journalDAL.getJournals(searchCriteria);
+            Journal editModel = journals.isEmpty() ? null : journals.get(0);
+            if (editModel == null) {
+                return ObjectResponseDto.builder()
+                                        .success(false)
+                                        .message("No Journal record found with given journalId and userType")
+                                        .object(editModel)
+                                        .build();
+            }
+            if(editJournalCommand.getTitle() != null){
+                editModel.setTitle(editJournalCommand.getTitle());
+            }
+            if(editJournalCommand.getName() != null){
+                editModel.setName(editJournalCommand.getName());
+            }
+            if(editJournalCommand.getDesc() != null){
+                editModel.setDesc(editJournalCommand.getDesc());
+            }
+            if(editJournalCommand.getJournalType() != null){
+                editModel.setJournalType(editJournalCommand.getJournalType());
+            }
+            if(editJournalCommand.getJournalYear() != null){
+                editModel.setJournalYear(editJournalCommand.getJournalYear());
+            }
+            if(editJournalCommand.isActive() == false){
+                editModel.setActive(false);
+            }
+            if(editJournalCommand.isActive() == true){
+                editModel.setActive(true);
+            }
+
+            journalDAL.saveJournal(editModel, false);
+            return ObjectResponseDto.builder()
+                                    .success(true)
+                                    .message(editJournalCommand.getJournalType()+" profile updated successfully")
+                                    .object(editModel)
+                                    .build();
+
         }
 
     @Override
@@ -176,6 +231,7 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription(timezone));
+                    journalResponse.setActive(journal.isActive());
                     journalResponse.setName(journal.getName());
                     journalResponse.setJournalType(journal.getJournalType());
                     journalResponses.add(journalResponse);

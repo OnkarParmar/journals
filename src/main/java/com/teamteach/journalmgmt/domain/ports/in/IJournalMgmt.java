@@ -17,4 +17,5 @@ public interface IJournalMgmt {
     ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
     ObjectResponseDto sendReport(SendReportInfo sendReportInfo, String accessToken);
     ObjectListResponseDto<JournalDashboardResponse> getJournalDashboard(String accessToken);
+    ObjectResponseDto editJournal(EditJournalCommand editJournalCommand,String journalId);
 }

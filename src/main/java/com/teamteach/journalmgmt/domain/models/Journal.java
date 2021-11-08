@@ -28,6 +28,7 @@ public class Journal  {
     private Date createdAt;
     private Date updatedAt;
     private String journalYear;
+    private boolean active;
 
     @Builder
     public Journal(

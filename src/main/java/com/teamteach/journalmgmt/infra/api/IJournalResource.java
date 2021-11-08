@@ -19,6 +19,9 @@ public interface IJournalResource {
     @PostMapping("/create")
         ResponseEntity<ObjectResponseDto> createJournal(@RequestBody @Valid JournalCommand journalCommand);
 
+    @PutMapping("/{id}")
+    ResponseEntity<ObjectResponseDto> editJournal(@RequestHeader HttpHeaders headers ,@PathVariable String id,@RequestBody EditJournalCommand editJournalCommand);
+    
     @GetMapping("/owner/{ownerId}")
         ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@RequestHeader HttpHeaders headers, @PathVariable String ownerId) ;
     
