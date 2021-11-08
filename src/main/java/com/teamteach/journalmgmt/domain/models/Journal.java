@@ -27,6 +27,7 @@ public class Journal  {
     private String name;
     private Date createdAt;
     private Date updatedAt;
+    private String journalYear;
 
     @Builder
     public Journal(
@@ -37,7 +38,8 @@ public class Journal  {
             Date updatedAt,
             String title,
             String desc,
-            String name) 
+            String name,
+            String journalYear) 
             {
                 this.createdAt = createdAt;
                 this.updatedAt = updatedAt;
@@ -47,5 +49,6 @@ public class Journal  {
                 this.journalType = journalType;
                 this.ownerId = ownerId;
                 this.name = name;
+                this.journalYear = journalYear;
             }
 }

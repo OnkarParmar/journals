@@ -98,7 +98,7 @@ public class JournalUse implements IJournalMgmt{
                 journalCommand.setOwnerId("0");
             }
 
-            if (journal != null) {
+            if (journal != null && journalCommand.getJournalType().equals("PARENT")) {
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("A Journal with this ownerID already exists!")
@@ -115,6 +115,7 @@ public class JournalUse implements IJournalMgmt{
                     .createdAt(date)
                     .updatedAt(date)
                     .name(journalCommand.getName())
+                    .journalYear(journalCommand.getJournalYear())
                     .build();
                 journalDAL.saveJournal(journal, true);
                 return ObjectResponseDto.builder()

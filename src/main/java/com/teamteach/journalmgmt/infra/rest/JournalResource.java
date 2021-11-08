@@ -27,12 +27,12 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     @Override
     @ApiOperation(value = "Creates the journal", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> createJournal(@Valid JournalCommand journalCommand){
-        if(journalCommand.getOwnerId() == null) //creating a master copy 
+        // if(journalCommand.getOwnerId() == null) //creating a master copy 
                 return ResponseEntity.ok(journalMgmt.createJournal(journalCommand));
-        else // retrieve the existing journal of the owner with the ownerId
-        {
-            return ResponseEntity.ok(journalMgmt.savePrivate(journalCommand));
-        }
+        // else // retrieve the existing journal of the owner with the ownerId
+        // {
+        //     return ResponseEntity.ok(journalMgmt.savePrivate(journalCommand));
+        // }
     }
 
     @Override
