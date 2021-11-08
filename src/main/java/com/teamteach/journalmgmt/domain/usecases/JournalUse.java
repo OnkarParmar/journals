@@ -190,7 +190,7 @@ public class JournalUse implements IJournalMgmt{
         int hourTime = Integer.parseInt(formatter.format(now));
         int timeArea;
         if(hourTime > 3 && hourTime < 12) timeArea = 0;
-        else if(hourTime >= 12 && hourTime < 18) timeArea = 1;
+        else if(hourTime >= 12 && hourTime < 17) timeArea = 1;
         else timeArea = 2;
         switch(timeArea){
             case 0 : des = "Good Morning! How are you doing today?";
@@ -235,7 +235,6 @@ public class JournalUse implements IJournalMgmt{
             Journal journal = journals.isEmpty() ? null : journals.get(0);
 
             if(journal == null) {
-                System.out.println("Oops, how come there is no master journal!");
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("No master journal found with type " + journalCommand.getJournalType())
@@ -339,7 +338,6 @@ public class JournalUse implements IJournalMgmt{
                         "URL generation failed!",
                         null);
             }
-            System.out.println(url);
             return new ObjectResponseDto(
                     true,
                     "URL generated successfully!",

@@ -54,7 +54,6 @@ public class RecommendationService {
     public Recommendation getSuggestion(String accessToken, JournalEntry searchParams){
         Recommendation recommendation = null;
         try {
-            System.out.println(searchParams);
             String url = gateway+"/recommendations";
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", accessToken); 

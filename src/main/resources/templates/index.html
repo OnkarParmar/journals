@@ -200,6 +200,10 @@ footer{
     object-fit: cover;
 }
 
+.logo-box1{
+    margin-bottom: 15px;  
+}
+
 .logo{
     height:30px;
     width:35px;
@@ -331,6 +335,7 @@ footer{
         height:25px;
         width:28px;
     }
+
     .logo-tag{
         width:70%;
     }
@@ -341,6 +346,9 @@ footer{
 <body>
     <header>
      <div class="banner-box">
+        <div class='logo-box1'>
+            <img class='logo1' src="https://dev.myfamilycoach.ml/images/lg.png" alt=""/>
+        </div>
          <h1 class="banner">Journal of Children</h1>
      </div>
      <h2 th:text="${'Parent : ' + fname + ' ' + lname}"></h2>
