@@ -177,6 +177,7 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription(timezone));
                     journalResponse.setName(journal.getName());
+                    journalResponse.setJournalType(journal.getJournalType());
                     journalResponses.add(journalResponse);
                 }            
             }
