@@ -43,8 +43,8 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
         
     }
     @Override
-    public long countJournal(String journalType){
-        Query query = new Query(Criteria.where("active").is(true).and("journalType").is(journalType));
+    public long countJournal(String journalType , String ownerId){
+        Query query = new Query(Criteria.where("active").is(true).and("journalType").is(journalType).and("ownerId").is(AnonymizeService.anonymizeData(ownerId)));
         return mongoTemplate.count(query, Journal.class);
     }
 
