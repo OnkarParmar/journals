@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,9 +44,11 @@ class JournalResource extends AbstractAppController implements IJournalResource 
 
     @Override
     @ApiOperation(value = "Finds journal by ownerId", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId){
+    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId, Optional<String> statusOpt){
+        String status = "all";
+        if (statusOpt.isPresent()) status = statusOpt.get();
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        return ResponseEntity.ok(journalMgmt.findById(ownerId, token));
+        return ResponseEntity.ok(journalMgmt.findById(ownerId, token, status));
     }
 
     @Override

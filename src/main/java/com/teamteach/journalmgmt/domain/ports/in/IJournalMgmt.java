@@ -12,7 +12,7 @@ public interface IJournalMgmt {
     ObjectListResponseDto<JournalResponse> findAll();
     ObjectResponseDto delete(String id);
     ObjectResponseDto findByTitle(String title);
-    ObjectListResponseDto<JournalResponse> findById(String id, String token);
+    ObjectListResponseDto<JournalResponse> findById(String id, String token, String status);
     ObjectResponseDto savePrivate(JournalCommand journalCommand);
     ObjectResponseDto buildReport(String journalId, JournalEntrySearchCommand journalEntrySearchCommand, String accessToken);
     ObjectResponseDto sendReport(SendReportInfo sendReportInfo, String accessToken);
