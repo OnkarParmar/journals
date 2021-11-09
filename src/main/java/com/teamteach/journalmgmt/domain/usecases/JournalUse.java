@@ -121,7 +121,7 @@ public class JournalUse implements IJournalMgmt{
                 if(journalCommand.getJournalType().equals("Class")||journalCommand.getJournalType().equals("Student")){
                     journal.setActive(true);
                 }
-                if(journalDAL.countJournal() == 0){
+                if(journalDAL.countJournal(journalCommand.getJournalType()) == 0){
                 journalDAL.saveJournal(journal, true);
                 return ObjectResponseDto.builder()
                     .success(true)

@@ -7,7 +7,7 @@ import com.teamteach.journalmgmt.domain.models.*;
 
 public interface IJournalRepository {
    void saveJournal(Journal journal, boolean anonymize);
-   long countJournal();
+   long countJournal(String journalType);
    void removeJournal(String id);
    List<Journal> getJournals(HashMap<SearchKey,Object> searchCriteria);
    List<Mood> getMoods(HashMap<SearchKey,Object> searchCriteria);
