@@ -219,7 +219,7 @@ public class JournalUse implements IJournalMgmt{
         }
 
     @Override
-        public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
+        public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken, String status) {
             ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
             if (parentProfile == null) {
                 return new ObjectListResponseDto<>(false, "A Parent with this ownerId does not exist!", null);
@@ -228,6 +228,7 @@ public class JournalUse implements IJournalMgmt{
             List<JournalResponse> journalResponses = new ArrayList<>();
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
             searchCriteria.put(new SearchKey("ownerId",true),ownerId);
+            searchCriteria.put(new SearchKey("active",false),status.equals("active"));
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             journals = journals.isEmpty() ? null : journals;
 
