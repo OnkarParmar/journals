@@ -22,6 +22,7 @@ public class JournalResponse {
     private String name;
     private String journalType;
     private Boolean active;
+    private String journalYear;
 
     @Builder
     public JournalResponse(Journal journal) {
@@ -35,6 +36,7 @@ public class JournalResponse {
         this.name = journal.getName();
         this.journalType = journal.getJournalType();
         this.active = journal.isActive();
+        this.journalYear = journal.getJournalYear();
     }
     public void setEntryCount() {
         this.entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);

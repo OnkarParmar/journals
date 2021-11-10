@@ -243,6 +243,7 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setActive(journal.isActive());
                     journalResponse.setName(journal.getName());
                     journalResponse.setJournalType(journal.getJournalType());
+                    journalResponse.setJournalYear(journal.getJournalYear());
                     journalResponses.add(journalResponse);
                 }            
             }
