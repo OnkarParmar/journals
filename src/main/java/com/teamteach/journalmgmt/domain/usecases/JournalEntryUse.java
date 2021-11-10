@@ -266,8 +266,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             if (editJournalEntryCommand.getRecommendationId() != null) {
                 entry.setRecommendationId(editJournalEntryCommand.getRecommendationId());
-            }            
+            }           
             if (editJournalEntryCommand.getSuggestionIndex() != null) {
+                try{
+                    int num = Integer.parseInt(editJournalEntryCommand.getSuggestionIndex());
+                } catch (NumberFormatException e) {
+                    return ObjectResponseDto.builder()
+                                            .success(false)
+                                            .message(e.getMessage())
+                                            .build();
+                }
                 entry.setSuggestionIndex(editJournalEntryCommand.getSuggestionIndex());
             }            
         } else {
