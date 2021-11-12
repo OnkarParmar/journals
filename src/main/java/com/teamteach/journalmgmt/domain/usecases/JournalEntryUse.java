@@ -361,6 +361,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
             containCriteria.put(new SearchKey("mood",false),journalEntrySearchCommand.getMoods());
         }
+        if (journalEntrySearchCommand.getJournalId() != null && !journalEntrySearchCommand.getJournalId().isEmpty()) {
+            searchCriteria.put(new SearchKey("journalId",false),journalEntrySearchCommand.getJournalId());
+        }
         if (journalEntrySearchCommand.getCategories() != null && !journalEntrySearchCommand.getCategories().isEmpty()) {
             containCriteria.put(new SearchKey("categoryId",false),journalEntrySearchCommand.getCategories());
         }
