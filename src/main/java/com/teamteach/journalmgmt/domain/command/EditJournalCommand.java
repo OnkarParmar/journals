@@ -12,6 +12,6 @@ public class EditJournalCommand {
     private String desc;
     private String journalType;
     private String journalYear;
-    private boolean active;
+    private Boolean active;
 
 }

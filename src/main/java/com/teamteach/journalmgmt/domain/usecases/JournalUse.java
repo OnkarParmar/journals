@@ -173,11 +173,8 @@ public class JournalUse implements IJournalMgmt{
             if(editJournalCommand.getJournalYear() != null){
                 editModel.setJournalYear(editJournalCommand.getJournalYear());
             }
-            if(editJournalCommand.isActive() == false){
-                editModel.setActive(false);
-            }
-            if(editJournalCommand.isActive() == true){
-                editModel.setActive(true);
+            if(editJournalCommand.getActive() != null){
+                editModel.setActive(editJournalCommand.getActive());
             }
 
             journalDAL.saveJournal(editModel, false);
