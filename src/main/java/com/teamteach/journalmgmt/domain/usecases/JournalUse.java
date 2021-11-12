@@ -110,6 +110,7 @@ public class JournalUse implements IJournalMgmt{
                     .journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
                     .title(journalCommand.getTitle())
                     .desc(journalCommand.getDesc())
+                    .info(journalCommand.getInfo())
                     .journalType(journalCommand.getJournalType())
                     .ownerId(journalCommand.getOwnerId())
                     .createdAt(date)
@@ -160,6 +161,9 @@ public class JournalUse implements IJournalMgmt{
             }
             if(editJournalCommand.getTitle() != null){
                 editModel.setTitle(editJournalCommand.getTitle());
+            }
+            if(editJournalCommand.getInfo() != null){
+                editModel.setInfo(editJournalCommand.getInfo());
             }
             if(editJournalCommand.getName() != null){
                 editModel.setName(editJournalCommand.getName());
@@ -237,6 +241,7 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription(timezone));
+                    journalResponse.setInfo(journal.getInfo());
                     journalResponse.setActive(journal.isActive());
                     journalResponse.setName(journal.getName());
                     journalResponse.setJournalType(journal.getJournalType());

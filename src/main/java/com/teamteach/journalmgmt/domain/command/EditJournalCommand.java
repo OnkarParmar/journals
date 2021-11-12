@@ -13,5 +13,6 @@ public class EditJournalCommand {
     private String journalType;
     private String journalYear;
     private Boolean active;
+    private String info;
 
 }
