@@ -22,6 +22,7 @@ import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
+import com.teamteach.commons.utils.AnonymizeService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -178,6 +179,15 @@ public class JournalUse implements IJournalMgmt{
                 editModel.setJournalYear(editJournalCommand.getJournalYear());
             }
             if(editJournalCommand.getActive() != null){
+                if(editJournalCommand.getActive()){
+                    if(journalDAL.countJournal(editJournalCommand.getJournalType(),AnonymizeService.deAnonymizeData(editModel.getOwnerId())) != 0){
+                        return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("You can only have one active Journal for "+editModel.getJournalType())
+                        .object(null)
+                        .build();
+                    }
+                }
                 editModel.setActive(editJournalCommand.getActive());
             }
 
