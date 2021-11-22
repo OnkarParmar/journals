@@ -459,7 +459,7 @@ public class JournalUse implements IJournalMgmt{
                     }
                     if(entryCount == 0) strDate = strDate2;
                     journalDashboardResponse = new JournalDashboardResponse(id++,
-                                                                            journal.getOwnerId(),
+                                                                            AnonymizeService.deAnonymizeData(journal.getOwnerId()),
                                                                             journal.getName(),
                                                                             journal.getCreatedAt()==null?" " :formatter.format(journal.getCreatedAt()), 
                                                                             entryCount,
