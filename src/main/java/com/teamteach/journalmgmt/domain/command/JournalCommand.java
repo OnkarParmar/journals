@@ -19,6 +19,8 @@ public class JournalCommand extends ValidatingCommand{
     private String ownerId;
     private String[] children;
     private String name;
+    private String journalYear;
+    private String info;
 
     public JournalCommand(UserSignupInfo userSignupInfo) {
         this.ownerId = userSignupInfo.getOwnerId();

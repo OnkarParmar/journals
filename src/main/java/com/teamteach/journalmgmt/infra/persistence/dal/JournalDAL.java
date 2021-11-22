@@ -38,7 +38,14 @@ public class JournalDAL  implements IJournalRepository, IJournalEntryRepository 
         if (anonymize) {
             journal.setOwnerId(AnonymizeService.anonymizeData(journal.getOwnerId()));
         }
+     
         mongoTemplate.save(journal);
+        
+    }
+    @Override
+    public long countJournal(String journalType , String ownerId){
+        Query query = new Query(Criteria.where("active").is(true).and("journalType").is(journalType).and("ownerId").is(AnonymizeService.anonymizeData(ownerId)));
+        return mongoTemplate.count(query, Journal.class);
     }
 
     @Override

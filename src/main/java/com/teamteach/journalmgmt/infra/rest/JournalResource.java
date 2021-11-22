@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,12 +28,12 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     @Override
     @ApiOperation(value = "Creates the journal", authorizations = { @Authorization(value="jwtToken") })
     public ResponseEntity<ObjectResponseDto> createJournal(@Valid JournalCommand journalCommand){
-        if(journalCommand.getOwnerId() == null) //creating a master copy 
+        // if(journalCommand.getOwnerId() == null) //creating a master copy 
                 return ResponseEntity.ok(journalMgmt.createJournal(journalCommand));
-        else // retrieve the existing journal of the owner with the ownerId
-        {
-            return ResponseEntity.ok(journalMgmt.savePrivate(journalCommand));
-        }
+        // else // retrieve the existing journal of the owner with the ownerId
+        // {
+        //     return ResponseEntity.ok(journalMgmt.savePrivate(journalCommand));
+        // }
     }
 
     @Override
@@ -43,9 +44,11 @@ class JournalResource extends AbstractAppController implements IJournalResource 
 
     @Override
     @ApiOperation(value = "Finds journal by ownerId", authorizations = { @Authorization(value="jwtToken") })
-    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId){
+    public ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(HttpHeaders headers, String ownerId, Optional<String> statusOpt){
+        String status = "all";
+        if (statusOpt.isPresent()) status = statusOpt.get();
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        return ResponseEntity.ok(journalMgmt.findById(ownerId, token));
+        return ResponseEntity.ok(journalMgmt.findById(ownerId, token, status));
     }
 
     @Override
@@ -67,5 +70,12 @@ class JournalResource extends AbstractAppController implements IJournalResource 
     public ResponseEntity<ObjectListResponseDto<JournalDashboardResponse>> getJournalDashboard(HttpHeaders headers){
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
         return ResponseEntity.ok(journalMgmt.getJournalDashboard(token));
+    }
+
+    @Override
+    @ApiOperation(value = "Edits Journal ", authorizations = { @Authorization(value="jwtToken") })
+    public ResponseEntity<ObjectResponseDto> editJournal(HttpHeaders headers, String id, EditJournalCommand editJournalCommand ){
+        String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
+        return ResponseEntity.ok(journalMgmt.editJournal(editJournalCommand,id));
     }
 }

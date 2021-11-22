@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RequestMapping("journals")
 public interface IJournalResource {
@@ -19,8 +20,13 @@ public interface IJournalResource {
     @PostMapping("/create")
         ResponseEntity<ObjectResponseDto> createJournal(@RequestBody @Valid JournalCommand journalCommand);
 
-    @GetMapping("/owner/{ownerId}")
-        ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@RequestHeader HttpHeaders headers, @PathVariable String ownerId) ;
+    @PutMapping("/{id}")
+    ResponseEntity<ObjectResponseDto> editJournal(@RequestHeader HttpHeaders headers ,@PathVariable String id,@RequestBody EditJournalCommand editJournalCommand);
+    
+    @GetMapping(value={"/owner/{ownerId}","/owner/{ownerId}/{statusOpt}"})
+        ResponseEntity<ObjectListResponseDto<JournalResponse>> findJournalById(@RequestHeader HttpHeaders headers, 
+                                                                                @PathVariable String ownerId,
+                                                                                @PathVariable Optional<String> statusOpt) ;
     
     @ApiIgnore
     @DeleteMapping("/{id}")

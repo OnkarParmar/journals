@@ -21,12 +21,15 @@ public class Journal  {
     private String journalType;
     private String ownerId;
     private String title;
-    private String desc;
+    private String desc; // Used by Kuntal To Tell Good Morning To The user
     private List<Category> categories;
     private List<Mood> moods;
     private String name;
     private Date createdAt;
     private Date updatedAt;
+    private String journalYear;
+    private boolean active;
+    private String info; 
 
     @Builder
     public Journal(
@@ -37,7 +40,9 @@ public class Journal  {
             Date updatedAt,
             String title,
             String desc,
-            String name) 
+            String name,
+            String journalYear,
+            String info) 
             {
                 this.createdAt = createdAt;
                 this.updatedAt = updatedAt;
@@ -47,5 +52,7 @@ public class Journal  {
                 this.journalType = journalType;
                 this.ownerId = ownerId;
                 this.name = name;
+                this.journalYear = journalYear;
+                this.info = info;
             }
 }

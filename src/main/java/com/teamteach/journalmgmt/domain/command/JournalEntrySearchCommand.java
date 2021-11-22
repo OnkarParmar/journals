@@ -17,6 +17,7 @@ public class JournalEntrySearchCommand extends ValidatingCommand{
     private String toDate;
     private String ownerId;
     private String entryId;
+    private String journalId;
     private List<String> categories;
     private List<String> moods;
     private String viewMonth;

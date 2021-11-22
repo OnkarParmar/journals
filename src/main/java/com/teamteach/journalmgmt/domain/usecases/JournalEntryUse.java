@@ -245,10 +245,12 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             if(editJournalEntryCommand.getChildren() != null && editJournalEntryCommand.getChildren().length != 0){
                 entry.setChildren(editJournalEntryCommand.getChildren());
             } else {
-                return ObjectResponseDto.builder()
-                        .success(false)
-                        .message("Entry cannot be created without child")
-                        .build();
+                if(editJournalEntryCommand.getEntryId() == null){
+                    return ObjectResponseDto.builder()
+                    .success(false)
+                    .message("Entry cannot be created without child")
+                    .build();
+                }
             }
             String url = null;
             if(editJournalEntryCommand.getEntryImage() != null){
@@ -266,8 +268,16 @@ public class JournalEntryUse implements IJournalEntryMgmt {
             }
             if (editJournalEntryCommand.getRecommendationId() != null) {
                 entry.setRecommendationId(editJournalEntryCommand.getRecommendationId());
-            }            
-            if (editJournalEntryCommand.getSuggestionIndex() != null) {
+            }           
+            if (editJournalEntryCommand.getSuggestionIndex() != null && !editJournalEntryCommand.getSuggestionIndex().equals("")) {
+                try{
+                    int num = Integer.parseInt(editJournalEntryCommand.getSuggestionIndex());
+                } catch (NumberFormatException e) {
+                    return ObjectResponseDto.builder()
+                                            .success(false)
+                                            .message(e.getMessage())
+                                            .build();
+                }
                 entry.setSuggestionIndex(editJournalEntryCommand.getSuggestionIndex());
             }            
         } else {
@@ -352,6 +362,9 @@ public class JournalEntryUse implements IJournalEntryMgmt {
         searchCriteria.put(new SearchKey("ownerId",true),ownerId);
         if (journalEntrySearchCommand.getMoods() != null && !journalEntrySearchCommand.getMoods().isEmpty()) {
             containCriteria.put(new SearchKey("mood",false),journalEntrySearchCommand.getMoods());
+        }
+        if (journalEntrySearchCommand.getJournalId() != null && !journalEntrySearchCommand.getJournalId().isEmpty()) {
+            searchCriteria.put(new SearchKey("journalId",false),journalEntrySearchCommand.getJournalId());
         }
         if (journalEntrySearchCommand.getCategories() != null && !journalEntrySearchCommand.getCategories().isEmpty()) {
             containCriteria.put(new SearchKey("categoryId",false),journalEntrySearchCommand.getCategories());

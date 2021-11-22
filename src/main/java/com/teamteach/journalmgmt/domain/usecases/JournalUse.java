@@ -22,6 +22,7 @@ import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
 import com.teamteach.commons.security.jwt.JwtOperationsWrapperSvc;
 import com.teamteach.commons.security.jwt.JwtUser;
 import com.teamteach.commons.connectors.rabbit.core.IMessagingPort;
+import com.teamteach.commons.utils.AnonymizeService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -98,7 +99,7 @@ public class JournalUse implements IJournalMgmt{
                 journalCommand.setOwnerId("0");
             }
 
-            if (journal != null) {
+            if (journal != null && journalCommand.getJournalType().equals("PARENT")) {
                 return ObjectResponseDto.builder()
                     .success(false)
                     .message("A Journal with this ownerID already exists!")
@@ -110,19 +111,93 @@ public class JournalUse implements IJournalMgmt{
                     .journalId(sequenceGeneratorService.generateSequence(Journal.SEQUENCE_NAME))
                     .title(journalCommand.getTitle())
                     .desc(journalCommand.getDesc())
+                    .info(journalCommand.getInfo())
                     .journalType(journalCommand.getJournalType())
                     .ownerId(journalCommand.getOwnerId())
                     .createdAt(date)
                     .updatedAt(date)
                     .name(journalCommand.getName())
+                    .journalYear(journalCommand.getJournalYear())
                     .build();
+
+                if(journalCommand.getJournalType().equals("Class")||journalCommand.getJournalType().equals("Student")){
+                    journal.setActive(true);
+                }
+                if(journalDAL.countJournal(journalCommand.getJournalType(),journalCommand.getOwnerId()) == 0){
                 journalDAL.saveJournal(journal, true);
                 return ObjectResponseDto.builder()
                     .success(true)
                     .message("Journal created successfully")
                     .object(journal)
                     .build();
+            }else{
+                return ObjectResponseDto.builder()
+                .success(false)
+                .message("Only one active journal can add")
+                .object(null)
+                .build();
             }
+            }
+        }
+
+    @Override
+        public ObjectResponseDto editJournal(EditJournalCommand editJournalCommand ,String journalId){
+            if (editJournalCommand.getJournalType() == null) {
+                return ObjectResponseDto.builder()
+                                        .success(false)
+                                        .message("Please provide JournalType in the requestBody")
+                                        .object(editJournalCommand)
+                                        .build();
+            }
+            HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
+            searchCriteria.put(new SearchKey("journalId",false),journalId);
+            List<Journal> journals = journalDAL.getJournals(searchCriteria);
+            Journal editModel = journals.isEmpty() ? null : journals.get(0);
+            if (editModel == null) {
+                return ObjectResponseDto.builder()
+                                        .success(false)
+                                        .message("No Journal record found with given journalId and userType")
+                                        .object(editModel)
+                                        .build();
+            }
+            if(editJournalCommand.getTitle() != null){
+                editModel.setTitle(editJournalCommand.getTitle());
+            }
+            if(editJournalCommand.getInfo() != null){
+                editModel.setInfo(editJournalCommand.getInfo());
+            }
+            if(editJournalCommand.getName() != null){
+                editModel.setName(editJournalCommand.getName());
+            }
+            if(editJournalCommand.getDesc() != null){
+                editModel.setDesc(editJournalCommand.getDesc());
+            }
+            if(editJournalCommand.getJournalType() != null){
+                editModel.setJournalType(editJournalCommand.getJournalType());
+            }
+            if(editJournalCommand.getJournalYear() != null){
+                editModel.setJournalYear(editJournalCommand.getJournalYear());
+            }
+            if(editJournalCommand.getActive() != null){
+                if(editJournalCommand.getActive()){
+                    if(journalDAL.countJournal(editJournalCommand.getJournalType(),AnonymizeService.deAnonymizeData(editModel.getOwnerId())) != 0){
+                        return ObjectResponseDto.builder()
+                        .success(false)
+                        .message("You can only have one active Journal for "+editModel.getJournalType())
+                        .object(null)
+                        .build();
+                    }
+                }
+                editModel.setActive(editJournalCommand.getActive());
+            }
+
+            journalDAL.saveJournal(editModel, false);
+            return ObjectResponseDto.builder()
+                                    .success(true)
+                                    .message(editJournalCommand.getJournalType()+" profile updated successfully")
+                                    .object(editModel)
+                                    .build();
+
         }
 
     @Override
@@ -155,7 +230,7 @@ public class JournalUse implements IJournalMgmt{
         }
 
     @Override
-        public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken) {
+        public ObjectListResponseDto<JournalResponse> findById(String ownerId, String accessToken, String status) {
             ParentProfileResponseDto parentProfile = profileService.getProfile(ownerId, accessToken);
             if (parentProfile == null) {
                 return new ObjectListResponseDto<>(false, "A Parent with this ownerId does not exist!", null);
@@ -164,6 +239,7 @@ public class JournalUse implements IJournalMgmt{
             List<JournalResponse> journalResponses = new ArrayList<>();
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
             searchCriteria.put(new SearchKey("ownerId",true),ownerId);
+            searchCriteria.put(new SearchKey("active",false),status.equals("active"));
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             journals = journals.isEmpty() ? null : journals;
 
@@ -175,7 +251,11 @@ public class JournalUse implements IJournalMgmt{
                     journalResponse.setMoods(moodsService.getMoodsCount(journal.getJournalId()));
                     journalResponse.setEntryCount();
                     journalResponse.setDesc(addDescription(timezone));
+                    journalResponse.setInfo(journal.getInfo());
+                    journalResponse.setActive(journal.isActive());
                     journalResponse.setName(journal.getName());
+                    journalResponse.setJournalType(journal.getJournalType());
+                    journalResponse.setJournalYear(journal.getJournalYear());
                     journalResponses.add(journalResponse);
                 }            
             }
