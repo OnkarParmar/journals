@@ -439,7 +439,7 @@ public class JournalUse implements IJournalMgmt{
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");  
             String strDate = "it is null by default";
             String strDate2="";
-            int id = 0;
+            int id = 1;
             Date date = new Date(System.currentTimeMillis());
             SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");  
             String strDate1 = formatter1.format(date);
@@ -448,7 +448,7 @@ public class JournalUse implements IJournalMgmt{
                 return new ObjectListResponseDto<>(false, "No journals found!", null);
             } else {
                 for (Journal journal : journals) {
-                    if(journal.getOwnerId() == "0") continue;
+                    if(journal.getOwnerId().equals("0")) continue;
                     moods = moodsService.getMoodsCount(journal.getJournalId());
                     entryCount = moods.stream().map(x -> x.getCount()).reduce(0, Integer::sum);
                     journalEntry = journalDAL.getJournalDashboardEntries(journal.getOwnerId(), journal.getJournalId());
