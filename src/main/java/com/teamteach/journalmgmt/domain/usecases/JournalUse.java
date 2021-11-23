@@ -399,6 +399,7 @@ public class JournalUse implements IJournalMgmt{
                 .toDate(toDate) 
                 .children(children)                                                                    
                 .entryList(sortedEntries)
+                .relation(parentProfile.getRelation())
                 .build();
             reportService.setReport(journalEntryProfile);  
             String url = null;

@@ -56,6 +56,7 @@ public class ProfileService {
 																.lname(parentProfileJson.get("lname").asText())
 																.email(parentProfileJson.get("email").asText())
 																.children(children)
+                                                                .relation(parentProfileJson.get("relation").asText())
                                                                 .timezone(parentProfileJson.get("timezone").asText())
 																.build();
 

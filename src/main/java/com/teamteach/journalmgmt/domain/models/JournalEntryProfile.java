@@ -18,4 +18,5 @@ public class JournalEntryProfile {
     List<String> filterChildren;
     String children;
     List<JournalEntryResponse> entryList;
+    String relation;
 }

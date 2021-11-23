@@ -65,7 +65,7 @@ public class ReportService {
         model.put("filterChildren", filterChildren);
         model.put("children", report.getChildren());
         model.put("entries", report.getEntryList());
-
+        model.put("relation",(report.getRelation() == null || report.getRelation().equals(""))  ? "Parent" : report.getRelation());
 
         context.setVariables(model);
         return context;
