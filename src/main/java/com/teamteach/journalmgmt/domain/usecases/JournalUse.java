@@ -239,7 +239,10 @@ public class JournalUse implements IJournalMgmt{
             List<JournalResponse> journalResponses = new ArrayList<>();
             HashMap<SearchKey,Object> searchCriteria = new HashMap<>();
             searchCriteria.put(new SearchKey("ownerId",true),ownerId);
-            searchCriteria.put(new SearchKey("active",false),status.equals("active"));
+            if (!parentProfile.getUserType().equals("Parent")) {
+                System.out.println("Getting non-parent status");
+                searchCriteria.put(new SearchKey("active",false),status.equals("active"));
+            }
             List<Journal> journals = journalDAL.getJournals(searchCriteria);
             journals = journals.isEmpty() ? null : journals;
 
