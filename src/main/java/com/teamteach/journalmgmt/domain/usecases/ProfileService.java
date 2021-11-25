@@ -55,6 +55,7 @@ public class ProfileService {
 																.fname(parentProfileJson.get("fname").asText())
 																.lname(parentProfileJson.get("lname").asText())
 																.email(parentProfileJson.get("email").asText())
+                                                                .userType(parentProfileJson.get("userType").get("type").asText())
 																.children(children)
                                                                 .relation(parentProfileJson.get("relation").asText())
                                                                 .timezone(parentProfileJson.get("timezone").asText())

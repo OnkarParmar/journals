@@ -19,4 +19,5 @@ public class ParentProfileResponseDto {
     private List<ChildProfile> children;
     private String timezone;
     private String relation;
+    private String userType;
 }
