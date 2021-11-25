@@ -34,7 +34,6 @@ public class ProfileService {
             headers.set("Authorization", accessToken); 
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity <String> entity = new HttpEntity <> (null, headers);
-            System.out.println(accessToken);
             System.out.println(parentProfileUrl);
             ResponseEntity <String> response = restTemplate.exchange(parentProfileUrl, HttpMethod.GET, entity, String.class);
             JsonNode respoJsonNode = new ObjectMapper().readTree(response.getBody());
