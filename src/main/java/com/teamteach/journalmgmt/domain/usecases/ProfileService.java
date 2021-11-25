@@ -50,14 +50,12 @@ public class ProfileService {
                                                     childJson.get("profileImage").asText()
                                                     ));
                 }
-                System.out.println(parentProfileJson);
-                System.out.println(parentProfileJson.get("userType"));
                 parentProfile = ParentProfileResponseDto.builder()
 																.profileId(parentProfileJson.get("profileId").asText())
 																.fname(parentProfileJson.get("fname").asText())
 																.lname(parentProfileJson.get("lname").asText())
 																.email(parentProfileJson.get("email").asText())
-                                                                .userType(parentProfileJson.get("userType").get("type").asText())
+                                                                .userType(parentProfileJson.get("userType").asText())
 																.children(children)
                                                                 .relation(parentProfileJson.get("relation").asText())
                                                                 .timezone(parentProfileJson.get("timezone").asText())
