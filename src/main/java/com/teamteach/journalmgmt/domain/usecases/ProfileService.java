@@ -50,6 +50,8 @@ public class ProfileService {
                                                     childJson.get("profileImage").asText()
                                                     ));
                 }
+                System.out.println(parentProfileJson);
+                System.out.println(parentProfileJson.get("userType"));
                 parentProfile = ParentProfileResponseDto.builder()
 																.profileId(parentProfileJson.get("profileId").asText())
 																.fname(parentProfileJson.get("fname").asText())
