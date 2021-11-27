@@ -27,7 +27,7 @@ public class JournalResponse {
 
     @Builder
     public JournalResponse(Journal journal) {
-        SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM, yyyy");
+        SimpleDateFormat formatter= new SimpleDateFormat("dd MMM, yyyy");
         this.journalId = journal.getJournalId();
         this.title = journal.getTitle();
         this.desc = journal.getDesc();    
